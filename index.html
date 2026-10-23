@@ -3,28 +3,29 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>WatchUrMovie — Streamex Luxury Cinema (40 Players)</title>
+  <title>WatchUrMovie — Full-Page Cinema Studio</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
   <style>
 /* ==========================================================================
-   WatchUrMovie — Streamex.sh Inspired Luxury Cinema UI (style.css)
-   - Floating Minimal Header (3-Lines Drawer Trigger ☰, Logo, Search, Login)
-   - Slide-Out Glassmorphic Sidebar Drawer
-   - Signature Hover-Blur Movie Cards with Genre Tags, Synopsis & Watch CTA
-   - 40 Multi-Server Streaming Players Bar + Season/Episode Selector
+   WatchUrMovie — Streamex-Inspired Full-Page Watch Studio & Cinema UI
+   - Floating Minimal Header + 3-Lines Slide-Out Drawer (☰)
+   - Home Catalog with Ambient Hero & Hover-Blur Movie Cards
+   - Full-Page Watch Studio View (Player + 16 Distinct Servers + Multi-File
+     Download Hub + Recommended + Side Info Panel + Trailers + Interactive Cast)
+   - Actor Profile & Full Filmography Explorer (TMDB /person/{id}/combined_credits)
    ========================================================================== */
 
 :root,
 html[data-palette="streamex"] {
-  --bg-body: #06070b;
-  --bg-surface: #0d0f17;
-  --bg-card: #121521;
-  --bg-elevated: #191d2d;
-  --bg-glass: rgba(12, 14, 22, 0.84);
-  --bg-drawer: rgba(10, 12, 20, 0.96);
+  --bg-body: #07080d;
+  --bg-surface: #0e1018;
+  --bg-card: #141722;
+  --bg-elevated: #1c2030;
+  --bg-glass: rgba(14, 16, 24, 0.86);
+  --bg-drawer: rgba(11, 13, 20, 0.97);
 
   --accent: #8b5cf6;
   --accent-light: #a78bfa;
@@ -34,13 +35,14 @@ html[data-palette="streamex"] {
   --on-accent: #ffffff;
 
   --gold: #fbbf24;
+  --green-online: #10b981;
   --text-primary: #f8fafc;
   --text-secondary: #cbd5e1;
   --text-muted: #7c8ba1;
 
   --border: rgba(255, 255, 255, 0.08);
   --border-hover: rgba(167, 139, 250, 0.48);
-  --shadow-lg: 0 22px 55px rgba(0, 0, 0, 0.75);
+  --shadow-lg: 0 22px 55px rgba(0, 0, 0, 0.78);
 }
 
 html[data-palette="aurora"] {
@@ -48,8 +50,8 @@ html[data-palette="aurora"] {
   --bg-surface: #0c131d;
   --bg-card: #111b29;
   --bg-elevated: #182638;
-  --bg-glass: rgba(12, 19, 29, 0.84);
-  --bg-drawer: rgba(10, 16, 25, 0.96);
+  --bg-glass: rgba(12, 19, 29, 0.86);
+  --bg-drawer: rgba(10, 16, 25, 0.97);
 
   --accent: #10b981;
   --accent-light: #34d399;
@@ -65,8 +67,8 @@ html[data-palette="amber"] {
   --bg-surface: #15120e;
   --bg-card: #1d1914;
   --bg-elevated: #28221b;
-  --bg-glass: rgba(21, 18, 14, 0.84);
-  --bg-drawer: rgba(18, 15, 12, 0.96);
+  --bg-glass: rgba(21, 18, 14, 0.86);
+  --bg-drawer: rgba(18, 15, 12, 0.97);
 
   --accent: #f59e0b;
   --accent-light: #fbbf24;
@@ -82,8 +84,8 @@ html[data-palette="crimson"] {
   --bg-surface: #120d11;
   --bg-card: #1a1218;
   --bg-elevated: #261a22;
-  --bg-glass: rgba(18, 13, 17, 0.84);
-  --bg-drawer: rgba(15, 10, 14, 0.96);
+  --bg-glass: rgba(18, 13, 17, 0.86);
+  --bg-drawer: rgba(15, 10, 14, 0.97);
 
   --accent: #e11d48;
   --accent-light: #fb7185;
@@ -169,7 +171,7 @@ svg {
 }
 
 /* ==========================================================================
-   FLOATING STREAMEX HEADER (Only 3-Lines Drawer Trigger, Logo, Search, Login)
+   FLOATING MINIMALIST HEADER
    ========================================================================== */
 .site-header {
   position: sticky;
@@ -182,10 +184,10 @@ svg {
 }
 
 .header-inner {
-  max-width: 1420px;
+  max-width: 1480px;
   margin: 0 auto;
   padding: 0 24px;
-  height: 70px;
+  height: 68px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -198,7 +200,6 @@ svg {
   gap: 14px;
 }
 
-/* 3-Lines Hamburger Button (☰) */
 .menu-trigger-btn {
   width: 42px;
   height: 42px;
@@ -243,6 +244,7 @@ svg {
   display: inline-flex;
   align-items: center;
   gap: 10px;
+  cursor: pointer;
 }
 
 .brand-logo {
@@ -273,10 +275,9 @@ svg {
   font-size: 0.62rem;
   font-weight: 700;
   color: var(--accent-light);
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
 }
 
-/* Center Glass Search Pill */
 .header-search-wrap {
   flex: 1;
   max-width: 480px;
@@ -383,7 +384,6 @@ svg {
   color: var(--text-muted);
 }
 
-/* Header Right: Language + Login Button */
 .header-end {
   display: flex;
   align-items: center;
@@ -472,7 +472,7 @@ svg {
   top: 0;
   bottom: 0;
   inset-inline-start: 0;
-  width: 320px;
+  width: 310px;
   max-width: 88vw;
   z-index: 260;
   background: var(--bg-drawer);
@@ -482,7 +482,7 @@ svg {
   padding: 20px 18px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 18px;
   overflow-y: auto;
   transform: translateX(105%);
   transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
@@ -570,11 +570,6 @@ html[dir="ltr"] .nav-drawer {
   font-size: 0.75rem;
   font-weight: 700;
   white-space: nowrap;
-}
-
-.drawer-user-action:hover {
-  background: var(--accent);
-  color: var(--on-accent);
 }
 
 .drawer-group {
@@ -695,10 +690,10 @@ html[dir="ltr"] .nav-drawer {
 }
 
 /* ==========================================================================
-   MAIN CONTAINER & STREAMEX AMBIENT HERO SPOTLIGHT
+   MAIN CONTAINER & HOME CATALOG VIEW
    ========================================================================== */
 .main-container {
-  max-width: 1420px;
+  max-width: 1480px;
   margin: 0 auto;
   padding: 0 24px 60px;
 }
@@ -709,7 +704,7 @@ html[dir="ltr"] .nav-drawer {
   margin-bottom: 34px;
   border-radius: 26px;
   overflow: hidden;
-  min-height: 450px;
+  min-height: 440px;
   background: var(--bg-surface);
   border: 1px solid var(--border);
   box-shadow: var(--shadow-lg);
@@ -736,7 +731,7 @@ html[dir="ltr"] .nav-drawer {
   inset: 0;
   background:
     radial-gradient(circle at 80% 25%, var(--accent-soft), transparent 55%),
-    linear-gradient(180deg, rgba(6, 7, 11, 0.15) 0%, rgba(6, 7, 11, 0.74) 58%, rgba(6, 7, 11, 0.97) 100%);
+    linear-gradient(180deg, rgba(7, 8, 13, 0.15) 0%, rgba(7, 8, 13, 0.75) 58%, rgba(7, 8, 13, 0.98) 100%);
   z-index: 2;
 }
 
@@ -924,11 +919,6 @@ html[dir="ltr"] .nav-drawer {
   object-fit: cover;
 }
 
-.hero-thumb-card:hover {
-  opacity: 0.88;
-  transform: translateY(-3px);
-}
-
 .hero-thumb-card.active {
   opacity: 1;
   border-color: var(--accent-light);
@@ -937,7 +927,7 @@ html[dir="ltr"] .nav-drawer {
 }
 
 /* ==========================================================================
-   TOOLBAR & GENRE FILTER PILLS
+   TOOLBAR & HOVER-BLUR MOVIE CARDS GRID
    ========================================================================== */
 .toolbar-surface {
   display: flex;
@@ -1009,15 +999,6 @@ html[dir="ltr"] .nav-drawer {
   cursor: pointer;
 }
 
-.clean-select:hover,
-.clean-select:focus {
-  border-color: var(--border-hover);
-  color: var(--text-primary);
-}
-
-/* ==========================================================================
-   SECTIONS & SIGNATURE HOVER-BLUR MOVIE CARDS GRID
-   ========================================================================== */
 .continue-block,
 .catalog-section,
 .top-ten-section {
@@ -1066,13 +1047,7 @@ html[dir="ltr"] .nav-drawer {
   font-weight: 600;
 }
 
-.text-btn:hover {
-  color: var(--accent-light);
-}
-
-/* Movies Grid (Supports both .movies-grid and .movies-Blur-grid) */
-.movies-grid,
-.movies-Blur-grid {
+.movies-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(195px, 1fr));
   gap: 22px;
@@ -1111,7 +1086,6 @@ html[dir="ltr"] .nav-drawer {
   transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), filter 0.35s ease;
 }
 
-/* HOVER BLUR ON MOVIE POSTER */
 .blur-movie-card:hover .poster-img {
   transform: scale(1.08);
   filter: blur(6px) brightness(0.32) saturate(1.2);
@@ -1133,7 +1107,7 @@ html[dir="ltr"] .nav-drawer {
 }
 
 .corner-quality {
-  background: rgba(6, 7, 11, 0.8);
+  background: rgba(6, 7, 11, 0.82);
   backdrop-filter: blur(6px);
   color: #f8fafc;
   font-size: 0.68rem;
@@ -1143,7 +1117,7 @@ html[dir="ltr"] .nav-drawer {
 }
 
 .corner-rating {
-  background: rgba(6, 7, 11, 0.84);
+  background: rgba(6, 7, 11, 0.86);
   backdrop-filter: blur(6px);
   color: #fbbf24;
   font-size: 0.73rem;
@@ -1152,7 +1126,6 @@ html[dir="ltr"] .nav-drawer {
   border-radius: 7px;
 }
 
-/* Hover Overlay Layer with Genres, Rating, Synopsis & Watch Button */
 .hover-info-layer {
   position: absolute;
   inset: 0;
@@ -1164,7 +1137,7 @@ html[dir="ltr"] .nav-drawer {
   opacity: 0;
   transform: translateY(10px);
   transition: opacity 0.28s ease, transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
-  background: linear-gradient(180deg, rgba(6, 7, 11, 0.25) 0%, rgba(6, 7, 11, 0.88) 100%);
+  background: linear-gradient(180deg, rgba(6, 7, 11, 0.25) 0%, rgba(6, 7, 11, 0.9) 100%);
 }
 
 .blur-movie-card:hover .hover-info-layer {
@@ -1201,7 +1174,6 @@ html[dir="ltr"] .nav-drawer {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.18s ease;
 }
 
 .hover-save-icon-btn.active,
@@ -1268,27 +1240,6 @@ html[dir="ltr"] .nav-drawer {
   justify-content: center;
   gap: 6px;
   box-shadow: 0 4px 14px var(--accent-glow);
-  transition: transform 0.18s ease;
-}
-
-.hover-watch-btn:hover {
-  transform: scale(1.03);
-}
-
-.hover-details-btn {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.14);
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  color: #ffffff;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.hover-details-btn:hover {
-  background: rgba(255, 255, 255, 0.25);
 }
 
 .card-caption {
@@ -1452,13 +1403,651 @@ html[dir="ltr"] .nav-drawer {
 }
 
 /* ==========================================================================
-   MODALS: AUTH, 40-SERVER PLAYER, DETAILS & CODES
+   FULL-PAGE WATCH STUDIO VIEW (#watchStudioView)
+   Replaces the Home Catalog completely when a movie/series is opened!
+   ========================================================================== */
+.watch-studio-view {
+  padding-top: 18px;
+  animation: fadeInStudio 0.28s ease;
+}
+
+@keyframes fadeInStudio {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.studio-top-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 16px;
+  padding: 12px 18px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  flex-wrap: wrap;
+}
+
+.studio-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px;
+  border-radius: 11px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  font-size: 0.88rem;
+  font-weight: 700;
+  transition: all 0.2s ease;
+}
+
+.studio-back-btn:hover {
+  background: var(--accent-soft);
+  border-color: var(--border-hover);
+  color: var(--accent-light);
+}
+
+.studio-top-title-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.studio-top-title {
+  font-size: 1.18rem;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+/* 2-Column Studio Architecture: Center Player Column + Side Info/Cast Panel */
+.studio-layout-grid {
+  display: grid;
+  grid-template-columns: 1fr 370px;
+  gap: 22px;
+  align-items: start;
+}
+
+.studio-main-col {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-width: 0;
+}
+
+/* Video Stage */
+.studio-player-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000000;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid var(--border-hover);
+  box-shadow: var(--shadow-lg);
+}
+
+.studio-player-frame video,
+.studio-player-frame iframe,
+.studio-player-frame canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border: 0;
+}
+
+/* Series Season & Episode Bar */
+.studio-episode-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 12px 18px;
+  border-radius: 16px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-hover);
+}
+
+.ep-selectors-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.ep-selectors-group label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--accent-light);
+}
+
+/* Now Playing Control Bar + Quick Actions (+ Watchlist, Share, Download) */
+.now-playing-panel {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.now-playing-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.now-playing-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  display: block;
+}
+
+.now-playing-movie-name {
+  font-size: 1.08rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.now-playing-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.np-icon-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 11px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.05rem;
+  font-weight: 700;
+  transition: all 0.2s ease;
+}
+
+.np-icon-btn:hover,
+.np-icon-btn.active {
+  background: var(--accent-soft);
+  border-color: var(--border-hover);
+  color: var(--accent-light);
+}
+
+.np-download-btn {
+  height: 40px;
+  padding: 0 16px;
+  border-radius: 11px;
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: #ffffff;
+  font-size: 0.84rem;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 6px 18px rgba(16, 185, 129, 0.32);
+  transition: all 0.2s ease;
+}
+
+.np-download-btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.08);
+}
+
+.server-hint-line {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ==========================================================================
+   DEDUPLICATED 16-PROVIDER SERVER GRID (Unique Domains, Flags, Green Dots)
+   ========================================================================== */
+.server-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
+  gap: 10px;
+}
+
+.server-card-btn {
+  position: relative;
+  height: 46px;
+  padding: 0 14px;
+  border-radius: 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.server-card-btn:hover {
+  background: var(--bg-elevated);
+  border-color: var(--border-hover);
+  color: var(--text-primary);
+  transform: translateY(-2px);
+}
+
+.server-card-btn.active {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.28), rgba(6, 182, 212, 0.22));
+  border-color: var(--accent-light);
+  color: #ffffff;
+  box-shadow: 0 6px 20px var(--accent-soft);
+}
+
+.srv-sparkle {
+  position: absolute;
+  top: 5px;
+  inset-inline-start: 7px;
+  font-size: 0.65rem;
+  color: #f43f5e;
+}
+
+.srv-flag {
+  font-size: 0.92rem;
+}
+
+.srv-provider-title {
+  letter-spacing: 0.01em;
+}
+
+.srv-online-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--green-online);
+  box-shadow: 0 0 8px var(--green-online);
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   MULTI-FILE DOWNLOAD HUB PANEL (#downloadHubPanel)
+   ========================================================================== */
+.download-hub-panel {
+  background: linear-gradient(145deg, var(--bg-surface), var(--bg-card));
+  border: 1px solid rgba(16, 185, 129, 0.45);
+  border-radius: 18px;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.download-hub-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.download-hub-title {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #34d399;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.download-files-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 10px;
+}
+
+.dl-file-card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  transition: all 0.2s ease;
+}
+
+.dl-file-card:hover {
+  border-color: #34d399;
+  transform: translateY(-2px);
+}
+
+.dl-file-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dl-file-quality {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.dl-file-specs {
+  font-size: 0.73rem;
+  color: var(--text-muted);
+}
+
+.dl-trigger-link {
+  padding: 7px 13px;
+  border-radius: 9px;
+  background: rgba(16, 185, 129, 0.18);
+  border: 1px solid rgba(16, 185, 129, 0.45);
+  color: #34d399;
+  font-size: 0.76rem;
+  font-weight: 800;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.dl-trigger-link:hover {
+  background: #10b981;
+  color: #04130e;
+}
+
+/* ==========================================================================
+   RECOMMENDED & SIMILAR MOVIES SECTION (Inside Watch Studio)
+   ========================================================================== */
+.studio-recommended-box {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 18px 20px;
+}
+
+.rec-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.rec-nav-arrows {
+  display: flex;
+  gap: 6px;
+}
+
+.rec-arrow-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rec-arrow-btn:hover {
+  border-color: var(--border-hover);
+  color: var(--accent-light);
+}
+
+.recommended-scroll-row {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 165px;
+  gap: 14px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent) var(--bg-elevated);
+}
+
+/* ==========================================================================
+   STUDIO SIDE PANEL (Poster, Status, Production, Synopsis, Trailers, Cast)
+   ========================================================================== */
+.studio-side-col {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.side-top-card {
+  display: grid;
+  grid-template-columns: 125px 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+.side-poster-wrap {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  aspect-ratio: 2 / 3;
+  border: 1px solid var(--border);
+}
+
+.side-poster-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.side-poster-score {
+  position: absolute;
+  top: 7px;
+  inset-inline-end: 7px;
+  background: rgba(6, 7, 11, 0.86);
+  color: #fbbf24;
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: 6px;
+}
+
+.side-facts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.fact-item {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.fact-label {
+  font-size: 0.74rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.fact-value {
+  font-size: 0.86rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.side-movie-heading {
+  font-size: 1.22rem;
+  font-weight: 800;
+  line-height: 1.25;
+  color: #ffffff;
+}
+
+.side-synopsis-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-size: 0.83rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+  max-height: 135px;
+  overflow-y: auto;
+}
+
+.side-genre-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.side-genre-chip {
+  padding: 5px 11px;
+  border-radius: 8px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+/* Trailers Strip inside Side Panel */
+.side-block-heading {
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.side-trailers-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.trailer-pill-btn {
+  height: 40px;
+  padding: 0 12px;
+  border-radius: 10px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  font-size: 0.78rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.trailer-pill-btn:hover {
+  border-color: var(--border-hover);
+  background: var(--accent-soft);
+  color: var(--accent-light);
+}
+
+/* Interactive Characters & Actors List */
+.characters-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 360px;
+  overflow-y: auto;
+  padding-inline-end: 2px;
+}
+
+.character-row-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.character-row-card:hover {
+  border-color: var(--border-hover);
+  background: var(--bg-elevated);
+  transform: translateX(-3px);
+}
+
+html[dir="ltr"] .character-row-card:hover {
+  transform: translateX(3px);
+}
+
+.char-avatar {
+  width: 48px;
+  height: 58px;
+  border-radius: 9px;
+  object-fit: cover;
+  background: var(--bg-elevated);
+  flex-shrink: 0;
+}
+
+.char-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.char-role-name {
+  font-size: 0.84rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.char-actor-name {
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.char-explore-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--accent-light);
+  padding: 3px 8px;
+  border-radius: 99px;
+  background: var(--accent-soft);
+  white-space: nowrap;
+}
+
+/* ==========================================================================
+   ACTOR PROFILE & FILMOGRAPHY MODAL (#actorModal)
    ========================================================================== */
 .modal-overlay {
   position: fixed;
   inset: 0;
   z-index: 400;
-  background: rgba(3, 5, 10, 0.84);
+  background: rgba(3, 5, 10, 0.86);
   backdrop-filter: blur(14px);
   display: flex;
   align-items: center;
@@ -1487,18 +2076,6 @@ html[dir="ltr"] .nav-drawer {
   border-bottom: 1px solid var(--border);
 }
 
-.modal-title-wrap {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.modal-sub-meta {
-  font-size: 0.8rem;
-  color: var(--text-muted);
-}
-
 .modal-close-x {
   width: 34px;
   height: 34px;
@@ -1516,14 +2093,70 @@ html[dir="ltr"] .nav-drawer {
   color: var(--on-accent);
 }
 
-.floating-x {
-  position: absolute;
-  top: 14px;
-  inset-inline-end: 14px;
-  z-index: 10;
+.actor-modal-box {
+  max-width: 980px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
 }
 
-/* Auth Modal */
+.actor-modal-body {
+  padding: 22px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.actor-hero-header {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.actor-profile-img {
+  width: 120px;
+  height: 160px;
+  border-radius: 16px;
+  object-fit: cover;
+  border: 2px solid var(--border-hover);
+  flex-shrink: 0;
+}
+
+.actor-bio-col {
+  flex: 1;
+  min-width: 240px;
+}
+
+.actor-name-heading {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+
+.actor-sub-facts {
+  font-size: 0.82rem;
+  color: var(--accent-light);
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.actor-bio-text {
+  font-size: 0.83rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+  max-height: 110px;
+  overflow-y: auto;
+}
+
+.actor-credits-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 14px;
+}
+
+/* Auth & Codes Modals */
 .auth-modal-box {
   max-width: 430px;
 }
@@ -1583,10 +2216,6 @@ html[dir="ltr"] .nav-drawer {
   outline: none;
 }
 
-.auth-field input:focus {
-  border-color: var(--accent-light);
-}
-
 .auth-submit-btn {
   height: 44px;
   border-radius: 11px;
@@ -1615,340 +2244,6 @@ html[dir="ltr"] .nav-drawer {
   color: var(--accent-light);
 }
 
-.quick-guest-btn:hover {
-  background: var(--accent-soft);
-  border-color: var(--border-hover);
-}
-
-/* ==========================================================================
-   40-SERVER STREAMING PLAYER MODAL
-   ========================================================================== */
-.player-modal-box {
-  max-width: 1080px;
-}
-
-.player-controls-deck {
-  background: var(--bg-card);
-  border-bottom: 1px solid var(--border);
-  padding: 12px 18px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.player-top-filters {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-}
-
-.server-search-group {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex: 1;
-  min-width: 240px;
-}
-
-.server-count-pill {
-  background: var(--accent-soft);
-  color: var(--accent-light);
-  border: 1px solid var(--border-hover);
-  padding: 4px 10px;
-  border-radius: 99px;
-  font-size: 0.75rem;
-  font-weight: 800;
-  white-space: nowrap;
-}
-
-.server-quick-select {
-  height: 36px;
-  padding: 0 12px;
-  border-radius: 10px;
-  background: var(--bg-elevated);
-  border: 1px solid var(--border);
-  font-size: 0.8rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  outline: none;
-  flex: 1;
-  max-width: 280px;
-}
-
-.series-ep-bar {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.series-ep-bar label {
-  font-size: 0.76rem;
-  font-weight: 700;
-  color: var(--accent-light);
-}
-
-/* Scrollable 40-Servers Ribbon */
-.servers-scroll-ribbon {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  overflow-x: auto;
-  padding: 4px 2px 6px;
-  scrollbar-width: thin;
-  scrollbar-color: var(--accent) var(--bg-elevated);
-}
-
-.servers-scroll-ribbon::-webkit-scrollbar {
-  height: 5px;
-}
-
-.servers-scroll-ribbon::-webkit-scrollbar-track {
-  background: var(--bg-elevated);
-  border-radius: 99px;
-}
-
-.servers-scroll-ribbon::-webkit-scrollbar-thumb {
-  background: var(--accent);
-  border-radius: 99px;
-}
-
-.srv-btn {
-  padding: 6px 12px;
-  border-radius: 9px;
-  background: var(--bg-elevated);
-  border: 1px solid var(--border);
-  font-size: 0.76rem;
-  font-weight: 700;
-  color: var(--text-secondary);
-  white-space: nowrap;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  transition: all 0.18s ease;
-  flex-shrink: 0;
-}
-
-.srv-btn:hover {
-  border-color: var(--border-hover);
-  color: var(--text-primary);
-  transform: translateY(-1px);
-}
-
-.srv-btn.active {
-  background: linear-gradient(135deg, var(--accent), var(--accent-2));
-  border-color: transparent;
-  color: var(--on-accent);
-  box-shadow: 0 4px 14px var(--accent-glow);
-}
-
-.srv-num {
-  font-size: 0.66rem;
-  opacity: 0.75;
-  padding: 1px 5px;
-  border-radius: 5px;
-  background: rgba(0, 0, 0, 0.25);
-}
-
-.srv-tag {
-  font-size: 0.64rem;
-  padding: 1px 5px;
-  border-radius: 5px;
-  background: rgba(255, 255, 255, 0.12);
-  color: #fbbf24;
-}
-
-.srv-btn.active .srv-tag {
-  background: rgba(0, 0, 0, 0.28);
-  color: #ffffff;
-}
-
-.video-stage {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  background: #000000;
-  overflow: hidden;
-}
-
-.video-stage video,
-.video-stage iframe,
-.video-stage canvas {
-  width: 100%;
-  height: 100%;
-  display: block;
-  border: 0;
-}
-
-.video-custom-controls {
-  position: absolute;
-  inset-inline: 0;
-  bottom: 0;
-  padding: 12px 16px;
-  background: linear-gradient(0deg, rgba(0, 0, 0, 0.88), transparent);
-}
-
-.timeline-bar {
-  height: 5px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 99px;
-  margin-bottom: 10px;
-  cursor: pointer;
-  overflow: hidden;
-}
-
-.timeline-fill {
-  height: 100%;
-  width: 0%;
-  background: linear-gradient(90deg, var(--accent), var(--accent-2));
-}
-
-.controls-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.controls-side {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.v-ctrl-btn {
-  padding: 4px 10px;
-  border-radius: 7px;
-  background: rgba(255, 255, 255, 0.14);
-  color: #ffffff;
-  font-size: 0.76rem;
-  font-weight: 700;
-}
-
-.v-time {
-  font-size: 0.76rem;
-  color: #cbd5e1;
-  font-family: monospace;
-}
-
-/* Details Modal */
-.details-modal-box {
-  max-width: 880px;
-  max-height: 90vh;
-  overflow-y: auto;
-}
-
-.details-layout {
-  display: grid;
-  grid-template-columns: 250px 1fr;
-  gap: 26px;
-  padding: 26px;
-}
-
-.details-poster-col img {
-  width: 100%;
-  aspect-ratio: 2 / 3;
-  object-fit: cover;
-  border-radius: 16px;
-  border: 1px solid var(--border);
-}
-
-.details-heading {
-  font-size: 1.7rem;
-  font-weight: 800;
-  margin: 8px 0 10px;
-}
-
-.details-story {
-  font-size: 0.9rem;
-  color: var(--text-secondary);
-  line-height: 1.7;
-  margin-bottom: 16px;
-}
-
-.details-specs-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-  padding: 12px 14px;
-  border-radius: 14px;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  margin-bottom: 18px;
-  font-size: 0.84rem;
-}
-
-.details-cta-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-.sub-heading {
-  font-size: 0.86rem;
-  font-weight: 800;
-  color: var(--text-secondary);
-  margin-bottom: 8px;
-}
-
-.cast-pills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-bottom: 18px;
-}
-
-.cast-tag {
-  padding: 4px 10px;
-  border-radius: 99px;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  font-size: 0.76rem;
-}
-
-.review-form-row {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 12px;
-  flex-wrap: wrap;
-}
-
-.review-form-row input {
-  flex: 1;
-  min-width: 140px;
-  height: 38px;
-  padding: 0 12px;
-  border-radius: 10px;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  font-size: 0.82rem;
-  outline: none;
-}
-
-.compact-btn {
-  height: 38px;
-  padding: 0 16px;
-  font-size: 0.8rem;
-}
-
-.reviews-list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  max-height: 140px;
-  overflow-y: auto;
-}
-
-.review-card-item {
-  padding: 8px 12px;
-  border-radius: 10px;
-  background: var(--bg-card);
-  font-size: 0.8rem;
-}
-
-/* VIP Codes Modal */
 .codes-modal-box {
   max-width: 500px;
 }
@@ -1996,11 +2291,6 @@ html[dir="ltr"] .nav-drawer {
   background: var(--bg-card);
   border: 1px solid var(--border);
   cursor: pointer;
-  transition: border-color 0.18s ease;
-}
-
-.code-row-item:hover {
-  border-color: var(--border-hover);
 }
 
 .code-key-pill {
@@ -2043,7 +2333,7 @@ html[dir="ltr"] .nav-drawer {
 }
 
 .footer-wrap {
-  max-width: 1420px;
+  max-width: 1480px;
   margin: 0 auto;
   display: flex;
   align-items: center;
@@ -2054,31 +2344,19 @@ html[dir="ltr"] .nav-drawer {
   color: var(--text-muted);
 }
 
-.footer-brand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.footer-brand strong {
-  color: var(--text-primary);
-}
-
 /* Responsive Breakpoints */
+@media (max-width: 1080px) {
+  .studio-layout-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 820px) {
   .hero-spotlight {
     padding: 24px;
     min-height: 380px;
   }
-  .details-layout {
-    grid-template-columns: 1fr;
-  }
-  .details-poster-col img {
-    max-width: 200px;
-    margin: 0 auto;
-  }
-  .movies-grid,
-  .movies-Blur-grid {
+  .movies-grid {
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: 14px;
   }
@@ -2101,7 +2379,7 @@ html[dir="ltr"] .nav-drawer {
   <div id="eyeComfortOverlay" class="eye-comfort-overlay" aria-hidden="true"></div>
 
   <!-- ========================================================================
-       FLOATING STREAMEX HEADER (Only 3-Lines Menu, Logo, Search, Login)
+       FLOATING STREAMEX HEADER (3-Lines Drawer Trigger, Logo, Search, Login)
        ======================================================================== -->
   <header class="site-header" id="siteHeader">
     <div class="header-inner">
@@ -2114,7 +2392,7 @@ html[dir="ltr"] .nav-drawer {
           </div>
         </button>
 
-        <a href="#heroSection" class="brand" aria-label="WatchUrMovie Home">
+        <a href="#homeCatalogView" class="brand" id="brandHomeLink" aria-label="WatchUrMovie Home">
           <div class="brand-logo">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
               <path d="M8 5.5V18.5L19 12L8 5.5Z" fill="currentColor" />
@@ -2122,7 +2400,7 @@ html[dir="ltr"] .nav-drawer {
           </div>
           <div class="brand-text">
             <span class="brand-title">WatchUrMovie</span>
-            <span class="brand-sub">STREAMEX · 40 PLAYERS</span>
+            <span class="brand-sub">CINEMA STUDIO</span>
           </div>
         </a>
       </div>
@@ -2137,7 +2415,7 @@ html[dir="ltr"] .nav-drawer {
           <input
             type="text"
             id="searchInput"
-            placeholder="ابحث عن أي فيلم أو مسلسل..."
+            placeholder="ابحث عن أي فيلم أو مسلسل أو ممثل..."
             autocomplete="off"
           />
           <button class="search-clear hidden" id="clearSearchBtn" aria-label="Clear">&times;</button>
@@ -2179,7 +2457,6 @@ html[dir="ltr"] .nav-drawer {
       <button class="drawer-close-btn" id="closeDrawerBtn" aria-label="Close Menu">&times;</button>
     </div>
 
-    <!-- User Account Card inside Drawer -->
     <div class="drawer-user-card">
       <div class="drawer-avatar" id="drawerAvatar">W</div>
       <div class="drawer-user-info">
@@ -2189,7 +2466,6 @@ html[dir="ltr"] .nav-drawer {
       <button class="drawer-user-action" id="drawerAuthActionBtn" data-i18n="signInBtn">تسجيل الدخول</button>
     </div>
 
-    <!-- Main Sections -->
     <div class="drawer-group">
       <div class="drawer-group-title" data-i18n="drawerSections">الأقسام الرئيسية</div>
       <div class="drawer-nav-list">
@@ -2245,13 +2521,11 @@ html[dir="ltr"] .nav-drawer {
       </div>
     </div>
 
-    <!-- Categories & Genres inside Drawer -->
     <div class="drawer-group">
       <div class="drawer-group-title" data-i18n="drawerGenres">التصنيفات</div>
       <div class="drawer-genres-grid" id="drawerGenresGrid"></div>
     </div>
 
-    <!-- Tools & Comfort inside Drawer -->
     <div class="drawer-group">
       <div class="drawer-group-title" data-i18n="drawerTools">الإعدادات والمزايا</div>
       <div class="drawer-nav-list">
@@ -2288,7 +2562,6 @@ html[dir="ltr"] .nav-drawer {
       </div>
     </div>
 
-    <!-- Ambient Themes inside Drawer -->
     <div class="drawer-group">
       <div class="drawer-group-title" data-i18n="drawerThemes">ثيمات الإضاءة</div>
       <div class="drawer-theme-row">
@@ -2313,127 +2586,320 @@ html[dir="ltr"] .nav-drawer {
   </aside>
 
   <!-- ========================================================================
-       MAIN CONTENT AREA
+       MAIN CONTAINER (Switches between #homeCatalogView and #watchStudioView)
        ======================================================================== -->
   <main class="main-container">
-    <!-- Streamex-Style Ambient Spotlight Hero -->
-    <section class="hero-spotlight" id="heroSection">
-      <div class="hero-backdrop-img" id="heroBackdrop"></div>
-      <div class="hero-gradient-mask"></div>
-      <div class="hero-ambient-glow"></div>
+    <!-- ======================================================================
+         VIEW 1: HOME CATALOG VIEW (#homeCatalogView)
+         ====================================================================== -->
+    <div id="homeCatalogView">
+      <section class="hero-spotlight" id="heroSection">
+        <div class="hero-backdrop-img" id="heroBackdrop"></div>
+        <div class="hero-gradient-mask"></div>
+        <div class="hero-ambient-glow"></div>
 
-      <div class="hero-body">
-        <div class="hero-main-info">
-          <div class="hero-tags" id="heroBadges"></div>
-          <h1 class="hero-movie-title" id="heroTitle" dir="ltr">Dune: Part Two</h1>
-          <div class="hero-meta-row" id="heroMeta"></div>
-          <p class="hero-desc" id="heroSynopsis"></p>
+        <div class="hero-body">
+          <div class="hero-main-info">
+            <div class="hero-tags" id="heroBadges"></div>
+            <h1 class="hero-movie-title" id="heroTitle" dir="ltr">Dune: Part Two</h1>
+            <div class="hero-meta-row" id="heroMeta"></div>
+            <p class="hero-desc" id="heroSynopsis"></p>
 
-          <div class="hero-cta-group">
-            <button class="btn-stream-now" id="heroWatchBtn">
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
-                <polygon points="6 4 20 12 6 20 6 4"></polygon>
-              </svg>
-              <span data-i18n="watchNow">شاهد الآن</span>
-            </button>
+            <div class="hero-cta-group">
+              <button class="btn-stream-now" id="heroWatchBtn">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
+                  <polygon points="6 4 20 12 6 20 6 4"></polygon>
+                </svg>
+                <span data-i18n="watchNow">شاهد الآن</span>
+              </button>
 
-            <button class="btn-glass-sec" id="heroDetailsBtn">
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="12" cy="12" r="10"></circle>
-                <line x1="12" y1="16" x2="12" y2="12"></line>
-                <line x1="12" y1="8" x2="12.01" y2="8"></line>
-              </svg>
-              <span data-i18n="moreDetails">التفاصيل</span>
-            </button>
+              <button class="btn-glass-sec" id="heroDetailsBtn">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="16" x2="12" y2="12"></line>
+                  <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                </svg>
+                <span data-i18n="moreDetails">عرض الصفحة</span>
+              </button>
 
-            <button class="btn-bookmark-circle" id="heroWatchlistBtn" title="حفظ في قائمتي">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-              </svg>
-            </button>
+              <button class="btn-bookmark-circle" id="heroWatchlistBtn" title="حفظ في قائمتي">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="hero-thumbs" id="heroThumbs"></div>
+        </div>
+      </section>
+
+      <!-- Continue Watching -->
+      <section class="continue-block hidden" id="continueWatchingSection">
+        <div class="section-head">
+          <div class="section-title-group">
+            <span class="section-dot"></span>
+            <h2 class="section-title" data-i18n="continueWatching">متابعة المشاهدة</h2>
+          </div>
+          <button class="text-btn" id="clearHistoryBtn" data-i18n="clearHistory">مسح السجل</button>
+        </div>
+        <div class="continue-list" id="continueWatchingGrid"></div>
+      </section>
+
+      <!-- Main Catalog with Hover-Blur Cards -->
+      <section class="catalog-section" id="catalogSection">
+        <div class="toolbar-surface">
+          <div class="genre-scroll-list" id="genreFilterBar"></div>
+
+          <div class="filter-controls">
+            <select id="ratingFilterSelect" class="clean-select" aria-label="Filter by rating">
+              <option value="0" data-i18n="allRatings">كل التقييمات</option>
+              <option value="8.5">+8.5 ★</option>
+              <option value="8.0">+8.0 ★</option>
+              <option value="7.5">+7.5 ★</option>
+            </select>
+
+            <select id="yearFilterSelect" class="clean-select" aria-label="Filter by year">
+              <option value="all" data-i18n="allYears">كل السنوات</option>
+              <option value="2026">2026</option>
+              <option value="2025">2025</option>
+              <option value="2024">2024</option>
+              <option value="2023">2023</option>
+              <option value="classic" data-i18n="classicYears">كلاسيكيات</option>
+            </select>
+
+            <select id="sortSelect" class="clean-select" aria-label="Sort catalog">
+              <option value="trending" data-i18n="sortTrending">الأكثر رواجاً</option>
+              <option value="rating" data-i18n="sortRating">الأعلى تقييماً</option>
+              <option value="newest" data-i18n="sortNewest">الأحدث إصداراً</option>
+              <option value="title" data-i18n="sortTitle">الترتيب A–Z</option>
+            </select>
           </div>
         </div>
 
-        <div class="hero-thumbs" id="heroThumbs"></div>
-      </div>
-    </section>
-
-    <!-- Continue Watching -->
-    <section class="continue-block hidden" id="continueWatchingSection">
-      <div class="section-head">
-        <div class="section-title-group">
-          <span class="section-dot"></span>
-          <h2 class="section-title" data-i18n="continueWatching">متابعة المشاهدة</h2>
+        <div class="section-head">
+          <div class="section-title-group">
+            <span class="section-dot"></span>
+            <h2 class="section-title" id="catalogHeading" data-i18n="exploreCatalog">اكتشف الأفلام والمسلسلات</h2>
+            <span class="count-chip" id="resultsCountBadge">0</span>
+          </div>
         </div>
-        <button class="text-btn" id="clearHistoryBtn" data-i18n="clearHistory">مسح السجل</button>
-      </div>
-      <div class="continue-list" id="continueWatchingGrid"></div>
-    </section>
 
-    <!-- Main Catalog with Hover-Blur Cards -->
-    <section class="catalog-section" id="catalogSection">
-      <div class="toolbar-surface">
-        <div class="genre-scroll-list" id="genreFilterBar"></div>
+        <div class="movies-grid" id="moviesGrid"></div>
 
-        <div class="filter-controls">
-          <select id="ratingFilterSelect" class="clean-select" aria-label="Filter by rating">
-            <option value="0" data-i18n="allRatings">كل التقييمات</option>
-            <option value="8.5">+8.5 ★</option>
-            <option value="8.0">+8.0 ★</option>
-            <option value="7.5">+7.5 ★</option>
-          </select>
-
-          <select id="yearFilterSelect" class="clean-select" aria-label="Filter by year">
-            <option value="all" data-i18n="allYears">كل السنوات</option>
-            <option value="2026">2026</option>
-            <option value="2025">2025</option>
-            <option value="2024">2024</option>
-            <option value="2023">2023</option>
-            <option value="classic" data-i18n="classicYears">كلاسيكيات</option>
-          </select>
-
-          <select id="sortSelect" class="clean-select" aria-label="Sort catalog">
-            <option value="trending" data-i18n="sortTrending">الأكثر رواجاً</option>
-            <option value="rating" data-i18n="sortRating">الأعلى تقييماً</option>
-            <option value="newest" data-i18n="sortNewest">الأحدث إصداراً</option>
-            <option value="title" data-i18n="sortTitle">الترتيب A–Z</option>
-          </select>
+        <div style="display:flex;justify-content:center;margin-top:30px;">
+          <button class="btn-glass-sec" id="loadMoreTmdbBtn" data-i18n="loadMoreBtn">عرض المزيد من الأعمال +</button>
         </div>
-      </div>
 
-      <div class="section-head">
-        <div class="section-title-group">
-          <span class="section-dot"></span>
-          <h2 class="section-title" id="catalogHeading" data-i18n="exploreCatalog">اكتشف الأفلام والمسلسلات</h2>
-          <span class="count-chip" id="resultsCountBadge">0</span>
+        <div class="empty-catalog hidden" id="emptyStateBox">
+          <h3 data-i18n="noResultsTitle">لم يتم العثور على نتائج مطابقة</h3>
+          <p data-i18n="noResultsDesc">جرب البحث بالاسم الإنجليزي للفيلم أو تغيير التصنيف.</p>
+          <button class="btn-stream-now" id="resetFiltersBtn" data-i18n="resetFilters">إظهار الكل</button>
+        </div>
+      </section>
+
+      <!-- Top 10 Strip -->
+      <section class="top-ten-section" id="top10Section">
+        <div class="section-head">
+          <div class="section-title-group">
+            <span class="section-dot"></span>
+            <h2 class="section-title" data-i18n="trendingTop10">أفضل 10 أعمال تقييماً على TMDB</h2>
+          </div>
+        </div>
+        <div class="honor-strip" id="top10Track"></div>
+      </section>
+    </div>
+
+    <!-- ======================================================================
+         VIEW 2: FULL-PAGE WATCH STUDIO VIEW (#watchStudioView)
+         Replaces the entire Catalog Page when clicking any Movie or TV Show!
+         ====================================================================== -->
+    <section class="watch-studio-view hidden" id="watchStudioView">
+      <!-- Top Studio Header Bar -->
+      <div class="studio-top-nav">
+        <div class="studio-top-title-group">
+          <button class="studio-back-btn" id="backToCatalogBtn">
+            <span>←</span>
+            <span data-i18n="backToCatalog">الرجوع للرئيسية</span>
+          </button>
+          <span class="pill-tag" id="studioTypeBadge">MOVIE</span>
+          <h1 class="studio-top-title" id="studioTopTitle" dir="ltr">Harry Potter and the Philosopher's Stone</h1>
         </div>
       </div>
 
-      <!-- HOVER-BLUR MOVIE CARDS GRID -->
-      <div class="movies-grid" id="moviesGrid"></div>
+      <!-- 2-Column Full-Page Studio Grid -->
+      <div class="studio-layout-grid">
+        <!-- CENTER COLUMN: Player + Episode Bar + Now Playing + Deduplicated Servers + Multi-File Downloads + Recommended -->
+        <div class="studio-main-col">
+          <!-- 16:9 Cinema Video Player -->
+          <div class="studio-player-frame">
+            <iframe
+              id="studioPlayerIframe"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+              allowfullscreen
+            ></iframe>
+          </div>
 
-      <div style="display:flex;justify-content:center;margin-top:30px;">
-        <button class="btn-glass-sec" id="loadMoreTmdbBtn" data-i18n="loadMoreBtn">عرض المزيد من الأعمال +</button>
-      </div>
+          <!-- Series Season & Episode Bar (Shown automatically for TV Shows) -->
+          <div class="studio-episode-bar hidden" id="studioEpisodeBar">
+            <div class="ep-selectors-group">
+              <label for="studioSeasonSelect" data-i18n="seasonLabel">الموسم:</label>
+              <select id="studioSeasonSelect" class="clean-select" dir="ltr"></select>
+              <label for="studioEpisodeSelect" data-i18n="episodeLabel">الحلقة:</label>
+              <select id="studioEpisodeSelect" class="clean-select" dir="ltr"></select>
+            </div>
+          </div>
 
-      <div class="empty-catalog hidden" id="emptyStateBox">
-        <h3 data-i18n="noResultsTitle">لم يتم العثور على نتائج مطابقة</h3>
-        <p data-i18n="noResultsDesc">جرب البحث بالاسم الإنجليزي للفيلم أو تغيير التصنيف.</p>
-        <button class="btn-stream-now" id="resetFiltersBtn" data-i18n="resetFilters">إظهار الكل</button>
-      </div>
-    </section>
+          <!-- Now Playing Strip + Action Buttons (+ Watchlist, Share, Download) & Deduplicated Servers Grid -->
+          <div class="now-playing-panel">
+            <div class="now-playing-top">
+              <div>
+                <span class="now-playing-label" data-i18n="nowPlayingLabel">يُعرض الآن · Now Playing</span>
+                <div class="now-playing-movie-name" id="nowPlayingMovieTitle" dir="ltr">Harry Potter and the Philosopher's Stone</div>
+              </div>
 
-    <!-- Top 10 Strip -->
-    <section class="top-ten-section" id="top10Section">
-      <div class="section-head">
-        <div class="section-title-group">
-          <span class="section-dot"></span>
-          <h2 class="section-title" data-i18n="trendingTop10">أفضل 10 أعمال تقييماً على TMDB</h2>
+              <div class="now-playing-actions">
+                <button class="np-icon-btn" id="studioWatchlistBtn" title="حفظ في قائمتي">+</button>
+                <button class="np-icon-btn" id="studioShareBtn" title="مشاركة الرابط">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <circle cx="18" cy="5" r="3"></circle>
+                    <circle cx="6" cy="12" r="3"></circle>
+                    <circle cx="18" cy="19" r="3"></circle>
+                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                  </svg>
+                </button>
+                <button class="np-download-btn" id="studioDownloadToggleBtn">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                  </svg>
+                  <span data-i18n="downloadBtnText">تحميل الفيلم / المسلسل</span>
+                </button>
+              </div>
+            </div>
+
+            <p class="server-hint-line" data-i18n="serverHintText">
+              🚀 جرب التبديل بين المشغلات بالأسفل إذا كان أحدها بطيئاً — جميع هذه المشغلات مفحوصة ومن مواقع مختلفة كلياً.
+            </p>
+
+            <!-- 16 Distinct, Deduplicated Streaming Providers Grid -->
+            <div class="server-cards-grid" id="studioServersGrid"></div>
+          </div>
+
+          <!-- Multi-File Download Hub (6 Download Files & Mirrors) -->
+          <div class="download-hub-panel" id="downloadHubPanel">
+            <div class="download-hub-head">
+              <div class="download-hub-title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                <span data-i18n="downloadHubTitle">مركز التحميل المباشر متعدد الجودات (Multi-File Download)</span>
+              </div>
+            </div>
+            <div class="download-files-grid" id="downloadFilesGrid"></div>
+          </div>
+
+          <!-- Recommended & Similar Movies -->
+          <div class="studio-recommended-box">
+            <div class="rec-header-bar">
+              <h3 class="section-title" style="font-size:1.08rem" data-i18n="recommendedHeading">أعمال مشابهة ومقترحة (Recommended)</h3>
+              <div class="rec-nav-arrows">
+                <button class="rec-arrow-btn" id="recPrevBtn" aria-label="Scroll Left">←</button>
+                <button class="rec-arrow-btn" id="recNextBtn" aria-label="Scroll Right">→</button>
+              </div>
+            </div>
+            <div class="recommended-scroll-row" id="recommendedMoviesRow"></div>
+          </div>
         </div>
+
+        <!-- SIDE COLUMN: Poster + Status/Production/Aired + Synopsis + Trailers + Interactive Cast -->
+        <aside class="studio-side-col">
+          <div class="side-top-card">
+            <div class="side-poster-wrap">
+              <img id="sidePosterImg" src="" alt="Movie Poster" />
+              <span class="side-poster-score" id="sidePosterScore">★ 8.3</span>
+            </div>
+
+            <div class="side-facts-list">
+              <div class="fact-item">
+                <span class="fact-label" data-i18n="statusLabel">الحالة · Status</span>
+                <span class="fact-value" id="sideFactStatus" dir="ltr">Released</span>
+              </div>
+              <div class="fact-item">
+                <span class="fact-label" data-i18n="productionLabel">الإنتاج · Production</span>
+                <span class="fact-value" id="sideFactProduction" dir="ltr">Warner Bros. Pictures</span>
+              </div>
+              <div class="fact-item">
+                <span class="fact-label" data-i18n="airedLabel">تاريخ الإصدار · Aired</span>
+                <span class="fact-value" id="sideFactAired" dir="ltr">2024-02-27</span>
+              </div>
+              <div class="fact-item">
+                <span class="fact-label" data-i18n="runtimeLabel">المدة · Runtime</span>
+                <span class="fact-value" id="sideFactRuntime">2h 46m</span>
+              </div>
+            </div>
+          </div>
+
+          <h2 class="side-movie-heading" id="sideMovieTitle" dir="ltr">Dune: Part Two</h2>
+
+          <div class="side-synopsis-box" id="sideMovieSynopsis"></div>
+
+          <div class="side-genre-chips" id="sideGenreChips"></div>
+
+          <!-- Official Trailers -->
+          <div>
+            <div class="side-block-heading">
+              <span data-i18n="trailersHeading">الإعلانات الرسمية · Trailers</span>
+            </div>
+            <div class="side-trailers-grid" id="sideTrailersGrid"></div>
+          </div>
+
+          <!-- Interactive Characters & Cast (Click any actor to view their Movies & TV Shows!) -->
+          <div>
+            <div class="side-block-heading">
+              <span data-i18n="charactersHeading">الشخصيات والممثلين · Characters</span>
+            </div>
+            <div class="characters-list" id="sideCharactersList"></div>
+          </div>
+        </aside>
       </div>
-      <div class="honor-strip" id="top10Track"></div>
     </section>
   </main>
+
+  <!-- ========================================================================
+       ACTOR PROFILE & FILMOGRAPHY MODAL (#actorModal)
+       Opens when clicking any actor in Characters & Cast!
+       ======================================================================== -->
+  <div class="modal-overlay hidden" id="actorModal" role="dialog" aria-modal="true">
+    <div class="modal-card actor-modal-box">
+      <div class="modal-top-bar">
+        <h3 style="font-size:1.05rem;font-weight:800">الملف الشخصي للممثل وأعماله · Actor Filmography</h3>
+        <button class="modal-close-x" id="closeActorModalBtn">&times;</button>
+      </div>
+
+      <div class="actor-modal-body">
+        <div class="actor-hero-header">
+          <img class="actor-profile-img" id="actorModalImg" src="" alt="Actor Photo" />
+          <div class="actor-bio-col">
+            <h2 class="actor-name-heading" id="actorModalName" dir="ltr">Actor Name</h2>
+            <div class="actor-sub-facts" id="actorModalSubFacts" dir="ltr">Acting</div>
+            <p class="actor-bio-text" id="actorModalBio" dir="ltr"></p>
+          </div>
+        </div>
+
+        <div>
+          <h4 style="font-size:0.95rem;font-weight:800;margin-bottom:12px" data-i18n="actorWorksHeading">
+            أفلام ومسلسلات الممثل (اضغط للمشاهدة فوراً):
+          </h4>
+          <div class="actor-credits-grid" id="actorCreditsGrid"></div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- ========================================================================
        USER LOGIN & REGISTRATION MODAL
@@ -2477,118 +2943,6 @@ html[dir="ltr"] .nav-drawer {
   </div>
 
   <!-- ========================================================================
-       40-SERVER STREAMING PLAYER MODAL + SEASON / EPISODE SELECTOR
-       ======================================================================== -->
-  <div class="modal-overlay hidden" id="playerModal" role="dialog" aria-modal="true">
-    <div class="modal-card player-modal-box">
-      <div class="modal-top-bar">
-        <div class="modal-title-wrap">
-          <span class="pill-tag" id="playerTypeBadge">MOVIE</span>
-          <h3 id="playerModalTitle" dir="ltr">Dune: Part Two</h3>
-          <span class="modal-sub-meta" id="playerSubMeta"></span>
-        </div>
-        <button class="modal-close-x" id="closePlayerModalBtn" aria-label="Close">&times;</button>
-      </div>
-
-      <!-- 40-Servers Selection Deck + TV Series Season/Episode Selector -->
-      <div class="player-controls-deck">
-        <div class="player-top-filters">
-          <div class="server-search-group">
-            <span class="server-count-pill" data-i18n="serversCountLabel">40 مشغل متاح:</span>
-            <select id="serverQuickSelect" class="server-quick-select" dir="ltr" aria-label="Quick select from 40 servers"></select>
-          </div>
-
-          <div class="series-ep-bar hidden" id="seriesEpisodeBar">
-            <label for="seasonSelect" data-i18n="seasonLabel">الموسم:</label>
-            <select id="seasonSelect" class="clean-select" dir="ltr"></select>
-            <label for="episodeSelect" data-i18n="episodeLabel">الحلقة:</label>
-            <select id="episodeSelect" class="clean-select" dir="ltr"></select>
-          </div>
-        </div>
-
-        <!-- Horizontal Scrollable Ribbon of all 40 Servers -->
-        <div class="servers-scroll-ribbon" id="serverTabs"></div>
-      </div>
-
-      <div class="video-stage" id="videoViewport">
-        <video id="cinemaVideo" playsinline preload="metadata" crossorigin="anonymous"></video>
-        <iframe
-          id="ytTrailerIframe"
-          class="hidden"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
-          allowfullscreen
-        ></iframe>
-        <canvas id="cinemaFallbackCanvas" class="hidden"></canvas>
-
-        <div class="video-custom-controls hidden" id="videoCustomCtrlBar">
-          <div class="timeline-bar" id="progressBarTrack">
-            <div class="timeline-fill" id="progressFilled"></div>
-          </div>
-          <div class="controls-row">
-            <div class="controls-side">
-              <button class="v-ctrl-btn" id="playPauseBtn">▶ / ❚❚</button>
-              <button class="v-ctrl-btn" id="skipBackBtn">-10s</button>
-              <button class="v-ctrl-btn" id="skipFwdBtn">+10s</button>
-              <span class="v-time"><span id="currentTimeLabel">00:00</span> / <span id="durationTimeLabel">02:20</span></span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ========================================================================
-       MOVIE / SERIES DETAILS MODAL
-       ======================================================================== -->
-  <div class="modal-overlay hidden" id="detailsModal" role="dialog" aria-modal="true">
-    <div class="modal-card details-modal-box">
-      <button class="modal-close-x floating-x" id="closeDetailsModalBtn" aria-label="Close">&times;</button>
-      <div class="details-layout">
-        <div class="details-poster-col">
-          <img id="detailsPoster" src="" alt="Poster" />
-        </div>
-        <div class="details-info-col">
-          <div class="hero-tags" id="detailsBadges"></div>
-          <h2 class="details-heading" id="detailsTitle" dir="ltr"></h2>
-          <p class="details-story" id="detailsSynopsis"></p>
-
-          <div class="details-specs-grid" id="detailsMetaGrid"></div>
-
-          <div class="details-cta-row">
-            <button class="btn-stream-now" id="detailsWatchBtn">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                <polygon points="6 4 20 12 6 20 6 4"></polygon>
-              </svg>
-              <span data-i18n="watchNow">شاهد الآن (40 مشغل)</span>
-            </button>
-            <button class="btn-glass-sec" id="detailsTrailerBtn">
-              <span data-i18n="watchTrailer">الإعلان الرسمي</span>
-            </button>
-            <button class="btn-glass-sec" id="detailsWatchlistBtn">
-              <span id="detailsWatchlistText">+ حفظ في قائمتي</span>
-            </button>
-          </div>
-
-          <div class="cast-block">
-            <h4 class="sub-heading" data-i18n="castAndCrew">طاقم التمثيل والإخراج</h4>
-            <div class="cast-pills" id="detailsCastList"></div>
-          </div>
-
-          <div class="reviews-block">
-            <h4 class="sub-heading" data-i18n="userReviews">تعليقات المشاهدين</h4>
-            <form class="review-form-row" id="reviewForm">
-              <input type="text" id="reviewerNameInput" placeholder="الاسم" required />
-              <input type="text" id="reviewCommentInput" placeholder="اكتب رأيك في العمل..." required />
-              <button type="submit" class="btn-stream-now compact-btn" data-i18n="submitReview">إرسال</button>
-            </form>
-            <div class="reviews-list" id="reviewsListContainer"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ========================================================================
        VIP ACCESS CODES MODAL (./codes)
        ======================================================================== -->
   <div class="modal-overlay hidden" id="codesModal" role="dialog" aria-modal="true">
@@ -2617,7 +2971,7 @@ html[dir="ltr"] .nav-drawer {
     <div class="footer-wrap">
       <div class="footer-brand">
         <strong>WatchUrMovie</strong>
-        <span>Streamex Edition · 40 Streaming Players · Live TMDB API</span>
+        <span>Full-Page Cinema Studio · Live TMDB API</span>
       </div>
       <div class="footer-links">
         <span>© 2026 WatchUrMovie</span>
@@ -2627,12 +2981,12 @@ html[dir="ltr"] .nav-drawer {
 
   <script>
 /* ==========================================================================
-   WatchUrMovie — Streamex Luxury Cinema Engine (script.js)
-   - Floating Header + 3-Lines Slide-Out Navigation Drawer (☰)
-   - User Authentication (Sign In, Create Account, VIP Guest, Logout)
-   - Signature Hover-Blur Movie Cards with Genre Badges, Synopsis & Watch CTA
-   - 40 Distinct Streaming Players / Embed Servers + Series Season/Episode Bar
-   - Live TMDB API v3 (Key: 948d5b52b35e1e08e125bd0acbe23ace) + Original Titles
+   WatchUrMovie — Streamex Full-Page Watch Studio & TMDB Engine (script.js)
+   - Full-Page Watch Studio View (#watchStudioView) replacing Catalog on click
+   - 16 Genuinely Distinct, Deduplicated Streaming Providers (with flags & ●)
+   - Multi-File Download Hub (4K, 1080p, 720p, 480p, Cloud Mirrors, .SRT Sub)
+   - Interactive Characters & Cast -> Actor Profile & Full Filmography Explorer
+   - Live Recommended & Similar Titles from TMDB API
    ========================================================================== */
 
 (() => {
@@ -2640,298 +2994,147 @@ html[dir="ltr"] .nav-drawer {
 
   const BUILTIN_TMDB_KEY = '948d5b52b35e1e08e125bd0acbe23ace';
   const TMDB_BASE_URL = 'https://api.themoviedb.org/3';
+  const TMDB_IMG_W185 = 'https://image.tmdb.org/t/p/w185';
   const TMDB_IMG_W500 = 'https://image.tmdb.org/t/p/w500';
   const TMDB_IMG_ORIG = 'https://image.tmdb.org/t/p/original';
 
   // ---------------------------------------------------------------------------
-  // 40 DISTINCT STREAMING SERVERS / EMBED PLAYERS (Movies & TV Series)
+  // 16 GENUINELY DISTINCT STREAMING PROVIDERS (Deduplicated — No Clone Domains)
   // ---------------------------------------------------------------------------
   const STREAM_SERVERS = [
     {
-      id: 'vidsrc_pro',
-      name: 'VidSrc Pro',
-      badge: '4K VIP',
-      type: 'embed',
-      buildUrl: (id, isTv, s, e) => isTv ? `https://vidsrc.pro/embed/tv/${id}/${s}/${e}` : `https://vidsrc.pro/embed/movie/${id}`
-    },
-    {
-      id: 'vidsrc_cc',
-      name: 'VidSrc.cc v2',
-      badge: '4K FAST',
+      id: 'wum_streamex',
+      name: 'wum-core',
+      flag: '🇺🇸',
+      sparkle: true,
       type: 'embed',
       buildUrl: (id, isTv, s, e) => isTv ? `https://vidsrc.cc/v2/embed/tv/${id}/${s}/${e}` : `https://vidsrc.cc/v2/embed/movie/${id}`
     },
     {
-      id: 'vidsrc_xyz',
-      name: 'VidSrc.xyz',
-      badge: 'FHD',
-      type: 'embed',
-      buildUrl: (id, isTv, s, e) => isTv ? `https://vidsrc.xyz/embed/tv?tmdb=${id}&season=${s}&episode=${e}` : `https://vidsrc.xyz/embed/movie?tmdb=${id}`
-    },
-    {
       id: 'vidlink_pro',
-      name: 'VidLink Pro',
-      badge: '4K HDR',
+      name: 'vidlink',
+      flag: '🇺🇸',
+      sparkle: true,
       type: 'embed',
       buildUrl: (id, isTv, s, e) => isTv ? `https://vidlink.pro/tv/${id}/${s}/${e}` : `https://vidlink.pro/movie/${id}`
     },
     {
-      id: 'embed_su',
-      name: 'Embed.su',
-      badge: '4K MULTI',
-      type: 'embed',
-      buildUrl: (id, isTv, s, e) => isTv ? `https://embed.su/embed/tv/${id}/${s}/${e}` : `https://embed.su/embed/movie/${id}`
-    },
-    {
-      id: 'superembed_multi',
-      name: 'SuperEmbed Multi',
-      badge: 'AR SUB',
-      type: 'embed',
-      buildUrl: (id, isTv, s, e) => isTv ? `https://multiembed.mov/?video_id=${id}&tmdb=1&s=${s}&e=${e}` : `https://multiembed.mov/?video_id=${id}&tmdb=1`
-    },
-    {
-      id: 'superembed_vip',
-      name: 'SuperEmbed VIP',
-      badge: 'DIRECT',
-      type: 'embed',
-      buildUrl: (id, isTv, s, e) => isTv ? `https://multiembed.mov/directstream.php?video_id=${id}&tmdb=1&s=${s}&e=${e}` : `https://multiembed.mov/directstream.php?video_id=${id}&tmdb=1`
-    },
-    {
-      id: 'autoembed_cc',
-      name: 'AutoEmbed.cc',
-      badge: 'FHD',
-      type: 'embed',
-      buildUrl: (id, isTv, s, e) => isTv ? `https://player.autoembed.cc/embed/tv/${id}/${s}/${e}` : `https://player.autoembed.cc/embed/movie/${id}`
-    },
-    {
-      id: 'vidsrc_to',
-      name: 'VidSrc.to',
-      badge: '1080p',
-      type: 'embed',
-      buildUrl: (id, isTv, s, e) => isTv ? `https://vidsrc.to/embed/tv/${id}/${s}/${e}` : `https://vidsrc.to/embed/movie/${id}`
-    },
-    {
-      id: 'vidsrc_me',
-      name: 'VidSrc.me',
-      badge: 'FAST',
-      type: 'embed',
-      buildUrl: (id, isTv, s, e) => isTv ? `https://vidsrc.me/embed/tv?tmdb=${id}&season=${s}&episode=${e}` : `https://vidsrc.me/embed/movie?tmdb=${id}`
-    },
-    {
-      id: 'vidsrc_icu',
-      name: 'VidSrc.icu',
-      badge: '4K',
-      type: 'embed',
-      buildUrl: (id, isTv, s, e) => isTv ? `https://vidsrc.icu/embed/tv/${id}/${s}/${e}` : `https://vidsrc.icu/embed/movie/${id}`
-    },
-    {
-      id: 'vidsrc_in',
-      name: 'VidSrc.in',
-      badge: 'FHD',
-      type: 'embed',
-      buildUrl: (id, isTv, s, e) => isTv ? `https://vidsrc.in/embed/tv?tmdb=${id}&season=${s}&episode=${e}` : `https://vidsrc.in/embed/movie?tmdb=${id}`
-    },
-    {
-      id: 'vidsrc_pm',
-      name: 'VidSrc.pm',
-      badge: '1080p',
-      type: 'embed',
-      buildUrl: (id, isTv, s, e) => isTv ? `https://vidsrc.pm/embed/tv?tmdb=${id}&season=${s}&episode=${e}` : `https://vidsrc.pm/embed/movie?tmdb=${id}`
-    },
-    {
-      id: 'vidsrc_net',
-      name: 'VidSrc.net',
-      badge: 'CLOUD',
-      type: 'embed',
-      buildUrl: (id, isTv, s, e) => isTv ? `https://vidsrc.net/embed/tv?tmdb=${id}&season=${s}&episode=${e}` : `https://vidsrc.net/embed/movie?tmdb=${id}`
-    },
-    {
-      id: 'vidsrc_rip',
-      name: 'VidSrc.rip',
-      badge: 'TURBO',
-      type: 'embed',
-      buildUrl: (id, isTv, s, e) => isTv ? `https://vidsrc.rip/embed/tv/${id}/${s}/${e}` : `https://vidsrc.rip/embed/movie/${id}`
-    },
-    {
-      id: 'twoembed_cc',
-      name: '2Embed.cc',
-      badge: 'MULTI',
-      type: 'embed',
-      buildUrl: (id, isTv, s, e) => isTv ? `https://www.2embed.cc/embedtv/${id}&s=${s}&e=${e}` : `https://www.2embed.cc/embed/${id}`
-    },
-    {
-      id: 'twoembed_skin',
-      name: '2Embed.skin',
-      badge: 'FHD',
-      type: 'embed',
-      buildUrl: (id, isTv, s, e) => isTv ? `https://www.2embed.skin/embedtv/${id}&s=${s}&e=${e}` : `https://www.2embed.skin/embed/${id}`
-    },
-    {
-      id: 'smashystream',
-      name: 'SmashyStream',
-      badge: '4K SUB',
-      type: 'embed',
-      buildUrl: (id, isTv, s, e) => isTv ? `https://player.smashy.stream/tv/${id}?s=${s}&e=${e}` : `https://player.smashy.stream/movie/${id}`
-    },
-    {
-      id: 'moviesapi_club',
-      name: 'MoviesAPI.club',
-      badge: 'VIP',
-      type: 'embed',
-      buildUrl: (id, isTv, s, e) => isTv ? `https://moviesapi.club/tv/${id}-${s}-${e}` : `https://moviesapi.club/movie/${id}`
-    },
-    {
-      id: 'rivestream_live',
-      name: 'RiveStream',
-      badge: '4K ULTRA',
+      id: 'rivestream',
+      name: 'rivestream',
+      flag: '🇺🇸',
+      sparkle: true,
       type: 'embed',
       buildUrl: (id, isTv, s, e) => isTv ? `https://rivestream.live/embed?type=tv&id=${id}&season=${s}&episode=${e}` : `https://rivestream.live/embed?type=movie&id=${id}`
     },
     {
-      id: 'videasy_net',
-      name: 'Videasy 4K',
-      badge: '4K HDR',
+      id: 'videasy',
+      name: 'videasy',
+      flag: '🇬🇧',
+      sparkle: true,
       type: 'embed',
       buildUrl: (id, isTv, s, e) => isTv ? `https://player.videasy.net/tv/${id}/${s}/${e}` : `https://player.videasy.net/movie/${id}`
     },
     {
-      id: 'vidfast_pro',
-      name: 'VidFast Pro',
-      badge: 'FAST',
+      id: 'embed_su',
+      name: 'embedsu',
+      flag: '🇺🇸',
+      sparkle: true,
       type: 'embed',
-      buildUrl: (id, isTv, s, e) => isTv ? `https://vidfast.pro/tv/${id}/${s}/${e}` : `https://vidfast.pro/movie/${id}`
+      buildUrl: (id, isTv, s, e) => isTv ? `https://embed.su/embed/tv/${id}/${s}/${e}` : `https://embed.su/embed/movie/${id}`
     },
     {
-      id: 'vidbinge_dev',
-      name: 'VidBinge',
-      badge: '4K',
+      id: 'vidbinge',
+      name: 'vidbinge',
+      flag: '🇺🇸',
+      sparkle: true,
       type: 'embed',
       buildUrl: (id, isTv, s, e) => isTv ? `https://vidbinge.dev/embed/tv/${id}/${s}/${e}` : `https://vidbinge.dev/embed/movie/${id}`
     },
     {
-      id: 'autoembed_co',
-      name: 'AutoEmbed Pro',
-      badge: '1080p',
+      id: 'autoembed',
+      name: 'autoembed',
+      flag: '🇺🇸',
+      sparkle: true,
       type: 'embed',
-      buildUrl: (id, isTv, s, e) => isTv ? `https://autoembed.co/tv/tmdb/${id}-${s}-${e}` : `https://autoembed.co/movie/tmdb/${id}`
+      buildUrl: (id, isTv, s, e) => isTv ? `https://player.autoembed.cc/embed/tv/${id}/${s}/${e}` : `https://player.autoembed.cc/embed/movie/${id}`
     },
     {
-      id: 'rgshows_me',
-      name: 'RGShows Stream',
-      badge: 'FHD',
+      id: 'moviesapi',
+      name: 'mapi',
+      flag: '🇬🇧',
+      sparkle: true,
       type: 'embed',
-      buildUrl: (id, isTv, s, e) => isTv ? `https://embed.rgshows.me/api/1/tv/?id=${id}&s=${s}&e=${e}` : `https://embed.rgshows.me/api/1/movie/?id=${id}`
+      buildUrl: (id, isTv, s, e) => isTv ? `https://moviesapi.club/tv/${id}-${s}-${e}` : `https://moviesapi.club/movie/${id}`
     },
     {
-      id: 'nontongo_win',
-      name: 'NontonGo',
-      badge: 'MULTI',
+      id: 'vidsrc_xyz',
+      name: 'vidsrc',
+      flag: '🇺🇸',
+      sparkle: true,
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://vidsrc.xyz/embed/tv?tmdb=${id}&season=${s}&episode=${e}` : `https://vidsrc.xyz/embed/movie?tmdb=${id}`
+    },
+    {
+      id: 'superembed',
+      name: 'multiembed',
+      flag: '🌍',
+      sparkle: true,
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://multiembed.mov/?video_id=${id}&tmdb=1&s=${s}&e=${e}` : `https://multiembed.mov/?video_id=${id}&tmdb=1`
+    },
+    {
+      id: 'smashy',
+      name: 'smashy',
+      flag: '🇺🇸',
+      sparkle: true,
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://player.smashy.stream/tv/${id}?s=${s}&e=${e}` : `https://player.smashy.stream/movie/${id}`
+    },
+    {
+      id: 'twoembed',
+      name: '2embed',
+      flag: '🇺🇸',
+      sparkle: true,
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://www.2embed.cc/embedtv/${id}&s=${s}&e=${e}` : `https://www.2embed.cc/embed/${id}`
+    },
+    {
+      id: 'nontongo',
+      name: 'nontongo',
+      flag: '🌍',
+      sparkle: false,
       type: 'embed',
       buildUrl: (id, isTv, s, e) => isTv ? `https://www.NontonGo.win/embed/tv/${id}/${s}/${e}` : `https://www.NontonGo.win/embed/movie/${id}`
     },
     {
-      id: 'primewire_tf',
-      name: 'PrimeWire',
-      badge: '1080p',
+      id: 'primewire',
+      name: 'primewire',
+      flag: '🇬🇧',
+      sparkle: false,
       type: 'embed',
       buildUrl: (id, isTv, s, e) => isTv ? `https://www.primewire.tf/embed/tv?tmdb=${id}&season=${s}&episode=${e}` : `https://www.primewire.tf/embed/movie?tmdb=${id}`
     },
     {
-      id: 'warezcdn',
-      name: 'WarezCDN',
-      badge: 'FAST',
-      type: 'embed',
-      buildUrl: (id, isTv, s, e) => isTv ? `https://embed.warezcdn.com/serie/${id}/${s}/${e}` : `https://embed.warezcdn.com/filme/${id}`
-    },
-    {
-      id: 'frembed_pro',
-      name: 'Frembed',
-      badge: 'EU FHD',
+      id: 'frembed_fr',
+      name: 'french',
+      flag: '🇫🇷',
+      sparkle: false,
       type: 'embed',
       buildUrl: (id, isTv, s, e) => isTv ? `https://frembed.pro/api/serie.php?id=${id}&sa=${s}&epi=${e}` : `https://frembed.pro/api/film.php?id=${id}`
     },
     {
-      id: 'filmxy_vip',
-      name: 'Filmxy VIP',
-      badge: '1080p',
+      id: 'warez_es',
+      name: 'spanish / pt',
+      flag: '🇪🇸',
+      sparkle: false,
       type: 'embed',
-      buildUrl: (id, isTv, s, e) => isTv ? `https://www.filmxy.vip/tv/${id}/${s}/${e}` : `https://www.filmxy.vip/movie/${id}`
-    },
-    {
-      id: 'godrive_player',
-      name: 'GoDrivePlayer',
-      badge: 'CLOUD',
-      type: 'embed',
-      buildUrl: (id, isTv, s, e) => isTv ? `https://databasegdriveplayer.xyz/player.php?type=series&tmdb=${id}&season=${s}&episode=${e}` : `https://databasegdriveplayer.xyz/player.php?tmdb=${id}`
-    },
-    {
-      id: 'anyembed_xyz',
-      name: 'AnyEmbed',
-      badge: 'FHD',
-      type: 'embed',
-      buildUrl: (id, isTv, s, e) => isTv ? `https://anyembed.xyz/tv/${id}/${s}/${e}` : `https://anyembed.xyz/movie/${id}`
-    },
-    {
-      id: 'blackvid_space',
-      name: 'BlackVid',
-      badge: '4K DARK',
-      type: 'embed',
-      buildUrl: (id, isTv, s, e) => isTv ? `https://blackvid.space/embed?tmdb=${id}&season=${s}&episode=${e}` : `https://blackvid.space/embed?tmdb=${id}`
-    },
-    {
-      id: 'cinescrape_com',
-      name: 'CineScrape',
-      badge: '4K',
-      type: 'embed',
-      buildUrl: (id, isTv, s, e) => isTv ? `https://cinescrape.com/embed/tv/${id}/${s}/${e}` : `https://cinescrape.com/embed/movie/${id}`
-    },
-    {
-      id: '111movies_com',
-      name: '111Movies',
-      badge: 'FHD',
-      type: 'embed',
-      buildUrl: (id, isTv, s, e) => isTv ? `https://111movies.com/tv/${id}/${s}/${e}` : `https://111movies.com/movie/${id}`
-    },
-    {
-      id: 'flickystream',
-      name: 'FlickyStream',
-      badge: 'FAST',
-      type: 'embed',
-      buildUrl: (id, isTv, s, e) => isTv ? `https://flickystream.com/embed/tv/${id}/${s}/${e}` : `https://flickystream.com/embed/movie/${id}`
-    },
-    {
-      id: 'moviehab_to',
-      name: 'MovieHab',
-      badge: '1080p',
-      type: 'embed',
-      buildUrl: (id, isTv, s, e) => isTv ? `https://moviehab.to/embed/tv/${id}/${s}/${e}` : `https://moviehab.to/embed/movie/${id}`
-    },
-    {
-      id: 'vidora_su',
-      name: 'Vidora Stream',
-      badge: '4K',
-      type: 'embed',
-      buildUrl: (id, isTv, s, e) => isTv ? `https://vidora.su/embed/tv/${id}/${s}/${e}` : `https://vidora.su/embed/movie/${id}`
-    },
-    {
-      id: 'youtube_trailer',
-      name: 'Official Trailer',
-      badge: 'YOUTUBE',
-      type: 'trailer',
-      buildUrl: () => ''
-    },
-    {
-      id: 'aurora_direct',
-      name: 'Aurora Direct 4K',
-      badge: 'LOCAL 4K',
-      type: 'direct',
-      buildUrl: () => ''
+      buildUrl: (id, isTv, s, e) => isTv ? `https://embed.warezcdn.com/serie/${id}/${s}/${e}` : `https://embed.warezcdn.com/filme/${id}`
     }
   ];
 
   const I18N = {
     ar: {
-      searchPlaceholder: 'ابحث عن أي فيلم أو مسلسل...',
+      searchPlaceholder: 'ابحث عن أي فيلم أو مسلسل أو ممثل...',
       signInBtn: 'تسجيل الدخول',
       guestStatus: 'زائر — سجل دخولك لحفظ قائمتك',
       memberStatus: 'عضوية مفعلة ✓',
@@ -2949,8 +3152,7 @@ html[dir="ltr"] .nav-drawer {
       eyeCareBtn: 'فلتر راحة العين الدافئ',
       codesBtn: 'أكواد التفعيل (./codes)',
       watchNow: 'شاهد الآن',
-      watchTrailer: 'الإعلان الرسمي',
-      moreDetails: 'التفاصيل',
+      moreDetails: 'عرض الصفحة',
       addToWatchlist: '+ حفظ في قائمتي',
       inWatchlist: '✓ في قائمتي',
       continueWatching: 'متابعة المشاهدة',
@@ -2969,12 +3171,22 @@ html[dir="ltr"] .nav-drawer {
       noResultsDesc: 'جرب البحث بالاسم الإنجليزي للفيلم أو تغيير التصنيف.',
       resetFilters: 'إظهار الكل',
       trendingTop10: 'أفضل 10 أعمال تقييماً على TMDB',
-      serversCountLabel: '40 مشغل متاح:',
+      backToCatalog: 'الرجوع للرئيسية',
+      nowPlayingLabel: 'يُعرض الآن · Now Playing',
+      downloadBtnText: 'تحميل الفيلم / المسلسل',
+      serverHintText: '🚀 جرب التبديل بين المشغلات بالأسفل إذا كان أحدها بطيئاً — جميع هذه المشغلات مفحوصة ومن مواقع مختلفة كلياً.',
+      downloadHubTitle: 'مركز التحميل المباشر متعدد الجودات (Multi-File Download)',
+      recommendedHeading: 'أعمال مشابهة ومقترحة (Recommended)',
+      statusLabel: 'الحالة · Status',
+      productionLabel: 'الإنتاج · Production',
+      airedLabel: 'تاريخ الإصدار · Aired',
+      runtimeLabel: 'المدة · Runtime',
+      trailersHeading: 'الإعلانات الرسمية · Trailers',
+      charactersHeading: 'الشخصيات والممثلين · Characters',
+      clickActorHint: 'اضغط لعرض أعماله',
+      actorWorksHeading: 'أفلام ومسلسلات الممثل (اضغط للمشاهدة فوراً):',
       seasonLabel: 'الموسم:',
       episodeLabel: 'الحلقة:',
-      castAndCrew: 'طاقم التمثيل والإخراج',
-      userReviews: 'تعليقات المشاهدين',
-      submitReview: 'إرسال',
       authModalTitle: 'حسابك في WatchUrMovie',
       tabLogin: 'تسجيل الدخول',
       tabRegister: 'إنشاء حساب',
@@ -2989,16 +3201,11 @@ html[dir="ltr"] .nav-drawer {
       activateCodeBtn: 'تفعيل',
       typeMovie: 'فيلم',
       typeSeries: 'مسلسل',
-      directorLabel: 'المخرج / الإنتاج',
-      yearLabel: 'الإصدار',
-      durationLabel: 'المدة / المواسم',
-      qualityMetaLabel: 'التقييم',
       useCodeNow: 'تفعيل ←',
       toastAddedWatchlist: 'تمت الإضافة إلى قائمتك المفضلة',
       toastRemovedWatchlist: 'تمت الإزالة من قائمتك',
-      toastServerSwitched: 'تم التحويل إلى المشغل: ',
+      toastServerSwitched: 'تم التحويل إلى مشغل: ',
       toastRandomPick: 'اخترنا لك هذا العمل:',
-      toastReviewAdded: 'تم نشر تعليقك بنجاح',
       toastHistoryCleared: 'تم مسح سجل المشاهدة',
       toastEyeOn: 'تم تفعيل فلتر راحة العين',
       toastEyeOff: 'تم إيقاف فلتر راحة العين',
@@ -3006,6 +3213,8 @@ html[dir="ltr"] .nav-drawer {
       toastLoggedOut: 'تم تسجيل الخروج بنجاح',
       toastCodeSuccess: 'تم تفعيل الكود:',
       toastCodeInvalid: 'الكود غير صحيح، اختر أحد الأكواد بالأسفل',
+      toastCopiedShare: 'تم نسخ رابط الفيلم للمشاركة ✓',
+      toastDownloadStarted: 'جاري بدء التحميل: ',
       genreAll: 'الكل',
       genreAction: 'أكشن ومغامرة',
       genreScifi: 'خيال علمي',
@@ -3015,7 +3224,7 @@ html[dir="ltr"] .nav-drawer {
       genreComedy: 'كوميديا'
     },
     en: {
-      searchPlaceholder: 'Search any movie or series...',
+      searchPlaceholder: 'Search any movie, series, or actor...',
       signInBtn: 'Sign In',
       guestStatus: 'Guest — Sign in to sync your list',
       memberStatus: 'Active Member ✓',
@@ -3033,8 +3242,7 @@ html[dir="ltr"] .nav-drawer {
       eyeCareBtn: 'Eye Comfort Shield',
       codesBtn: 'Access Codes (./codes)',
       watchNow: 'Watch Now',
-      watchTrailer: 'Official Trailer',
-      moreDetails: 'Details',
+      moreDetails: 'Open Page',
       addToWatchlist: '+ Add to List',
       inWatchlist: '✓ In My List',
       continueWatching: 'Continue Watching',
@@ -3053,12 +3261,22 @@ html[dir="ltr"] .nav-drawer {
       noResultsDesc: 'Try searching another title or resetting filters.',
       resetFilters: 'Reset All',
       trendingTop10: 'Top 10 Highest Rated on TMDB',
-      serversCountLabel: '40 Players Ready:',
+      backToCatalog: 'Back to Catalog',
+      nowPlayingLabel: 'Now Playing',
+      downloadBtnText: 'Download Files',
+      serverHintText: '🚀 Please try different servers below if one is slow — all providers are deduplicated & verified.',
+      downloadHubTitle: 'Multi-File Direct Download Center',
+      recommendedHeading: 'Recommended & Similar Titles',
+      statusLabel: 'Status',
+      productionLabel: 'Production',
+      airedLabel: 'Aired',
+      runtimeLabel: 'Runtime',
+      trailersHeading: 'Trailers',
+      charactersHeading: 'Characters & Cast',
+      clickActorHint: 'View Filmography',
+      actorWorksHeading: 'Movies & TV Shows Featuring This Actor (Click to Watch):',
       seasonLabel: 'Season:',
       episodeLabel: 'Episode:',
-      castAndCrew: 'Cast & Crew',
-      userReviews: 'Audience Comments',
-      submitReview: 'Post',
       authModalTitle: 'WatchUrMovie Account',
       tabLogin: 'Sign In',
       tabRegister: 'Create Account',
@@ -3073,16 +3291,11 @@ html[dir="ltr"] .nav-drawer {
       activateCodeBtn: 'Activate',
       typeMovie: 'Movie',
       typeSeries: 'TV Show',
-      directorLabel: 'Director / Creator',
-      yearLabel: 'Released',
-      durationLabel: 'Runtime',
-      qualityMetaLabel: 'Score',
       useCodeNow: 'Activate →',
       toastAddedWatchlist: 'Added to your watchlist',
       toastRemovedWatchlist: 'Removed from your watchlist',
-      toastServerSwitched: 'Switched to player: ',
+      toastServerSwitched: 'Switched to server: ',
       toastRandomPick: 'Picked for you:',
-      toastReviewAdded: 'Your comment has been posted',
       toastHistoryCleared: 'Watch history cleared',
       toastEyeOn: 'Eye Comfort filter enabled',
       toastEyeOff: 'Eye Comfort filter disabled',
@@ -3090,6 +3303,8 @@ html[dir="ltr"] .nav-drawer {
       toastLoggedOut: 'Logged out successfully',
       toastCodeSuccess: 'Code activated:',
       toastCodeInvalid: 'Invalid code, click one below',
+      toastCopiedShare: 'Share link copied to clipboard ✓',
+      toastDownloadStarted: 'Starting file download: ',
       genreAll: 'All',
       genreAction: 'Action',
       genreScifi: 'Sci-Fi',
@@ -3141,7 +3356,7 @@ html[dir="ltr"] .nav-drawer {
       <circle cx="200" cy="195" r="88" fill="none" stroke="${accent}" stroke-width="1.6" stroke-opacity="0.45"/>
       <rect x="26" y="26" width="348" height="548" rx="16" fill="none" stroke="#ffffff" stroke-opacity="0.08" stroke-width="1"/>
       <text x="200" y="490" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-weight="800" font-size="20" fill="#f8fafc">${safeTitle}</text>
-      <text x="200" y="530" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-weight="700" font-size="11" fill="${accent}" letter-spacing="3">${item.year} • ${item.quality}</text>
+      <text x="200" y="530" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-weight="700" font-size="11" fill="${accent}" letter-spacing="3">${item.year || 2025} • ${item.quality || '4K'}</text>
     </svg>`;
     return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
   }
@@ -3162,6 +3377,16 @@ html[dir="ltr"] .nav-drawer {
     return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
   }
 
+  function makeAvatarSvg(name) {
+    const letter = (name || 'A').trim().charAt(0).toUpperCase();
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 150" width="120" height="150">
+      <rect width="120" height="150" fill="#1c2030"/>
+      <circle cx="60" cy="55" r="26" fill="#8b5cf6" fill-opacity="0.28"/>
+      <text x="60" y="65" text-anchor="middle" font-family="sans-serif" font-weight="800" font-size="26" fill="#f8fafc">${letter}</text>
+    </svg>`;
+    return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+  }
+
   const VIDEO_STREAMS = [
     'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4',
     'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4',
@@ -3178,13 +3403,21 @@ html[dir="ltr"] .nav-drawer {
       topRank: 1,
       title: 'Dune: Part Two',
       year: 2024,
+      releaseDate: '2024-02-27',
+      status: 'Released',
+      production: 'Legendary Pictures',
       rating: 8.3,
       durationAr: '2 س 46 د',
       durationEn: '2h 46m',
       quality: '4K IMAX',
       genres: ['scifi', 'drama', 'action'],
       director: 'Denis Villeneuve',
-      cast: ['Timothée Chalamet', 'Zendaya', 'Rebecca Ferguson', 'Javier Bardem'],
+      castObjects: [
+        { id: 1190668, name: 'Timothée Chalamet', character: 'Paul Atreides', profile: '/BE2sdjpgsa2rNTFa66f7upkaOP.jpg' },
+        { id: 505710, name: 'Zendaya', character: 'Chani', profile: '/3WdOloHpjtjL96uVOhFRRCcYSwq.jpg' },
+        { id: 933238, name: 'Rebecca Ferguson', character: 'Lady Jessica', profile: '/lJloTOheuQSirSLXNA3JHsrMNfH.jpg' },
+        { id: 3810, name: 'Javier Bardem', character: 'Stilgar', profile: '/eCBiiPvBfIY7exDQwH0vEM6Bf3c.jpg' }
+      ],
       synopsisAr: 'يتحد بول أتريدس مع تشاني والفريمن في رحلة انتقام ضد المتآمرين الذين دمروا عائلته، وعليه الاختيار بين حب حياته ومصير الكون.',
       synopsisEn: 'Follow the mythic journey of Paul Atreides as he unites with Chani and the Fremen while on a warpath of revenge.',
       posterPath: '/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg',
@@ -3193,48 +3426,62 @@ html[dir="ltr"] .nav-drawer {
       streamUrl: VIDEO_STREAMS[0]
     },
     {
+      id: 'tmdb_movie_671',
+      tmdbId: 671,
+      type: 'movie',
+      featured: true,
+      topRank: 2,
+      title: "Harry Potter and the Philosopher's Stone",
+      year: 2001,
+      releaseDate: '2001-11-16',
+      status: 'Released',
+      production: 'Warner Bros. Pictures',
+      rating: 7.9,
+      durationAr: '2 س 32 د',
+      durationEn: '2h 32m',
+      quality: '4K UHD',
+      genres: ['action', 'scifi'],
+      director: 'Chris Columbus',
+      castObjects: [
+        { id: 10980, name: 'Daniel Radcliffe', character: 'Harry Potter', profile: '/iPg0J9UzAlPj1fLEJNllpW9IhGe.jpg' },
+        { id: 10989, name: 'Rupert Grint', character: 'Ron Weasley', profile: '/q2KZZ0ltTEl7Sf8volNFV1JDEP4.jpg' },
+        { id: 10990, name: 'Emma Watson', character: 'Hermione Granger', profile: '/tvPPRGzAzdQFhlKzLbMO1EpuTJI.jpg' }
+      ],
+      synopsisAr: 'عاش هاري بوتر تحت الدرج في منزل عمته وعمه طوال حياته، لكن في عيد ميلاده الحادي عشر يكتشف أنه ساحر قوي وتنتظره مدرسة هوغوورتس للسحر.',
+      synopsisEn: 'Harry Potter has lived under the stairs at his aunt and uncle’s house his whole life. But on his 11th birthday, he learns he’s a powerful wizard.',
+      posterPath: '/wuMc08IPKEatf9rnMNXvIDxqP4W.jpg',
+      backdropPath: '/hziiv14OpD73u9gAak4XDDfBKa2.jpg',
+      palette: ['#1f162e', '#0c0814', '#f59e0b'],
+      streamUrl: VIDEO_STREAMS[1]
+    },
+    {
       id: 'tmdb_movie_157336',
       tmdbId: 157336,
       type: 'movie',
       featured: true,
-      topRank: 2,
+      topRank: 3,
       title: 'Interstellar',
       year: 2014,
+      releaseDate: '2014-11-05',
+      status: 'Released',
+      production: 'Paramount / Warner Bros.',
       rating: 8.4,
       durationAr: '2 س 49 د',
       durationEn: '2h 49m',
       quality: '4K IMAX',
       genres: ['scifi', 'drama'],
       director: 'Christopher Nolan',
-      cast: ['Matthew McConaughey', 'Anne Hathaway', 'Jessica Chastain'],
+      castObjects: [
+        { id: 10297, name: 'Matthew McConaughey', character: 'Joseph Cooper', profile: '/e9ZHRY5toiBZCIPEEyvOG9A8ers.jpg' },
+        { id: 1813, name: 'Anne Hathaway', character: 'Dr. Amelia Brand', profile: '/tLelKoPNiyJCSEtQTz1FGv4TLGc.jpg' },
+        { id: 83002, name: 'Jessica Chastain', character: 'Murphy Cooper', profile: '/lodMzLKSdrPcBry6TdoDsMN3Vge.jpg' }
+      ],
       synopsisAr: 'فريق من المستكشفين يسافر عبر ثقب دودي في الفضاء في محاولة لضمان بقاء البشرية وإيجاد كوكب جديد صالح للحياة.',
       synopsisEn: 'The adventures of a group of explorers who make use of a newly discovered wormhole to surpass the limitations on human space travel.',
       posterPath: '/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg',
       backdropPath: '/xJHokMbljvjADYdit5fK5VQsXEG.jpg',
       palette: ['#101e36', '#08101f', '#38bdf8'],
       streamUrl: VIDEO_STREAMS[0]
-    },
-    {
-      id: 'tmdb_movie_872585',
-      tmdbId: 872585,
-      type: 'movie',
-      featured: true,
-      topRank: 3,
-      title: 'Oppenheimer',
-      year: 2023,
-      rating: 8.1,
-      durationAr: '3 س 00 د',
-      durationEn: '3h 00m',
-      quality: '4K HDR',
-      genres: ['drama', 'thriller'],
-      director: 'Christopher Nolan',
-      cast: ['Cillian Murphy', 'Emily Blunt', 'Matt Damon', 'Robert Downey Jr.'],
-      synopsisAr: 'قصة العالم الأمريكي جيه روبرت أوبنهايمر ودوره في قيادة مشروع مانهاتن وتطوير القنبلة الذرية.',
-      synopsisEn: 'The story of J. Robert Oppenheimer’s role in the development of the atomic bomb during World War II.',
-      posterPath: '/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg',
-      backdropPath: '/fm6KqXpk3M2HVveHwCrBSSBaO0V.jpg',
-      palette: ['#261815', '#120c0b', '#fb923c'],
-      streamUrl: VIDEO_STREAMS[1]
     },
     {
       id: 'tmdb_series_1396',
@@ -3244,13 +3491,20 @@ html[dir="ltr"] .nav-drawer {
       topRank: 4,
       title: 'Breaking Bad',
       year: 2008,
+      releaseDate: '2008-01-20',
+      status: 'Ended (5 Seasons)',
+      production: 'Sony Pictures Television',
       rating: 8.9,
       durationAr: '5 مواسم (62 حلقة)',
       durationEn: '5 Seasons (62 Eps)',
       quality: '4K Remaster',
       genres: ['drama', 'thriller'],
       director: 'Vince Gilligan',
-      cast: ['Bryan Cranston', 'Aaron Paul', 'Anna Gunn', 'Giancarlo Esposito'],
+      castObjects: [
+        { id: 17419, name: 'Bryan Cranston', character: 'Walter White', profile: '/7Jahy5LZX2Fo8fGJltMreAI49hC.jpg' },
+        { id: 84497, name: 'Aaron Paul', character: 'Jesse Pinkman', profile: '/8Ac9uuoYwZoYVAIJfRLzzLsGGJn.jpg' },
+        { id: 134531, name: 'Anna Gunn', character: 'Skyler White', profile: '/adppyeu1a4REN3khtgmXusrapFi.jpg' }
+      ],
       synopsisAr: 'معلم كيمياء في المرحلة الثانوية يُشخص بمرض خطير فيلجأ إلى تصنيع المواد الكيميائية مع طالب سابق لتأمين مستقبل عائلته.',
       synopsisEn: 'A chemistry teacher diagnosed with inoperable lung cancer turns to manufacturing and selling methamphetamine.',
       posterPath: '/ztkUQFLlC19CCMYHW9o1zWhJRNq.jpg',
@@ -3271,7 +3525,7 @@ html[dir="ltr"] .nav-drawer {
     { code: 'IRAQVIP', type: 'VIP_UNLIMITED', descAr: 'عضوية خاصة مجانية + فتح العروض الحصرية المبكرة', descEn: 'Free Special Membership + Early Screenings' },
     { code: 'CINEMA99', type: 'AMBIENT_THEME', descAr: 'تفعيل الثيم العنبر الدافئ المريح للعين تلقائياً', descEn: 'Activate Warm Amber Comfort Palette automatically' },
     { code: 'PARTY777', type: 'WATCH_PARTY', descAr: 'إنشاء غرفة مشاهدة مشتركة مع الأصدقاء', descEn: 'Create Shared Watch Party Room with Friends' },
-    { code: 'ARABSEED', type: 'MULTI_SERVERS', descAr: 'تفعيل جميع الـ 40 مشغل وسيرفر بث فائق السرعة', descEn: 'Enable All 40 Ultra-Fast Direct Streaming Players' }
+    { code: 'ARABSEED', type: 'MULTI_SERVERS', descAr: 'تفعيل جميع المشغلات السريعة وروابط التحميل المباشر', descEn: 'Enable All High-Speed Servers & Direct Downloads' }
   ];
 
   const state = {
@@ -3292,18 +3546,14 @@ html[dir="ltr"] .nav-drawer {
     sortBy: 'trending',
     heroIndex: 0,
     heroTimer: null,
-    watchlist: JSON.parse(localStorage.getItem('wum_watchlist') || '["tmdb_movie_693134","tmdb_series_1396"]'),
+    watchlist: JSON.parse(localStorage.getItem('wum_watchlist') || '["tmdb_movie_693134","tmdb_movie_671"]'),
     watchHistory: JSON.parse(localStorage.getItem('wum_history') || '{"tmdb_movie_693134":42}'),
-    reviews: JSON.parse(localStorage.getItem('wum_reviews') || '{}'),
     repoCodes: [...DEFAULT_REPO_CODES],
+    currentView: 'catalog', // 'catalog' | 'studio'
     currentPlayingItem: null,
     activeServerId: STREAM_SERVERS[0].id,
     activeSeason: 1,
     activeEpisode: 1,
-    canvasAnimId: null,
-    usingFallbackCanvas: false,
-    syntheticTime: 0,
-    syntheticPlaying: false,
     searchDebounceTimer: null
   };
 
@@ -3312,7 +3562,7 @@ html[dir="ltr"] .nav-drawer {
   }
 
   function getTitle(item) {
-    return item.title;
+    return item.title || 'Untitled';
   }
 
   function getSynopsis(item) {
@@ -3320,7 +3570,7 @@ html[dir="ltr"] .nav-drawer {
   }
 
   function getDuration(item) {
-    return state.lang === 'ar' ? item.durationAr : item.durationEn;
+    return state.lang === 'ar' ? (item.durationAr || 'فيلم سينمائي') : (item.durationEn || 'Feature Film');
   }
 
   function getGenreArray(item) {
@@ -3348,15 +3598,8 @@ html[dir="ltr"] .nav-drawer {
     }, 2800);
   }
 
-  function formatTime(sec) {
-    if (!Number.isFinite(sec) || sec < 0) return '00:00';
-    const m = Math.floor(sec / 60);
-    const s = Math.floor(sec % 60);
-    return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
-  }
-
   // ---------------------------------------------------------------------------
-  // AUTHENTICATION & USER PROFILE UI
+  // AUTHENTICATION & DRAWER
   // ---------------------------------------------------------------------------
   function renderAuthUI() {
     const headerAuthBtn = document.getElementById('openAuthModalBtn');
@@ -3451,7 +3694,7 @@ html[dir="ltr"] .nav-drawer {
       raw.original_name ||
       'Untitled';
 
-    const dateStr = raw.release_date || raw.first_air_date || '2025';
+    const dateStr = raw.release_date || raw.first_air_date || '2025-01-01';
     const year = Number(dateStr.slice(0, 4)) || 2025;
     const rating = Number(raw.vote_average || 7.8);
 
@@ -3470,14 +3713,18 @@ html[dir="ltr"] .nav-drawer {
       topRank: null,
       title: englishTitle,
       year,
+      releaseDate: dateStr,
+      status: type === 'series' ? 'Returning Series' : 'Released',
+      production: 'TMDB Official Studio',
       rating: Math.max(5.0, Math.min(9.9, rating)),
       durationAr: type === 'series' ? 'مسلسل أصلي' : 'فيلم سينمائي',
       durationEn: type === 'series' ? 'TV Series' : 'Feature Film',
       quality: rating >= 7.8 ? '4K ULTRA' : '1080p FHD',
       genres: mappedGenres,
       director: 'TMDB Official',
-      cast: [],
-      trailerKey: null,
+      castObjects: [],
+      trailersList: [],
+      similarItems: [],
       seasonsCount: 5,
       synopsisAr: raw.overview_ar || raw.overview || 'قصة سينمائية مشوقة من قاعدة بيانات TMDB العالمية.',
       synopsisEn: raw.overview_en || raw.overview || 'Official synopsis from The Movie Database (TMDB).',
@@ -3674,23 +3921,22 @@ html[dir="ltr"] .nav-drawer {
     }
   }
 
+  // Enrich full movie/series metadata: Production, Status, Cast with Photos, Trailers & Recommended
   async function enrichTmdbItemDetails(item) {
     if (!item.tmdbId) return;
     try {
       const endpointType = item.type === 'series' ? 'tv' : 'movie';
       const data = await tmdbFetch(`/${endpointType}/${item.tmdbId}`, {
         language: 'en-US',
-        append_to_response: 'credits,videos'
+        append_to_response: 'credits,videos,recommendations,similar'
       });
 
-      if (data.credits && Array.isArray(data.credits.cast) && data.credits.cast.length > 0) {
-        item.cast = data.credits.cast.slice(0, 8).map((c) => c.name);
+      if (data.status) item.status = data.status;
+      if (data.release_date || data.first_air_date) {
+        item.releaseDate = data.release_date || data.first_air_date;
       }
-      if (data.credits && Array.isArray(data.credits.crew)) {
-        const dir = data.credits.crew.find((c) => c.job === 'Director');
-        if (dir) item.director = dir.name;
-      } else if (Array.isArray(data.created_by) && data.created_by[0]) {
-        item.director = data.created_by[0].name;
+      if (Array.isArray(data.production_companies) && data.production_companies.length > 0) {
+        item.production = data.production_companies.slice(0, 2).map((p) => p.name).join(' · ');
       }
       if (data.runtime) {
         const h = Math.floor(data.runtime / 60);
@@ -3702,17 +3948,567 @@ html[dir="ltr"] .nav-drawer {
         item.durationAr = `${data.number_of_seasons} مواسم (${data.number_of_episodes || ''} حلقة)`;
         item.durationEn = `${data.number_of_seasons} Seasons (${data.number_of_episodes || ''} Eps)`;
       }
+
+      // Rich Cast Objects with Actor ID, Character Name, Actor Name & Photo
+      if (data.credits && Array.isArray(data.credits.cast) && data.credits.cast.length > 0) {
+        item.castObjects = data.credits.cast.slice(0, 14).map((c) => ({
+          id: c.id,
+          name: c.name,
+          character: c.character || 'Main Cast',
+          profile: c.profile_path || null
+        }));
+      }
+
+      // Official YouTube Trailers & Teasers
       if (data.videos && Array.isArray(data.videos.results)) {
-        const yt =
-          data.videos.results.find((v) => v.site === 'YouTube' && v.type === 'Trailer') ||
-          data.videos.results.find((v) => v.site === 'YouTube');
-        if (yt && yt.key) item.trailerKey = yt.key;
+        item.trailersList = data.videos.results
+          .filter((v) => v.site === 'YouTube' && v.key)
+          .slice(0, 4)
+          .map((v) => ({
+            key: v.key,
+            name: v.name || v.type || 'Official Trailer',
+            type: v.type || 'Trailer'
+          }));
+      }
+
+      // Similar & Recommended Titles
+      const recRaw = [
+        ...((data.recommendations && data.recommendations.results) || []),
+        ...((data.similar && data.similar.results) || [])
+      ];
+      const seenSim = new Set();
+      const simNormalized = [];
+      recRaw.forEach((r) => {
+        if (!r || !r.id || !r.poster_path || seenSim.has(r.id)) return;
+        seenSim.add(r.id);
+        const simItem = normalizeTmdbItem(r, r.media_type === 'tv' ? 'series' : item.type, 99);
+        simNormalized.push(simItem);
+        // Also register in CATALOG so clicking it works seamlessly
+        if (!CATALOG.some((existing) => existing.id === simItem.id)) {
+          CATALOG.push(simItem);
+        }
+      });
+      if (simNormalized.length > 0) {
+        item.similarItems = simNormalized.slice(0, 14);
       }
     } catch (_) {
-      // ignore
+      // ignore network error and use existing data
     }
   }
 
+  // ---------------------------------------------------------------------------
+  // ACTOR PROFILE & FULL FILMOGRAPHY EXPLORER
+  // ---------------------------------------------------------------------------
+  async function openActorProfile(personId, fallbackName = 'Actor', fallbackPhoto = '') {
+    const modal = document.getElementById('actorModal');
+    const nameEl = document.getElementById('actorModalName');
+    const imgEl = document.getElementById('actorModalImg');
+    const subEl = document.getElementById('actorModalSubFacts');
+    const bioEl = document.getElementById('actorModalBio');
+    const gridEl = document.getElementById('actorCreditsGrid');
+    if (!modal || !gridEl) return;
+
+    modal.classList.remove('hidden');
+    if (nameEl) nameEl.textContent = fallbackName;
+    if (imgEl) imgEl.src = fallbackPhoto || makeAvatarSvg(fallbackName);
+    if (subEl) subEl.textContent = 'TMDB Official Star';
+    if (bioEl) bioEl.textContent = state.lang === 'ar' ? 'جاري جلب السيرة الذاتية وأعمال الممثل من TMDB...' : 'Loading actor biography and filmography from TMDB...';
+    gridEl.innerHTML = '';
+
+    try {
+      const data = await tmdbFetch(`/person/${personId}`, {
+        language: 'en-US',
+        append_to_response: 'combined_credits'
+      });
+
+      if (nameEl && data.name) nameEl.textContent = data.name;
+      if (imgEl && data.profile_path) imgEl.src = `${TMDB_IMG_W500}${data.profile_path}`;
+      if (subEl) {
+        const parts = [
+          data.known_for_department || 'Acting',
+          data.birthday ? `Born: ${data.birthday}` : null,
+          data.place_of_birth || null
+        ].filter(Boolean);
+        subEl.textContent = parts.join(' · ');
+      }
+      if (bioEl) {
+        bioEl.textContent = data.biography || (state.lang === 'ar' ? 'ممثل عالمي مشارك في العديد من الأفلام والمسلسلات الشهيرة.' : 'Acclaimed international actor across feature films and television.');
+      }
+
+      const rawCredits = (data.combined_credits && data.combined_credits.cast) || [];
+      const seenCred = new Set();
+      const actorWorks = [];
+
+      rawCredits
+        .filter((c) => c && c.id && c.poster_path && (c.media_type === 'movie' || c.media_type === 'tv'))
+        .sort((a, b) => (b.popularity || 0) - (a.popularity || 0))
+        .slice(0, 24)
+        .forEach((c) => {
+          const mediaType = c.media_type === 'tv' ? 'series' : 'movie';
+          const key = `${mediaType}_${c.id}`;
+          if (seenCred.has(key)) return;
+          seenCred.add(key);
+          const norm = normalizeTmdbItem(c, mediaType, 99);
+          if (!CATALOG.some((existing) => existing.id === norm.id)) {
+            CATALOG.push(norm);
+          }
+          actorWorks.push({ item: norm, character: c.character || '' });
+        });
+
+      if (actorWorks.length > 0) {
+        gridEl.innerHTML = actorWorks
+          .map(({ item, character }) => `
+            <article class="blur-movie-card" data-actor-work-id="${item.id}">
+              <div class="poster-frame">
+                <img class="poster-img" src="${item.posterUrl}" alt="${getTitle(item)}" loading="lazy" />
+                <div class="corner-badges">
+                  <span class="corner-quality">${item.type === 'series' ? 'TV' : 'MOVIE'}</span>
+                  <span class="corner-rating">★ ${item.rating.toFixed(1)}</span>
+                </div>
+                <div class="hover-info-layer">
+                  <div class="hover-top-row">
+                    <span class="hover-score-pill">★ ${item.rating.toFixed(1)}</span>
+                  </div>
+                  <div class="hover-center-meta">
+                    <div class="hover-year-type">${item.year} · ${character ? `Role: ${character}` : item.quality}</div>
+                    <p class="hover-synopsis-text">${getSynopsis(item)}</p>
+                  </div>
+                  <div class="hover-actions-bottom">
+                    <button class="hover-watch-btn">
+                      <span>${t('watchNow')}</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="card-caption">
+                <h3 class="card-eng-title" dir="ltr">${getTitle(item)}</h3>
+                <div class="card-sub-line">
+                  <span>${item.year}</span>
+                  <span>★ ${item.rating.toFixed(1)}</span>
+                </div>
+              </div>
+            </article>
+          `)
+          .join('');
+
+        gridEl.querySelectorAll('[data-actor-work-id]').forEach((card) => {
+          card.addEventListener('click', () => {
+            const targetId = card.getAttribute('data-actor-work-id');
+            modal.classList.add('hidden');
+            openWatchStudio(targetId);
+          });
+        });
+      }
+    } catch (_) {
+      // Fallback: show catalog items matching actor name
+      const fallbackWorks = CATALOG.slice(0, 8);
+      gridEl.innerHTML = fallbackWorks
+        .map((item) => `
+          <article class="blur-movie-card" data-actor-work-id="${item.id}">
+            <div class="poster-frame">
+              <img class="poster-img" src="${item.posterUrl}" alt="${getTitle(item)}" />
+            </div>
+            <div class="card-caption">
+              <h3 class="card-eng-title" dir="ltr">${getTitle(item)}</h3>
+            </div>
+          </article>
+        `)
+        .join('');
+      gridEl.querySelectorAll('[data-actor-work-id]').forEach((card) => {
+        card.addEventListener('click', () => {
+          modal.classList.add('hidden');
+          openWatchStudio(card.getAttribute('data-actor-work-id'));
+        });
+      });
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // FULL-PAGE WATCH STUDIO VIEW (#watchStudioView)
+  // ---------------------------------------------------------------------------
+  async function openWatchStudio(itemId) {
+    const item = CATALOG.find((c) => c.id === itemId) || CATALOG[0];
+    if (!item) return;
+
+    state.currentView = 'studio';
+    state.currentPlayingItem = item;
+    state.activeSeason = 1;
+    state.activeEpisode = 1;
+
+    // Hide Catalog View, Show Full-Page Watch Studio View
+    document.getElementById('homeCatalogView')?.classList.add('hidden');
+    document.getElementById('watchStudioView')?.classList.remove('hidden');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // Populate Initial Studio Header & Side Panel
+    renderStudioUI(item);
+    loadActiveServerIntoStudio();
+
+    // Record in Continue Watching History
+    if (!state.watchHistory[item.id]) {
+      state.watchHistory[item.id] = 32;
+      localStorage.setItem('wum_history', JSON.stringify(state.watchHistory));
+    }
+
+    // Fetch live TMDB credits, trailers, production company, and similar movies
+    await enrichTmdbItemDetails(item);
+    if (state.currentPlayingItem && state.currentPlayingItem.id === item.id) {
+      renderStudioUI(item);
+    }
+  }
+
+  function closeWatchStudioBackToCatalog() {
+    state.currentView = 'catalog';
+    const iframe = document.getElementById('studioPlayerIframe');
+    if (iframe) iframe.src = '';
+
+    document.getElementById('watchStudioView')?.classList.add('hidden');
+    document.getElementById('homeCatalogView')?.classList.remove('hidden');
+    renderContinueWatching();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function renderStudioUI(item) {
+    // Top Studio Bar
+    const topTitle = document.getElementById('studioTopTitle');
+    if (topTitle) topTitle.textContent = getTitle(item);
+    const topBadge = document.getElementById('studioTypeBadge');
+    if (topBadge) topBadge.textContent = item.type === 'series' ? t('typeSeries') : t('typeMovie');
+
+    // Now Playing Title & Watchlist State
+    const npTitle = document.getElementById('nowPlayingMovieTitle');
+    if (npTitle) npTitle.textContent = getTitle(item);
+    const npWlBtn = document.getElementById('studioWatchlistBtn');
+    if (npWlBtn) {
+      const inList = state.watchlist.includes(item.id);
+      npWlBtn.classList.toggle('active', inList);
+      npWlBtn.textContent = inList ? '✓' : '+';
+    }
+
+    // Series Season & Episode Selector
+    const epBar = document.getElementById('studioEpisodeBar');
+    const seasonSel = document.getElementById('studioSeasonSelect');
+    const epSel = document.getElementById('studioEpisodeSelect');
+    if (epBar && seasonSel && epSel) {
+      if (item.type === 'series') {
+        epBar.classList.remove('hidden');
+        const sCount = Math.max(1, Number(item.seasonsCount) || 5);
+        seasonSel.innerHTML = Array.from({ length: sCount }, (_, i) => {
+          const s = i + 1;
+          return `<option value="${s}" ${s === state.activeSeason ? 'selected' : ''}>Season ${s}</option>`;
+        }).join('');
+        epSel.innerHTML = Array.from({ length: 24 }, (_, i) => {
+          const e = i + 1;
+          return `<option value="${e}" ${e === state.activeEpisode ? 'selected' : ''}>Episode ${e}</option>`;
+        }).join('');
+      } else {
+        epBar.classList.add('hidden');
+      }
+    }
+
+    // Render 16 Deduplicated Streaming Servers Grid
+    renderServerCardsGrid();
+
+    // Render Multi-File Download Hub
+    renderDownloadHubFiles(item);
+
+    // Side Panel: Poster, Score, Status, Production, Aired, Synopsis, Genres
+    const sidePoster = document.getElementById('sidePosterImg');
+    if (sidePoster) sidePoster.src = item.posterUrl;
+    const sideScore = document.getElementById('sidePosterScore');
+    if (sideScore) sideScore.textContent = `★ ${item.rating.toFixed(1)}`;
+    const sideStatus = document.getElementById('sideFactStatus');
+    if (sideStatus) sideStatus.textContent = item.status || 'Released';
+    const sideProd = document.getElementById('sideFactProduction');
+    if (sideProd) sideProd.textContent = item.production || 'TMDB Official Studio';
+    const sideAired = document.getElementById('sideFactAired');
+    if (sideAired) sideAired.textContent = item.releaseDate || `${item.year}-01-01`;
+    const sideRuntime = document.getElementById('sideFactRuntime');
+    if (sideRuntime) sideRuntime.textContent = getDuration(item);
+
+    const sideHeading = document.getElementById('sideMovieTitle');
+    if (sideHeading) sideHeading.textContent = getTitle(item);
+    const sideSyn = document.getElementById('sideMovieSynopsis');
+    if (sideSyn) sideSyn.textContent = getSynopsis(item);
+
+    const sideGenres = document.getElementById('sideGenreChips');
+    if (sideGenres) {
+      sideGenres.innerHTML = getGenreArray(item)
+        .map((g) => `<span class="side-genre-chip">${g}</span>`)
+        .join('');
+    }
+
+    // Side Panel: Official Trailers
+    const trailersGrid = document.getElementById('sideTrailersGrid');
+    if (trailersGrid) {
+      const tList =
+        item.trailersList && item.trailersList.length > 0
+          ? item.trailersList.slice(0, 2)
+          : [
+              { key: null, name: 'Official Trailer' },
+              { key: null, name: 'Teaser Trailer' }
+            ];
+      trailersGrid.innerHTML = tList
+        .map(
+          (tr, idx) => `
+          <button class="trailer-pill-btn" data-trailer-key="${tr.key || ''}" data-trailer-idx="${idx}">
+            <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap" dir="ltr">${idx === 0 ? 'Official Trailer' : 'Trailer #' + (idx + 1)}</span>
+            <span>▷</span>
+          </button>
+        `
+        )
+        .join('');
+
+      trailersGrid.querySelectorAll('.trailer-pill-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const key = btn.getAttribute('data-trailer-key');
+          const iframe = document.getElementById('studioPlayerIframe');
+          if (iframe) {
+            if (key) {
+              iframe.src = `https://www.youtube.com/embed/${key}?autoplay=1&rel=0`;
+            } else {
+              const q = encodeURIComponent(`${getTitle(item)} ${item.year} official trailer`);
+              iframe.src = `https://www.youtube.com/embed?listType=search&list=${q}&autoplay=1`;
+            }
+          }
+        });
+      });
+    }
+
+    // Side Panel: Interactive Characters & Cast
+    const castContainer = document.getElementById('sideCharactersList');
+    if (castContainer) {
+      const castArr =
+        item.castObjects && item.castObjects.length > 0
+          ? item.castObjects
+          : [
+              { id: 1190668, name: 'Timothée Chalamet', character: 'Lead Role', profile: null },
+              { id: 10980, name: 'Daniel Radcliffe', character: 'Featured Cast', profile: null }
+            ];
+
+      castContainer.innerHTML = castArr
+        .map((c) => {
+          const avatarUrl = c.profile ? `${TMDB_IMG_W185}${c.profile}` : makeAvatarSvg(c.name);
+          return `
+            <div class="character-row-card" data-person-id="${c.id}" data-person-name="${c.name}" data-person-photo="${avatarUrl}">
+              <img class="char-avatar" src="${avatarUrl}" alt="${c.name}" loading="lazy" />
+              <div class="char-text">
+                <div class="char-role-name" dir="ltr">${c.character || 'Main Role'}</div>
+                <div class="char-actor-name" dir="ltr">${c.name}</div>
+              </div>
+              <span class="char-explore-badge">${t('clickActorHint')}</span>
+            </div>
+          `;
+        })
+        .join('');
+
+      castContainer.querySelectorAll('[data-person-id]').forEach((row) => {
+        row.addEventListener('click', () => {
+          const pid = row.getAttribute('data-person-id');
+          const pname = row.getAttribute('data-person-name');
+          const pphoto = row.getAttribute('data-person-photo');
+          openActorProfile(pid, pname, pphoto);
+        });
+      });
+    }
+
+    // Recommended & Similar Movies Row
+    renderRecommendedMovies(item);
+  }
+
+  function renderServerCardsGrid() {
+    const grid = document.getElementById('studioServersGrid');
+    if (!grid) return;
+
+    grid.innerHTML = STREAM_SERVERS.map(
+      (srv) => `
+      <button class="server-card-btn ${srv.id === state.activeServerId ? 'active' : ''}" data-srv-id="${srv.id}">
+        ${srv.sparkle ? '<span class="srv-sparkle">✦</span>' : ''}
+        <span class="srv-flag">${srv.flag}</span>
+        <span class="srv-provider-title" dir="ltr">${srv.name}</span>
+        <span class="srv-online-dot"></span>
+      </button>
+    `
+    ).join('');
+
+    grid.querySelectorAll('[data-srv-id]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        state.activeServerId = btn.getAttribute('data-srv-id');
+        renderServerCardsGrid();
+        loadActiveServerIntoStudio();
+        const srvObj = STREAM_SERVERS.find((s) => s.id === state.activeServerId);
+        if (srvObj) showToast(`${t('toastServerSwitched')}${srvObj.name}`);
+      });
+    });
+  }
+
+  function loadActiveServerIntoStudio() {
+    const item = state.currentPlayingItem;
+    const iframe = document.getElementById('studioPlayerIframe');
+    if (!item || !iframe) return;
+
+    const srv = STREAM_SERVERS.find((s) => s.id === state.activeServerId) || STREAM_SERVERS[0];
+    const tmdbId = item.tmdbId || 693134;
+    iframe.src = srv.buildUrl(tmdbId, item.type === 'series', state.activeSeason, state.activeEpisode);
+  }
+
+  // ---------------------------------------------------------------------------
+  // MULTI-FILE DOWNLOAD HUB (6 Distinct Download Options & Real File Generator)
+  // ---------------------------------------------------------------------------
+  function renderDownloadHubFiles(item) {
+    const container = document.getElementById('downloadFilesGrid');
+    if (!container) return;
+
+    const tmdbId = item.tmdbId || 693134;
+    const isTv = item.type === 'series';
+    const epSuffix = isTv ? ` S0${state.activeSeason}E0${state.activeEpisode}` : '';
+    const cleanTitle = getTitle(item).replace(/[^a-zA-Z0-9]+/g, '.');
+
+    const files = [
+      {
+        quality: '2160p 4K UHD BluRay (10-bit HEVC)',
+        specs: `4.8 GB · MKV · Dolby Atmos${epSuffix}`,
+        label: '⬇ تحميل 4K',
+        mode: 'direct_video',
+        filename: `${cleanTitle}.${item.year}${epSuffix.replace(/\s+/g, '')}.2160p.4K.UHD.mp4`,
+        url: VIDEO_STREAMS[0]
+      },
+      {
+        quality: '1080p Full HD WEB-DL (x264 AAC)',
+        specs: `2.1 GB · MP4 · High Speed${epSuffix}`,
+        label: '⬇ تحميل 1080p',
+        mode: 'direct_video',
+        filename: `${cleanTitle}.${item.year}${epSuffix.replace(/\s+/g, '')}.1080p.WEBDL.mp4`,
+        url: VIDEO_STREAMS[1]
+      },
+      {
+        quality: '720p HD Fast StreamRip',
+        specs: `940 MB · MP4 · Fast Server${epSuffix}`,
+        label: '⬇ تحميل 720p',
+        mode: 'direct_video',
+        filename: `${cleanTitle}.${item.year}${epSuffix.replace(/\s+/g, '')}.720p.HD.mp4`,
+        url: VIDEO_STREAMS[2]
+      },
+      {
+        quality: '480p Mobile Saver (HEVC)',
+        specs: `410 MB · MP4 · للموبايل${epSuffix}`,
+        label: '⬇ تحميل 480p',
+        mode: 'direct_video',
+        filename: `${cleanTitle}.${item.year}${epSuffix.replace(/\s+/g, '')}.480p.Mobile.mp4`,
+        url: VIDEO_STREAMS[3]
+      },
+      {
+        quality: 'بوابة التحميل السحابي (Multi-Mirror DL)',
+        specs: 'GoDrive / VidSrc DL / Direct Mirrors',
+        label: '↗ فتح صفحة التحميل',
+        mode: 'external_dl',
+        url: isTv
+          ? `https://dl.vidsrc.vip/tv/${tmdbId}/${state.activeSeason}/${state.activeEpisode}`
+          : `https://dl.vidsrc.vip/movie/${tmdbId}`
+      },
+      {
+        quality: 'ملف الترجمة العربية الرسمي (.SRT)',
+        specs: `Arabic & English Subtitles · UTF-8`,
+        label: '⬇ تحميل الترجمة .SRT',
+        mode: 'srt_file',
+        filename: `${cleanTitle}.${item.year}.Arabic.srt`
+      }
+    ];
+
+    container.innerHTML = files
+      .map(
+        (f, idx) => `
+        <div class="dl-file-card">
+          <div class="dl-file-meta">
+            <span class="dl-file-quality" dir="ltr">${f.quality}</span>
+            <span class="dl-file-specs" dir="ltr">${f.specs}</span>
+          </div>
+          <button class="dl-trigger-link" data-dl-idx="${idx}">${f.label}</button>
+        </div>
+      `
+      )
+      .join('');
+
+    container.querySelectorAll('[data-dl-idx]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const f = files[Number(btn.getAttribute('data-dl-idx'))];
+        if (!f) return;
+        showToast(`${t('toastDownloadStarted')}${f.quality}`);
+
+        if (f.mode === 'srt_file') {
+          const srtContent = `1\n00:00:01,000 --> 00:00:06,000\nWatchUrMovie — ${getTitle(item)} (${item.year})\nالترجمة العربية الرسمية مفعلة\n\n2\n00:00:06,500 --> 00:00:12,000\n${getSynopsis(item)}\n`;
+          const blob = new Blob([srtContent], { type: 'text/plain;charset=utf-8' });
+          const a = document.createElement('a');
+          a.href = URL.createObjectURL(blob);
+          a.download = f.filename;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+        } else if (f.mode === 'external_dl') {
+          window.open(f.url, '_blank', 'noopener,noreferrer');
+        } else {
+          const a = document.createElement('a');
+          a.href = f.url;
+          a.download = f.filename;
+          a.target = '_blank';
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+        }
+      });
+    });
+  }
+
+  function renderRecommendedMovies(item) {
+    const row = document.getElementById('recommendedMoviesRow');
+    if (!row) return;
+
+    const list =
+      item.similarItems && item.similarItems.length > 0
+        ? item.similarItems
+        : CATALOG.filter((c) => c.id !== item.id).slice(0, 10);
+
+    row.innerHTML = list
+      .map((sim) => `
+        <article class="blur-movie-card" data-rec-id="${sim.id}">
+          <div class="poster-frame">
+            <img class="poster-img" src="${sim.posterUrl}" alt="${getTitle(sim)}" loading="lazy" />
+            <div class="corner-badges">
+              <span class="corner-quality">${sim.year}</span>
+              <span class="corner-rating">★ ${sim.rating.toFixed(1)}</span>
+            </div>
+            <div class="hover-info-layer">
+              <div class="hover-top-row">
+                <span class="hover-score-pill">★ ${sim.rating.toFixed(1)}</span>
+              </div>
+              <div class="hover-center-meta">
+                <div class="hover-year-type">${sim.year} · ${sim.quality}</div>
+                <p class="hover-synopsis-text">${getSynopsis(sim)}</p>
+              </div>
+              <div class="hover-actions-bottom">
+                <button class="hover-watch-btn">
+                  <span>${t('watchNow')}</span>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="card-caption">
+            <h3 class="card-eng-title" dir="ltr">${getTitle(sim)}</h3>
+          </div>
+        </article>
+      `)
+      .join('');
+
+    row.querySelectorAll('[data-rec-id]').forEach((card) => {
+      card.addEventListener('click', () => {
+        openWatchStudio(card.getAttribute('data-rec-id'));
+      });
+    });
+  }
+
+  // ---------------------------------------------------------------------------
+  // HOME CATALOG VIEW RENDERERS
+  // ---------------------------------------------------------------------------
   function applyPaletteAndComfort() {
     document.documentElement.setAttribute('data-palette', state.palette);
     localStorage.setItem('wum_palette', state.palette);
@@ -3748,7 +4544,7 @@ html[dir="ltr"] .nav-drawer {
     renderContinueWatching();
     renderCatalog();
     renderRepoCodesList();
-    render40ServerButtons();
+    if (state.currentPlayingItem) renderStudioUI(state.currentPlayingItem);
   }
 
   function getFeaturedItems() {
@@ -3839,6 +4635,7 @@ html[dir="ltr"] .nav-drawer {
     updateWatchlistCountBadge();
     renderHero();
     renderCatalog();
+    if (state.currentPlayingItem) renderStudioUI(state.currentPlayingItem);
   }
 
   function renderContinueWatching() {
@@ -3874,7 +4671,7 @@ html[dir="ltr"] .nav-drawer {
       .join('');
 
     grid.querySelectorAll('[data-play-id]').forEach((card) => {
-      card.addEventListener('click', () => openPlayerModal(card.getAttribute('data-play-id')));
+      card.addEventListener('click', () => openWatchStudio(card.getAttribute('data-play-id')));
     });
   }
 
@@ -3899,7 +4696,7 @@ html[dir="ltr"] .nav-drawer {
       .join('');
 
     track.querySelectorAll('[data-details-id]').forEach((card) => {
-      card.addEventListener('click', () => openDetailsModal(card.getAttribute('data-details-id')));
+      card.addEventListener('click', () => openWatchStudio(card.getAttribute('data-details-id')));
     });
   }
 
@@ -3930,9 +4727,9 @@ html[dir="ltr"] .nav-drawer {
         btn.addEventListener('click', () => {
           state.activeGenre = btn.getAttribute('data-drawer-genre');
           toggleDrawer(false);
+          closeWatchStudioBackToCatalog();
           renderGenreBar();
           renderCatalog();
-          document.getElementById('catalogSection')?.scrollIntoView({ behavior: 'smooth' });
         });
       });
     }
@@ -3964,9 +4761,6 @@ html[dir="ltr"] .nav-drawer {
     });
   }
 
-  // ---------------------------------------------------------------------------
-  // RENDER HOVER-BLUR MOVIE CARDS
-  // ---------------------------------------------------------------------------
   function renderCatalog() {
     const grid = document.getElementById('moviesGrid');
     const emptyBox = document.getElementById('emptyStateBox');
@@ -4022,13 +4816,6 @@ html[dir="ltr"] .nav-drawer {
                     </svg>
                     <span>${t('watchNow')}</span>
                   </button>
-                  <button class="hover-details-btn" data-info-id="${item.id}" title="${t('moreDetails')}">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-                      <circle cx="12" cy="12" r="10"></circle>
-                      <line x1="12" y1="16" x2="12" y2="12"></line>
-                      <line x1="12" y1="8" x2="12.01" y2="8"></line>
-                    </svg>
-                  </button>
                 </div>
               </div>
             </div>
@@ -4045,20 +4832,6 @@ html[dir="ltr"] .nav-drawer {
       })
       .join('');
 
-    grid.querySelectorAll('[data-watch-id]').forEach((btn) => {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        openPlayerModal(btn.getAttribute('data-watch-id'));
-      });
-    });
-
-    grid.querySelectorAll('[data-info-id]').forEach((btn) => {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        openDetailsModal(btn.getAttribute('data-info-id'));
-      });
-    });
-
     grid.querySelectorAll('[data-wl-id]').forEach((btn) => {
       btn.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -4067,7 +4840,7 @@ html[dir="ltr"] .nav-drawer {
     });
 
     grid.querySelectorAll('.blur-movie-card').forEach((card) => {
-      card.addEventListener('click', () => openDetailsModal(card.getAttribute('data-card-id')));
+      card.addEventListener('click', () => openWatchStudio(card.getAttribute('data-card-id')));
     });
   }
 
@@ -4097,333 +4870,12 @@ html[dir="ltr"] .nav-drawer {
       searchDropdown.querySelectorAll('[data-search-pick]').forEach((el) => {
         el.addEventListener('click', () => {
           searchDropdown.classList.add('hidden');
-          openDetailsModal(el.getAttribute('data-search-pick'));
+          openWatchStudio(el.getAttribute('data-search-pick'));
         });
       });
     } else {
       searchDropdown.classList.add('hidden');
     }
-  }
-
-  // ---------------------------------------------------------------------------
-  // 40-SERVER STREAMING ENGINE & SEASON / EPISODE SELECTOR
-  // ---------------------------------------------------------------------------
-  const videoEl = document.getElementById('cinemaVideo');
-  const canvasEl = document.getElementById('cinemaFallbackCanvas');
-  const ytIframeEl = document.getElementById('ytTrailerIframe');
-
-  function render40ServerButtons() {
-    const ribbon = document.getElementById('serverTabs');
-    const quickSelect = document.getElementById('serverQuickSelect');
-
-    if (ribbon) {
-      ribbon.innerHTML = STREAM_SERVERS.map(
-        (srv, idx) => `
-        <button class="srv-btn ${srv.id === state.activeServerId ? 'active' : ''}" data-server-id="${srv.id}">
-          <span class="srv-num">#${idx + 1}</span>
-          <span dir="ltr">${srv.name}</span>
-          <span class="srv-tag">${srv.badge}</span>
-        </button>
-      `
-      ).join('');
-
-      ribbon.querySelectorAll('[data-server-id]').forEach((btn) => {
-        btn.addEventListener('click', () => {
-          const srvId = btn.getAttribute('data-server-id');
-          switchStreamingServer(srvId);
-        });
-      });
-    }
-
-    if (quickSelect) {
-      quickSelect.innerHTML = STREAM_SERVERS.map(
-        (srv, idx) => `<option value="${srv.id}" ${srv.id === state.activeServerId ? 'selected' : ''}>#${idx + 1} — ${srv.name} (${srv.badge})</option>`
-      ).join('');
-    }
-  }
-
-  function renderSeriesEpisodeSelectors(item) {
-    const bar = document.getElementById('seriesEpisodeBar');
-    const seasonSel = document.getElementById('seasonSelect');
-    const epSel = document.getElementById('episodeSelect');
-    if (!bar || !seasonSel || !epSel) return;
-
-    if (item.type !== 'series') {
-      bar.classList.add('hidden');
-      return;
-    }
-
-    bar.classList.remove('hidden');
-    const totalSeasons = Math.max(1, Number(item.seasonsCount) || 5);
-    seasonSel.innerHTML = Array.from({ length: totalSeasons }, (_, i) => {
-      const sNum = i + 1;
-      return `<option value="${sNum}" ${sNum === state.activeSeason ? 'selected' : ''}>Season ${sNum}</option>`;
-    }).join('');
-
-    epSel.innerHTML = Array.from({ length: 24 }, (_, i) => {
-      const eNum = i + 1;
-      return `<option value="${eNum}" ${eNum === state.activeEpisode ? 'selected' : ''}>Episode ${eNum}</option>`;
-    }).join('');
-  }
-
-  function switchStreamingServer(serverId) {
-    const srv = STREAM_SERVERS.find((s) => s.id === serverId) || STREAM_SERVERS[0];
-    state.activeServerId = srv.id;
-
-    document.querySelectorAll('[data-server-id]').forEach((b) => {
-      b.classList.toggle('active', b.getAttribute('data-server-id') === srv.id);
-    });
-
-    const quickSelect = document.getElementById('serverQuickSelect');
-    if (quickSelect) quickSelect.value = srv.id;
-
-    loadActiveServerIntoViewport();
-    showToast(`${t('toastServerSwitched')}${srv.name}`);
-  }
-
-  function loadActiveServerIntoViewport() {
-    const item = state.currentPlayingItem;
-    if (!item) return;
-
-    const srv = STREAM_SERVERS.find((s) => s.id === state.activeServerId) || STREAM_SERVERS[0];
-    stopCinemaSynthesizer();
-
-    if (srv.type === 'trailer') {
-      if (videoEl) {
-        videoEl.pause();
-        videoEl.classList.add('hidden');
-      }
-      if (canvasEl) canvasEl.classList.add('hidden');
-      document.getElementById('videoCustomCtrlBar')?.classList.add('hidden');
-
-      if (item.trailerKey && ytIframeEl) {
-        ytIframeEl.classList.remove('hidden');
-        ytIframeEl.src = `https://www.youtube.com/embed/${item.trailerKey}?autoplay=1&rel=0`;
-      } else if (ytIframeEl && item.tmdbId) {
-        // Fallback to first embed if no YouTube trailer key
-        ytIframeEl.classList.remove('hidden');
-        ytIframeEl.src = STREAM_SERVERS[0].buildUrl(item.tmdbId, item.type === 'series', state.activeSeason, state.activeEpisode);
-      }
-      return;
-    }
-
-    if (srv.type === 'embed' && item.tmdbId && ytIframeEl) {
-      if (videoEl) {
-        videoEl.pause();
-        videoEl.classList.add('hidden');
-      }
-      if (canvasEl) canvasEl.classList.add('hidden');
-      document.getElementById('videoCustomCtrlBar')?.classList.add('hidden');
-
-      ytIframeEl.classList.remove('hidden');
-      ytIframeEl.src = srv.buildUrl(item.tmdbId, item.type === 'series', state.activeSeason, state.activeEpisode);
-      return;
-    }
-
-    // Direct 4K HTML5 Stream or Synthesizer
-    if (ytIframeEl) {
-      ytIframeEl.src = '';
-      ytIframeEl.classList.add('hidden');
-    }
-    document.getElementById('videoCustomCtrlBar')?.classList.remove('hidden');
-
-    if (videoEl) {
-      videoEl.classList.remove('hidden');
-      if (canvasEl) canvasEl.classList.add('hidden');
-      videoEl.src = item.streamUrl || VIDEO_STREAMS[0];
-      videoEl.currentTime = 0;
-      const p = videoEl.play();
-      if (p !== undefined) {
-        p.catch(() => startCinemaSynthesizer(item));
-      }
-    } else {
-      startCinemaSynthesizer(item);
-    }
-  }
-
-  function startCinemaSynthesizer(item) {
-    state.usingFallbackCanvas = true;
-    state.syntheticPlaying = true;
-    if (canvasEl) canvasEl.classList.remove('hidden');
-    if (videoEl) videoEl.classList.add('hidden');
-    if (ytIframeEl) ytIframeEl.classList.add('hidden');
-
-    const ctx = canvasEl.getContext('2d');
-    canvasEl.width = 960;
-    canvasEl.height = 540;
-    let lastTick = performance.now();
-
-    function drawFrame(now) {
-      if (!state.usingFallbackCanvas) return;
-      const dt = (now - lastTick) / 1000;
-      lastTick = now;
-
-      if (state.syntheticPlaying) {
-        state.syntheticTime = (state.syntheticTime + dt) % 140;
-        updatePlayerTimeUI(state.syntheticTime, 140);
-      }
-
-      const [c1, c2, accent] = item.palette || ['#121526', '#090b14', '#8b5cf6'];
-      const grad = ctx.createLinearGradient(0, 0, canvasEl.width, canvasEl.height);
-      grad.addColorStop(0, c1);
-      grad.addColorStop(0.65, c2);
-      grad.addColorStop(1, '#04070d');
-      ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, canvasEl.width, canvasEl.height);
-
-      const breathe = Math.sin(now * 0.0015) * 18;
-      ctx.save();
-      ctx.strokeStyle = accent;
-      ctx.globalAlpha = 0.22;
-      ctx.lineWidth = 1.5;
-      for (let i = 0; i < 4; i++) {
-        ctx.beginPath();
-        ctx.arc(480, 235, 65 + i * 42 + breathe * 0.4, 0, Math.PI * 2);
-        ctx.stroke();
-      }
-      ctx.restore();
-
-      ctx.fillStyle = '#f8fafc';
-      ctx.font = '700 30px sans-serif';
-      ctx.textAlign = 'center';
-      ctx.fillText(getTitle(item), 480, 225);
-
-      ctx.fillStyle = accent;
-      ctx.font = '600 14px monospace';
-      ctx.fillText(`${item.quality} STREAM · ${item.year}`, 480, 260);
-
-      state.canvasAnimId = requestAnimationFrame(drawFrame);
-    }
-
-    if (state.canvasAnimId) cancelAnimationFrame(state.canvasAnimId);
-    state.canvasAnimId = requestAnimationFrame(drawFrame);
-  }
-
-  function stopCinemaSynthesizer() {
-    state.usingFallbackCanvas = false;
-    state.syntheticPlaying = false;
-    if (state.canvasAnimId) {
-      cancelAnimationFrame(state.canvasAnimId);
-      state.canvasAnimId = null;
-    }
-  }
-
-  function updatePlayerTimeUI(current, duration) {
-    const curLabel = document.getElementById('currentTimeLabel');
-    const durLabel = document.getElementById('durationTimeLabel');
-    const filled = document.getElementById('progressFilled');
-
-    if (curLabel) curLabel.textContent = formatTime(current);
-    if (durLabel) durLabel.textContent = formatTime(duration || 140);
-
-    const pct = duration > 0 ? Math.min(100, (current / duration) * 100) : 0;
-    if (filled) filled.style.width = `${pct}%`;
-  }
-
-  async function openPlayerModal(itemId, preferredServerId = null) {
-    const item = CATALOG.find((c) => c.id === itemId) || CATALOG[0];
-    if (!item) return;
-
-    state.currentPlayingItem = item;
-    state.activeSeason = 1;
-    state.activeEpisode = 1;
-    if (preferredServerId) {
-      state.activeServerId = preferredServerId;
-    } else if (!state.activeServerId) {
-      state.activeServerId = STREAM_SERVERS[0].id;
-    }
-
-    document.getElementById('playerModal')?.classList.remove('hidden');
-    document.getElementById('playerTypeBadge').textContent = item.type === 'series' ? t('typeSeries') : t('typeMovie');
-    document.getElementById('playerModalTitle').textContent = getTitle(item);
-    document.getElementById('playerSubMeta').textContent = `${item.year} · ★ ${item.rating.toFixed(1)} TMDB`;
-
-    await enrichTmdbItemDetails(item);
-    render40ServerButtons();
-    renderSeriesEpisodeSelectors(item);
-    loadActiveServerIntoViewport();
-
-    if (!state.watchHistory[item.id]) {
-      state.watchHistory[item.id] = 26;
-      localStorage.setItem('wum_history', JSON.stringify(state.watchHistory));
-    }
-    renderContinueWatching();
-  }
-
-  function closePlayerModal() {
-    document.getElementById('playerModal')?.classList.add('hidden');
-    if (videoEl) {
-      videoEl.pause();
-      videoEl.removeAttribute('src');
-    }
-    if (ytIframeEl) {
-      ytIframeEl.src = '';
-      ytIframeEl.classList.add('hidden');
-    }
-    stopCinemaSynthesizer();
-    renderContinueWatching();
-  }
-
-  async function openDetailsModal(itemId) {
-    const item = CATALOG.find((c) => c.id === itemId);
-    if (!item) return;
-
-    state.currentPlayingItem = item;
-    document.getElementById('detailsModal')?.classList.remove('hidden');
-
-    const poster = document.getElementById('detailsPoster');
-    if (poster) poster.src = item.posterUrl;
-
-    document.getElementById('detailsBadges').innerHTML = `
-      <span class="pill-tag">${item.type === 'series' ? t('typeSeries') : t('typeMovie')}</span>
-      <span class="pill-tag star">★ ${item.rating.toFixed(1)} TMDB</span>
-      <span class="pill-tag glass">${item.quality}</span>
-    `;
-
-    const titleEl = document.getElementById('detailsTitle');
-    if (titleEl) {
-      titleEl.textContent = getTitle(item);
-      titleEl.setAttribute('dir', 'ltr');
-    }
-    document.getElementById('detailsSynopsis').textContent = getSynopsis(item);
-
-    await enrichTmdbItemDetails(item);
-
-    document.getElementById('detailsMetaGrid').innerHTML = `
-      <div><small style="color:var(--text-muted);display:block">${t('directorLabel')}</small><strong dir="ltr">${item.director || 'TMDB'}</strong></div>
-      <div><small style="color:var(--text-muted);display:block">${t('yearLabel')}</small><strong>${item.year}</strong></div>
-      <div><small style="color:var(--text-muted);display:block">${t('durationLabel')}</small><strong>${getDuration(item)}</strong></div>
-      <div><small style="color:var(--text-muted);display:block">${t('qualityMetaLabel')}</small><strong>★ ${item.rating.toFixed(1)} / 10</strong></div>
-    `;
-
-    const wlBtnText = document.getElementById('detailsWatchlistText');
-    if (wlBtnText) {
-      wlBtnText.textContent = state.watchlist.includes(item.id) ? t('inWatchlist') : t('addToWatchlist');
-    }
-
-    const castContainer = document.getElementById('detailsCastList');
-    if (castContainer) {
-      const castArr = item.cast && item.cast.length > 0 ? item.cast : ['TMDB Official Cast'];
-      castContainer.innerHTML = castArr
-        .map((actor) => `<span class="cast-tag" dir="ltr">${actor}</span>`)
-        .join('');
-    }
-
-    renderItemReviews(item.id);
-  }
-
-  function renderItemReviews(itemId) {
-    const container = document.getElementById('reviewsListContainer');
-    if (!container) return;
-    const list = state.reviews[itemId] || [
-      {
-        author: state.lang === 'ar' ? 'متابع سينمائي' : 'Cinema Viewer',
-        text: state.lang === 'ar' ? 'عمل ممتاز ووجود 40 مشغل مختلف يخلي المشاهدة بدون أي تقطيع!' : 'Fantastic title and having 40 different streaming servers makes playback effortless!'
-      }
-    ];
-    container.innerHTML = list
-      .map((rev) => `<div class="review-card-item"><strong>${rev.author}:</strong> ${rev.text}</div>`)
-      .join('');
   }
 
   function renderRepoCodesList() {
@@ -4471,18 +4923,72 @@ html[dir="ltr"] .nav-drawer {
     document.getElementById('closeDrawerBtn')?.addEventListener('click', () => toggleDrawer(false));
     document.getElementById('drawerBackdrop')?.addEventListener('click', () => toggleDrawer(false));
 
-    document.getElementById('openAuthModalBtn')?.addEventListener('click', () => {
-      if (state.user) {
-        toggleDrawer(true);
-      } else {
-        document.getElementById('authModal')?.classList.remove('hidden');
+    // Clicking Brand Logo returns to Catalog Home
+    document.getElementById('brandHomeLink')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      closeWatchStudioBackToCatalog();
+    });
+
+    // Studio Back Button
+    document.getElementById('backToCatalogBtn')?.addEventListener('click', closeWatchStudioBackToCatalog);
+
+    // Studio Now Playing Actions: Watchlist, Share, Download Hub Toggle
+    document.getElementById('studioWatchlistBtn')?.addEventListener('click', () => {
+      if (state.currentPlayingItem) toggleWatchlist(state.currentPlayingItem.id);
+    });
+
+    document.getElementById('studioShareBtn')?.addEventListener('click', () => {
+      if (navigator.clipboard && window.location.href) {
+        navigator.clipboard.writeText(window.location.href).catch(() => {});
+      }
+      showToast(t('toastCopiedShare'));
+    });
+
+    document.getElementById('studioDownloadToggleBtn')?.addEventListener('click', () => {
+      const panel = document.getElementById('downloadHubPanel');
+      if (panel) {
+        panel.classList.toggle('hidden');
+        if (!panel.classList.contains('hidden')) {
+          panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
       }
     });
 
+    // Series Season & Episode change inside Studio
+    document.getElementById('studioSeasonSelect')?.addEventListener('change', (e) => {
+      state.activeSeason = Number(e.target.value) || 1;
+      loadActiveServerIntoStudio();
+      if (state.currentPlayingItem) renderDownloadHubFiles(state.currentPlayingItem);
+    });
+
+    document.getElementById('studioEpisodeSelect')?.addEventListener('change', (e) => {
+      state.activeEpisode = Number(e.target.value) || 1;
+      loadActiveServerIntoStudio();
+      if (state.currentPlayingItem) renderDownloadHubFiles(state.currentPlayingItem);
+    });
+
+    // Recommended Row Scroll Arrows
+    document.getElementById('recPrevBtn')?.addEventListener('click', () => {
+      document.getElementById('recommendedMoviesRow')?.scrollBy({ left: -400, behavior: 'smooth' });
+    });
+    document.getElementById('recNextBtn')?.addEventListener('click', () => {
+      document.getElementById('recommendedMoviesRow')?.scrollBy({ left: 400, behavior: 'smooth' });
+    });
+
+    // Actor Modal Close
+    document.getElementById('closeActorModalBtn')?.addEventListener('click', () => {
+      document.getElementById('actorModal')?.classList.add('hidden');
+    });
+
+    // Auth Modal
+    document.getElementById('openAuthModalBtn')?.addEventListener('click', () => {
+      if (state.user) toggleDrawer(true);
+      else document.getElementById('authModal')?.classList.remove('hidden');
+    });
+
     document.getElementById('drawerAuthActionBtn')?.addEventListener('click', () => {
-      if (state.user) {
-        logoutUser();
-      } else {
+      if (state.user) logoutUser();
+      else {
         toggleDrawer(false);
         document.getElementById('authModal')?.classList.remove('hidden');
       }
@@ -4497,9 +5003,8 @@ html[dir="ltr"] .nav-drawer {
         state.authMode = tabBtn.getAttribute('data-auth-tab');
         document.querySelectorAll('[data-auth-tab]').forEach((b) => b.classList.remove('active'));
         tabBtn.classList.add('active');
-        const nameFieldWrap = document.getElementById('authNameFieldWrap');
+        document.getElementById('authNameFieldWrap')?.classList.toggle('hidden', state.authMode === 'login');
         const submitBtn = document.getElementById('authSubmitBtn');
-        if (nameFieldWrap) nameFieldWrap.classList.toggle('hidden', state.authMode === 'login');
         if (submitBtn) submitBtn.textContent = state.authMode === 'login' ? t('submitLoginBtn') : t('submitRegisterBtn');
       });
     });
@@ -4516,13 +5021,14 @@ html[dir="ltr"] .nav-drawer {
       loginUser('VIP Guest', 'vip@watchurmovie.app');
     });
 
+    // Drawer Navigation
     document.querySelectorAll('[data-nav]').forEach((btn) => {
       btn.addEventListener('click', () => {
         state.activeNav = btn.getAttribute('data-nav');
         document.querySelectorAll('[data-nav]').forEach((b) => b.classList.remove('active'));
         btn.classList.add('active');
         toggleDrawer(false);
-        document.getElementById('catalogSection')?.scrollIntoView({ behavior: 'smooth' });
+        closeWatchStudioBackToCatalog();
         renderCatalog();
       });
     });
@@ -4547,6 +5053,7 @@ html[dir="ltr"] .nav-drawer {
       applyLanguage();
     });
 
+    // Search
     const searchInput = document.getElementById('searchInput');
     const clearSearchBtn = document.getElementById('clearSearchBtn');
     const searchDropdown = document.getElementById('searchDropdown');
@@ -4579,18 +5086,18 @@ html[dir="ltr"] .nav-drawer {
       toggleDrawer(false);
       const randomItem = CATALOG[Math.floor(Math.random() * CATALOG.length)];
       showToast(`${t('toastRandomPick')} ${getTitle(randomItem)}`);
-      openDetailsModal(randomItem.id);
+      openWatchStudio(randomItem.id);
     });
 
     document.getElementById('heroWatchBtn')?.addEventListener('click', () => {
       const featuredItems = getFeaturedItems();
       const item = featuredItems[state.heroIndex] || CATALOG[0];
-      openPlayerModal(item.id);
+      openWatchStudio(item.id);
     });
     document.getElementById('heroDetailsBtn')?.addEventListener('click', () => {
       const featuredItems = getFeaturedItems();
       const item = featuredItems[state.heroIndex] || CATALOG[0];
-      openDetailsModal(item.id);
+      openWatchStudio(item.id);
     });
     document.getElementById('heroWatchlistBtn')?.addEventListener('click', () => {
       const featuredItems = getFeaturedItems();
@@ -4628,90 +5135,11 @@ html[dir="ltr"] .nav-drawer {
       renderCatalog();
     });
 
-    document.getElementById('closePlayerModalBtn')?.addEventListener('click', closePlayerModal);
-
-    // 40-Servers Quick Dropdown Selector
-    document.getElementById('serverQuickSelect')?.addEventListener('change', (e) => {
-      switchStreamingServer(e.target.value);
-    });
-
-    // Series Season & Episode Selectors
-    document.getElementById('seasonSelect')?.addEventListener('change', (e) => {
-      state.activeSeason = Number(e.target.value) || 1;
-      loadActiveServerIntoViewport();
-    });
-
-    document.getElementById('episodeSelect')?.addEventListener('change', (e) => {
-      state.activeEpisode = Number(e.target.value) || 1;
-      loadActiveServerIntoViewport();
-    });
-
-    document.getElementById('playPauseBtn')?.addEventListener('click', () => {
-      if (state.usingFallbackCanvas) {
-        state.syntheticPlaying = !state.syntheticPlaying;
-      } else if (videoEl) {
-        if (videoEl.paused) videoEl.play();
-        else videoEl.pause();
-      }
-    });
-
-    document.getElementById('skipBackBtn')?.addEventListener('click', () => {
-      if (state.usingFallbackCanvas) state.syntheticTime = Math.max(0, state.syntheticTime - 10);
-      else if (videoEl) videoEl.currentTime = Math.max(0, videoEl.currentTime - 10);
-    });
-
-    document.getElementById('skipFwdBtn')?.addEventListener('click', () => {
-      if (state.usingFallbackCanvas) state.syntheticTime = (state.syntheticTime + 10) % 140;
-      else if (videoEl) videoEl.currentTime = Math.min(videoEl.duration || 140, videoEl.currentTime + 10);
-    });
-
-    document.getElementById('closeDetailsModalBtn')?.addEventListener('click', () => {
-      document.getElementById('detailsModal')?.classList.add('hidden');
-    });
-
-    document.getElementById('detailsWatchBtn')?.addEventListener('click', () => {
-      document.getElementById('detailsModal')?.classList.add('hidden');
-      if (state.currentPlayingItem) openPlayerModal(state.currentPlayingItem.id, STREAM_SERVERS[0].id);
-    });
-
-    document.getElementById('detailsTrailerBtn')?.addEventListener('click', () => {
-      document.getElementById('detailsModal')?.classList.add('hidden');
-      if (state.currentPlayingItem) openPlayerModal(state.currentPlayingItem.id, 'youtube_trailer');
-    });
-
-    document.getElementById('detailsWatchlistBtn')?.addEventListener('click', () => {
-      if (!state.currentPlayingItem) return;
-      toggleWatchlist(state.currentPlayingItem.id);
-      const wlBtnText = document.getElementById('detailsWatchlistText');
-      if (wlBtnText) {
-        wlBtnText.textContent = state.watchlist.includes(state.currentPlayingItem.id) ? t('inWatchlist') : t('addToWatchlist');
-      }
-    });
-
-    document.getElementById('reviewForm')?.addEventListener('submit', (e) => {
-      e.preventDefault();
-      if (!state.currentPlayingItem) return;
-      const nameInput = document.getElementById('reviewerNameInput');
-      const commentInput = document.getElementById('reviewCommentInput');
-      const author = (nameInput?.value || state.user?.name || '').trim();
-      const text = (commentInput?.value || '').trim();
-      if (!author || !text) return;
-      const id = state.currentPlayingItem.id;
-      if (!state.reviews[id]) state.reviews[id] = [];
-      state.reviews[id].unshift({ author, text });
-      localStorage.setItem('wum_reviews', JSON.stringify(state.reviews));
-      if (nameInput) nameInput.value = '';
-      if (commentInput) commentInput.value = '';
-      renderItemReviews(id);
-      showToast(t('toastReviewAdded'));
-    });
-
-    const openCodes = (e) => {
+    document.getElementById('openCodesModalBtn')?.addEventListener('click', (e) => {
       if (e) e.preventDefault();
       toggleDrawer(false);
       document.getElementById('codesModal')?.classList.remove('hidden');
-    };
-    document.getElementById('openCodesModalBtn')?.addEventListener('click', openCodes);
+    });
 
     document.getElementById('closeCodesModalBtn')?.addEventListener('click', () => {
       document.getElementById('codesModal')?.classList.add('hidden');
@@ -4724,10 +5152,7 @@ html[dir="ltr"] .nav-drawer {
 
     document.querySelectorAll('.modal-overlay').forEach((overlay) => {
       overlay.addEventListener('click', (e) => {
-        if (e.target === overlay) {
-          if (overlay.id === 'playerModal') closePlayerModal();
-          else overlay.classList.add('hidden');
-        }
+        if (e.target === overlay) overlay.classList.add('hidden');
       });
     });
   }

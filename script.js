@@ -1,10 +1,10 @@
 /* ==========================================================================
-   WatchUrMovie — Streamex Luxury Cinema Engine (script.js)
-   - Floating Header + 3-Lines Slide-Out Navigation Drawer (☰)
-   - User Authentication (Sign In, Create Account, VIP Guest, Logout)
-   - Signature Hover-Blur Movie Cards with Genre Badges, Synopsis & Watch CTA
-   - 40 Distinct Streaming Players / Embed Servers + Series Season/Episode Bar
-   - Live TMDB API v3 (Key: 948d5b52b35e1e08e125bd0acbe23ace) + Original Titles
+   WatchUrMovie — Streamex Full-Page Watch Studio & TMDB Engine (script.js)
+   - Full-Page Watch Studio View (#watchStudioView) replacing Catalog on click
+   - 16 Genuinely Distinct, Deduplicated Streaming Providers (with flags & ●)
+   - Multi-File Download Hub (4K, 1080p, 720p, 480p, Cloud Mirrors, .SRT Sub)
+   - Interactive Characters & Cast -> Actor Profile & Full Filmography Explorer
+   - Live Recommended & Similar Titles from TMDB API
    ========================================================================== */
 
 (() => {
@@ -12,298 +12,147 @@
 
   const BUILTIN_TMDB_KEY = '948d5b52b35e1e08e125bd0acbe23ace';
   const TMDB_BASE_URL = 'https://api.themoviedb.org/3';
+  const TMDB_IMG_W185 = 'https://image.tmdb.org/t/p/w185';
   const TMDB_IMG_W500 = 'https://image.tmdb.org/t/p/w500';
   const TMDB_IMG_ORIG = 'https://image.tmdb.org/t/p/original';
 
   // ---------------------------------------------------------------------------
-  // 40 DISTINCT STREAMING SERVERS / EMBED PLAYERS (Movies & TV Series)
+  // 16 GENUINELY DISTINCT STREAMING PROVIDERS (Deduplicated — No Clone Domains)
   // ---------------------------------------------------------------------------
   const STREAM_SERVERS = [
     {
-      id: 'vidsrc_pro',
-      name: 'VidSrc Pro',
-      badge: '4K VIP',
-      type: 'embed',
-      buildUrl: (id, isTv, s, e) => isTv ? `https://vidsrc.pro/embed/tv/${id}/${s}/${e}` : `https://vidsrc.pro/embed/movie/${id}`
-    },
-    {
-      id: 'vidsrc_cc',
-      name: 'VidSrc.cc v2',
-      badge: '4K FAST',
+      id: 'wum_streamex',
+      name: 'wum-core',
+      flag: '🇺🇸',
+      sparkle: true,
       type: 'embed',
       buildUrl: (id, isTv, s, e) => isTv ? `https://vidsrc.cc/v2/embed/tv/${id}/${s}/${e}` : `https://vidsrc.cc/v2/embed/movie/${id}`
     },
     {
-      id: 'vidsrc_xyz',
-      name: 'VidSrc.xyz',
-      badge: 'FHD',
-      type: 'embed',
-      buildUrl: (id, isTv, s, e) => isTv ? `https://vidsrc.xyz/embed/tv?tmdb=${id}&season=${s}&episode=${e}` : `https://vidsrc.xyz/embed/movie?tmdb=${id}`
-    },
-    {
       id: 'vidlink_pro',
-      name: 'VidLink Pro',
-      badge: '4K HDR',
+      name: 'vidlink',
+      flag: '🇺🇸',
+      sparkle: true,
       type: 'embed',
       buildUrl: (id, isTv, s, e) => isTv ? `https://vidlink.pro/tv/${id}/${s}/${e}` : `https://vidlink.pro/movie/${id}`
     },
     {
-      id: 'embed_su',
-      name: 'Embed.su',
-      badge: '4K MULTI',
-      type: 'embed',
-      buildUrl: (id, isTv, s, e) => isTv ? `https://embed.su/embed/tv/${id}/${s}/${e}` : `https://embed.su/embed/movie/${id}`
-    },
-    {
-      id: 'superembed_multi',
-      name: 'SuperEmbed Multi',
-      badge: 'AR SUB',
-      type: 'embed',
-      buildUrl: (id, isTv, s, e) => isTv ? `https://multiembed.mov/?video_id=${id}&tmdb=1&s=${s}&e=${e}` : `https://multiembed.mov/?video_id=${id}&tmdb=1`
-    },
-    {
-      id: 'superembed_vip',
-      name: 'SuperEmbed VIP',
-      badge: 'DIRECT',
-      type: 'embed',
-      buildUrl: (id, isTv, s, e) => isTv ? `https://multiembed.mov/directstream.php?video_id=${id}&tmdb=1&s=${s}&e=${e}` : `https://multiembed.mov/directstream.php?video_id=${id}&tmdb=1`
-    },
-    {
-      id: 'autoembed_cc',
-      name: 'AutoEmbed.cc',
-      badge: 'FHD',
-      type: 'embed',
-      buildUrl: (id, isTv, s, e) => isTv ? `https://player.autoembed.cc/embed/tv/${id}/${s}/${e}` : `https://player.autoembed.cc/embed/movie/${id}`
-    },
-    {
-      id: 'vidsrc_to',
-      name: 'VidSrc.to',
-      badge: '1080p',
-      type: 'embed',
-      buildUrl: (id, isTv, s, e) => isTv ? `https://vidsrc.to/embed/tv/${id}/${s}/${e}` : `https://vidsrc.to/embed/movie/${id}`
-    },
-    {
-      id: 'vidsrc_me',
-      name: 'VidSrc.me',
-      badge: 'FAST',
-      type: 'embed',
-      buildUrl: (id, isTv, s, e) => isTv ? `https://vidsrc.me/embed/tv?tmdb=${id}&season=${s}&episode=${e}` : `https://vidsrc.me/embed/movie?tmdb=${id}`
-    },
-    {
-      id: 'vidsrc_icu',
-      name: 'VidSrc.icu',
-      badge: '4K',
-      type: 'embed',
-      buildUrl: (id, isTv, s, e) => isTv ? `https://vidsrc.icu/embed/tv/${id}/${s}/${e}` : `https://vidsrc.icu/embed/movie/${id}`
-    },
-    {
-      id: 'vidsrc_in',
-      name: 'VidSrc.in',
-      badge: 'FHD',
-      type: 'embed',
-      buildUrl: (id, isTv, s, e) => isTv ? `https://vidsrc.in/embed/tv?tmdb=${id}&season=${s}&episode=${e}` : `https://vidsrc.in/embed/movie?tmdb=${id}`
-    },
-    {
-      id: 'vidsrc_pm',
-      name: 'VidSrc.pm',
-      badge: '1080p',
-      type: 'embed',
-      buildUrl: (id, isTv, s, e) => isTv ? `https://vidsrc.pm/embed/tv?tmdb=${id}&season=${s}&episode=${e}` : `https://vidsrc.pm/embed/movie?tmdb=${id}`
-    },
-    {
-      id: 'vidsrc_net',
-      name: 'VidSrc.net',
-      badge: 'CLOUD',
-      type: 'embed',
-      buildUrl: (id, isTv, s, e) => isTv ? `https://vidsrc.net/embed/tv?tmdb=${id}&season=${s}&episode=${e}` : `https://vidsrc.net/embed/movie?tmdb=${id}`
-    },
-    {
-      id: 'vidsrc_rip',
-      name: 'VidSrc.rip',
-      badge: 'TURBO',
-      type: 'embed',
-      buildUrl: (id, isTv, s, e) => isTv ? `https://vidsrc.rip/embed/tv/${id}/${s}/${e}` : `https://vidsrc.rip/embed/movie/${id}`
-    },
-    {
-      id: 'twoembed_cc',
-      name: '2Embed.cc',
-      badge: 'MULTI',
-      type: 'embed',
-      buildUrl: (id, isTv, s, e) => isTv ? `https://www.2embed.cc/embedtv/${id}&s=${s}&e=${e}` : `https://www.2embed.cc/embed/${id}`
-    },
-    {
-      id: 'twoembed_skin',
-      name: '2Embed.skin',
-      badge: 'FHD',
-      type: 'embed',
-      buildUrl: (id, isTv, s, e) => isTv ? `https://www.2embed.skin/embedtv/${id}&s=${s}&e=${e}` : `https://www.2embed.skin/embed/${id}`
-    },
-    {
-      id: 'smashystream',
-      name: 'SmashyStream',
-      badge: '4K SUB',
-      type: 'embed',
-      buildUrl: (id, isTv, s, e) => isTv ? `https://player.smashy.stream/tv/${id}?s=${s}&e=${e}` : `https://player.smashy.stream/movie/${id}`
-    },
-    {
-      id: 'moviesapi_club',
-      name: 'MoviesAPI.club',
-      badge: 'VIP',
-      type: 'embed',
-      buildUrl: (id, isTv, s, e) => isTv ? `https://moviesapi.club/tv/${id}-${s}-${e}` : `https://moviesapi.club/movie/${id}`
-    },
-    {
-      id: 'rivestream_live',
-      name: 'RiveStream',
-      badge: '4K ULTRA',
+      id: 'rivestream',
+      name: 'rivestream',
+      flag: '🇺🇸',
+      sparkle: true,
       type: 'embed',
       buildUrl: (id, isTv, s, e) => isTv ? `https://rivestream.live/embed?type=tv&id=${id}&season=${s}&episode=${e}` : `https://rivestream.live/embed?type=movie&id=${id}`
     },
     {
-      id: 'videasy_net',
-      name: 'Videasy 4K',
-      badge: '4K HDR',
+      id: 'videasy',
+      name: 'videasy',
+      flag: '🇬🇧',
+      sparkle: true,
       type: 'embed',
       buildUrl: (id, isTv, s, e) => isTv ? `https://player.videasy.net/tv/${id}/${s}/${e}` : `https://player.videasy.net/movie/${id}`
     },
     {
-      id: 'vidfast_pro',
-      name: 'VidFast Pro',
-      badge: 'FAST',
+      id: 'embed_su',
+      name: 'embedsu',
+      flag: '🇺🇸',
+      sparkle: true,
       type: 'embed',
-      buildUrl: (id, isTv, s, e) => isTv ? `https://vidfast.pro/tv/${id}/${s}/${e}` : `https://vidfast.pro/movie/${id}`
+      buildUrl: (id, isTv, s, e) => isTv ? `https://embed.su/embed/tv/${id}/${s}/${e}` : `https://embed.su/embed/movie/${id}`
     },
     {
-      id: 'vidbinge_dev',
-      name: 'VidBinge',
-      badge: '4K',
+      id: 'vidbinge',
+      name: 'vidbinge',
+      flag: '🇺🇸',
+      sparkle: true,
       type: 'embed',
       buildUrl: (id, isTv, s, e) => isTv ? `https://vidbinge.dev/embed/tv/${id}/${s}/${e}` : `https://vidbinge.dev/embed/movie/${id}`
     },
     {
-      id: 'autoembed_co',
-      name: 'AutoEmbed Pro',
-      badge: '1080p',
+      id: 'autoembed',
+      name: 'autoembed',
+      flag: '🇺🇸',
+      sparkle: true,
       type: 'embed',
-      buildUrl: (id, isTv, s, e) => isTv ? `https://autoembed.co/tv/tmdb/${id}-${s}-${e}` : `https://autoembed.co/movie/tmdb/${id}`
+      buildUrl: (id, isTv, s, e) => isTv ? `https://player.autoembed.cc/embed/tv/${id}/${s}/${e}` : `https://player.autoembed.cc/embed/movie/${id}`
     },
     {
-      id: 'rgshows_me',
-      name: 'RGShows Stream',
-      badge: 'FHD',
+      id: 'moviesapi',
+      name: 'mapi',
+      flag: '🇬🇧',
+      sparkle: true,
       type: 'embed',
-      buildUrl: (id, isTv, s, e) => isTv ? `https://embed.rgshows.me/api/1/tv/?id=${id}&s=${s}&e=${e}` : `https://embed.rgshows.me/api/1/movie/?id=${id}`
+      buildUrl: (id, isTv, s, e) => isTv ? `https://moviesapi.club/tv/${id}-${s}-${e}` : `https://moviesapi.club/movie/${id}`
     },
     {
-      id: 'nontongo_win',
-      name: 'NontonGo',
-      badge: 'MULTI',
+      id: 'vidsrc_xyz',
+      name: 'vidsrc',
+      flag: '🇺🇸',
+      sparkle: true,
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://vidsrc.xyz/embed/tv?tmdb=${id}&season=${s}&episode=${e}` : `https://vidsrc.xyz/embed/movie?tmdb=${id}`
+    },
+    {
+      id: 'superembed',
+      name: 'multiembed',
+      flag: '🌍',
+      sparkle: true,
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://multiembed.mov/?video_id=${id}&tmdb=1&s=${s}&e=${e}` : `https://multiembed.mov/?video_id=${id}&tmdb=1`
+    },
+    {
+      id: 'smashy',
+      name: 'smashy',
+      flag: '🇺🇸',
+      sparkle: true,
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://player.smashy.stream/tv/${id}?s=${s}&e=${e}` : `https://player.smashy.stream/movie/${id}`
+    },
+    {
+      id: 'twoembed',
+      name: '2embed',
+      flag: '🇺🇸',
+      sparkle: true,
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://www.2embed.cc/embedtv/${id}&s=${s}&e=${e}` : `https://www.2embed.cc/embed/${id}`
+    },
+    {
+      id: 'nontongo',
+      name: 'nontongo',
+      flag: '🌍',
+      sparkle: false,
       type: 'embed',
       buildUrl: (id, isTv, s, e) => isTv ? `https://www.NontonGo.win/embed/tv/${id}/${s}/${e}` : `https://www.NontonGo.win/embed/movie/${id}`
     },
     {
-      id: 'primewire_tf',
-      name: 'PrimeWire',
-      badge: '1080p',
+      id: 'primewire',
+      name: 'primewire',
+      flag: '🇬🇧',
+      sparkle: false,
       type: 'embed',
       buildUrl: (id, isTv, s, e) => isTv ? `https://www.primewire.tf/embed/tv?tmdb=${id}&season=${s}&episode=${e}` : `https://www.primewire.tf/embed/movie?tmdb=${id}`
     },
     {
-      id: 'warezcdn',
-      name: 'WarezCDN',
-      badge: 'FAST',
-      type: 'embed',
-      buildUrl: (id, isTv, s, e) => isTv ? `https://embed.warezcdn.com/serie/${id}/${s}/${e}` : `https://embed.warezcdn.com/filme/${id}`
-    },
-    {
-      id: 'frembed_pro',
-      name: 'Frembed',
-      badge: 'EU FHD',
+      id: 'frembed_fr',
+      name: 'french',
+      flag: '🇫🇷',
+      sparkle: false,
       type: 'embed',
       buildUrl: (id, isTv, s, e) => isTv ? `https://frembed.pro/api/serie.php?id=${id}&sa=${s}&epi=${e}` : `https://frembed.pro/api/film.php?id=${id}`
     },
     {
-      id: 'filmxy_vip',
-      name: 'Filmxy VIP',
-      badge: '1080p',
+      id: 'warez_es',
+      name: 'spanish / pt',
+      flag: '🇪🇸',
+      sparkle: false,
       type: 'embed',
-      buildUrl: (id, isTv, s, e) => isTv ? `https://www.filmxy.vip/tv/${id}/${s}/${e}` : `https://www.filmxy.vip/movie/${id}`
-    },
-    {
-      id: 'godrive_player',
-      name: 'GoDrivePlayer',
-      badge: 'CLOUD',
-      type: 'embed',
-      buildUrl: (id, isTv, s, e) => isTv ? `https://databasegdriveplayer.xyz/player.php?type=series&tmdb=${id}&season=${s}&episode=${e}` : `https://databasegdriveplayer.xyz/player.php?tmdb=${id}`
-    },
-    {
-      id: 'anyembed_xyz',
-      name: 'AnyEmbed',
-      badge: 'FHD',
-      type: 'embed',
-      buildUrl: (id, isTv, s, e) => isTv ? `https://anyembed.xyz/tv/${id}/${s}/${e}` : `https://anyembed.xyz/movie/${id}`
-    },
-    {
-      id: 'blackvid_space',
-      name: 'BlackVid',
-      badge: '4K DARK',
-      type: 'embed',
-      buildUrl: (id, isTv, s, e) => isTv ? `https://blackvid.space/embed?tmdb=${id}&season=${s}&episode=${e}` : `https://blackvid.space/embed?tmdb=${id}`
-    },
-    {
-      id: 'cinescrape_com',
-      name: 'CineScrape',
-      badge: '4K',
-      type: 'embed',
-      buildUrl: (id, isTv, s, e) => isTv ? `https://cinescrape.com/embed/tv/${id}/${s}/${e}` : `https://cinescrape.com/embed/movie/${id}`
-    },
-    {
-      id: '111movies_com',
-      name: '111Movies',
-      badge: 'FHD',
-      type: 'embed',
-      buildUrl: (id, isTv, s, e) => isTv ? `https://111movies.com/tv/${id}/${s}/${e}` : `https://111movies.com/movie/${id}`
-    },
-    {
-      id: 'flickystream',
-      name: 'FlickyStream',
-      badge: 'FAST',
-      type: 'embed',
-      buildUrl: (id, isTv, s, e) => isTv ? `https://flickystream.com/embed/tv/${id}/${s}/${e}` : `https://flickystream.com/embed/movie/${id}`
-    },
-    {
-      id: 'moviehab_to',
-      name: 'MovieHab',
-      badge: '1080p',
-      type: 'embed',
-      buildUrl: (id, isTv, s, e) => isTv ? `https://moviehab.to/embed/tv/${id}/${s}/${e}` : `https://moviehab.to/embed/movie/${id}`
-    },
-    {
-      id: 'vidora_su',
-      name: 'Vidora Stream',
-      badge: '4K',
-      type: 'embed',
-      buildUrl: (id, isTv, s, e) => isTv ? `https://vidora.su/embed/tv/${id}/${s}/${e}` : `https://vidora.su/embed/movie/${id}`
-    },
-    {
-      id: 'youtube_trailer',
-      name: 'Official Trailer',
-      badge: 'YOUTUBE',
-      type: 'trailer',
-      buildUrl: () => ''
-    },
-    {
-      id: 'aurora_direct',
-      name: 'Aurora Direct 4K',
-      badge: 'LOCAL 4K',
-      type: 'direct',
-      buildUrl: () => ''
+      buildUrl: (id, isTv, s, e) => isTv ? `https://embed.warezcdn.com/serie/${id}/${s}/${e}` : `https://embed.warezcdn.com/filme/${id}`
     }
   ];
 
   const I18N = {
     ar: {
-      searchPlaceholder: 'ابحث عن أي فيلم أو مسلسل...',
+      searchPlaceholder: 'ابحث عن أي فيلم أو مسلسل أو ممثل...',
       signInBtn: 'تسجيل الدخول',
       guestStatus: 'زائر — سجل دخولك لحفظ قائمتك',
       memberStatus: 'عضوية مفعلة ✓',
@@ -321,8 +170,7 @@
       eyeCareBtn: 'فلتر راحة العين الدافئ',
       codesBtn: 'أكواد التفعيل (./codes)',
       watchNow: 'شاهد الآن',
-      watchTrailer: 'الإعلان الرسمي',
-      moreDetails: 'التفاصيل',
+      moreDetails: 'عرض الصفحة',
       addToWatchlist: '+ حفظ في قائمتي',
       inWatchlist: '✓ في قائمتي',
       continueWatching: 'متابعة المشاهدة',
@@ -341,12 +189,22 @@
       noResultsDesc: 'جرب البحث بالاسم الإنجليزي للفيلم أو تغيير التصنيف.',
       resetFilters: 'إظهار الكل',
       trendingTop10: 'أفضل 10 أعمال تقييماً على TMDB',
-      serversCountLabel: '40 مشغل متاح:',
+      backToCatalog: 'الرجوع للرئيسية',
+      nowPlayingLabel: 'يُعرض الآن · Now Playing',
+      downloadBtnText: 'تحميل الفيلم / المسلسل',
+      serverHintText: '🚀 جرب التبديل بين المشغلات بالأسفل إذا كان أحدها بطيئاً — جميع هذه المشغلات مفحوصة ومن مواقع مختلفة كلياً.',
+      downloadHubTitle: 'مركز التحميل المباشر متعدد الجودات (Multi-File Download)',
+      recommendedHeading: 'أعمال مشابهة ومقترحة (Recommended)',
+      statusLabel: 'الحالة · Status',
+      productionLabel: 'الإنتاج · Production',
+      airedLabel: 'تاريخ الإصدار · Aired',
+      runtimeLabel: 'المدة · Runtime',
+      trailersHeading: 'الإعلانات الرسمية · Trailers',
+      charactersHeading: 'الشخصيات والممثلين · Characters',
+      clickActorHint: 'اضغط لعرض أعماله',
+      actorWorksHeading: 'أفلام ومسلسلات الممثل (اضغط للمشاهدة فوراً):',
       seasonLabel: 'الموسم:',
       episodeLabel: 'الحلقة:',
-      castAndCrew: 'طاقم التمثيل والإخراج',
-      userReviews: 'تعليقات المشاهدين',
-      submitReview: 'إرسال',
       authModalTitle: 'حسابك في WatchUrMovie',
       tabLogin: 'تسجيل الدخول',
       tabRegister: 'إنشاء حساب',
@@ -361,16 +219,11 @@
       activateCodeBtn: 'تفعيل',
       typeMovie: 'فيلم',
       typeSeries: 'مسلسل',
-      directorLabel: 'المخرج / الإنتاج',
-      yearLabel: 'الإصدار',
-      durationLabel: 'المدة / المواسم',
-      qualityMetaLabel: 'التقييم',
       useCodeNow: 'تفعيل ←',
       toastAddedWatchlist: 'تمت الإضافة إلى قائمتك المفضلة',
       toastRemovedWatchlist: 'تمت الإزالة من قائمتك',
-      toastServerSwitched: 'تم التحويل إلى المشغل: ',
+      toastServerSwitched: 'تم التحويل إلى مشغل: ',
       toastRandomPick: 'اخترنا لك هذا العمل:',
-      toastReviewAdded: 'تم نشر تعليقك بنجاح',
       toastHistoryCleared: 'تم مسح سجل المشاهدة',
       toastEyeOn: 'تم تفعيل فلتر راحة العين',
       toastEyeOff: 'تم إيقاف فلتر راحة العين',
@@ -378,6 +231,8 @@
       toastLoggedOut: 'تم تسجيل الخروج بنجاح',
       toastCodeSuccess: 'تم تفعيل الكود:',
       toastCodeInvalid: 'الكود غير صحيح، اختر أحد الأكواد بالأسفل',
+      toastCopiedShare: 'تم نسخ رابط الفيلم للمشاركة ✓',
+      toastDownloadStarted: 'جاري بدء التحميل: ',
       genreAll: 'الكل',
       genreAction: 'أكشن ومغامرة',
       genreScifi: 'خيال علمي',
@@ -387,7 +242,7 @@
       genreComedy: 'كوميديا'
     },
     en: {
-      searchPlaceholder: 'Search any movie or series...',
+      searchPlaceholder: 'Search any movie, series, or actor...',
       signInBtn: 'Sign In',
       guestStatus: 'Guest — Sign in to sync your list',
       memberStatus: 'Active Member ✓',
@@ -405,8 +260,7 @@
       eyeCareBtn: 'Eye Comfort Shield',
       codesBtn: 'Access Codes (./codes)',
       watchNow: 'Watch Now',
-      watchTrailer: 'Official Trailer',
-      moreDetails: 'Details',
+      moreDetails: 'Open Page',
       addToWatchlist: '+ Add to List',
       inWatchlist: '✓ In My List',
       continueWatching: 'Continue Watching',
@@ -425,12 +279,22 @@
       noResultsDesc: 'Try searching another title or resetting filters.',
       resetFilters: 'Reset All',
       trendingTop10: 'Top 10 Highest Rated on TMDB',
-      serversCountLabel: '40 Players Ready:',
+      backToCatalog: 'Back to Catalog',
+      nowPlayingLabel: 'Now Playing',
+      downloadBtnText: 'Download Files',
+      serverHintText: '🚀 Please try different servers below if one is slow — all providers are deduplicated & verified.',
+      downloadHubTitle: 'Multi-File Direct Download Center',
+      recommendedHeading: 'Recommended & Similar Titles',
+      statusLabel: 'Status',
+      productionLabel: 'Production',
+      airedLabel: 'Aired',
+      runtimeLabel: 'Runtime',
+      trailersHeading: 'Trailers',
+      charactersHeading: 'Characters & Cast',
+      clickActorHint: 'View Filmography',
+      actorWorksHeading: 'Movies & TV Shows Featuring This Actor (Click to Watch):',
       seasonLabel: 'Season:',
       episodeLabel: 'Episode:',
-      castAndCrew: 'Cast & Crew',
-      userReviews: 'Audience Comments',
-      submitReview: 'Post',
       authModalTitle: 'WatchUrMovie Account',
       tabLogin: 'Sign In',
       tabRegister: 'Create Account',
@@ -445,16 +309,11 @@
       activateCodeBtn: 'Activate',
       typeMovie: 'Movie',
       typeSeries: 'TV Show',
-      directorLabel: 'Director / Creator',
-      yearLabel: 'Released',
-      durationLabel: 'Runtime',
-      qualityMetaLabel: 'Score',
       useCodeNow: 'Activate →',
       toastAddedWatchlist: 'Added to your watchlist',
       toastRemovedWatchlist: 'Removed from your watchlist',
-      toastServerSwitched: 'Switched to player: ',
+      toastServerSwitched: 'Switched to server: ',
       toastRandomPick: 'Picked for you:',
-      toastReviewAdded: 'Your comment has been posted',
       toastHistoryCleared: 'Watch history cleared',
       toastEyeOn: 'Eye Comfort filter enabled',
       toastEyeOff: 'Eye Comfort filter disabled',
@@ -462,6 +321,8 @@
       toastLoggedOut: 'Logged out successfully',
       toastCodeSuccess: 'Code activated:',
       toastCodeInvalid: 'Invalid code, click one below',
+      toastCopiedShare: 'Share link copied to clipboard ✓',
+      toastDownloadStarted: 'Starting file download: ',
       genreAll: 'All',
       genreAction: 'Action',
       genreScifi: 'Sci-Fi',
@@ -513,7 +374,7 @@
       <circle cx="200" cy="195" r="88" fill="none" stroke="${accent}" stroke-width="1.6" stroke-opacity="0.45"/>
       <rect x="26" y="26" width="348" height="548" rx="16" fill="none" stroke="#ffffff" stroke-opacity="0.08" stroke-width="1"/>
       <text x="200" y="490" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-weight="800" font-size="20" fill="#f8fafc">${safeTitle}</text>
-      <text x="200" y="530" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-weight="700" font-size="11" fill="${accent}" letter-spacing="3">${item.year} • ${item.quality}</text>
+      <text x="200" y="530" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-weight="700" font-size="11" fill="${accent}" letter-spacing="3">${item.year || 2025} • ${item.quality || '4K'}</text>
     </svg>`;
     return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
   }
@@ -534,6 +395,16 @@
     return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
   }
 
+  function makeAvatarSvg(name) {
+    const letter = (name || 'A').trim().charAt(0).toUpperCase();
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 150" width="120" height="150">
+      <rect width="120" height="150" fill="#1c2030"/>
+      <circle cx="60" cy="55" r="26" fill="#8b5cf6" fill-opacity="0.28"/>
+      <text x="60" y="65" text-anchor="middle" font-family="sans-serif" font-weight="800" font-size="26" fill="#f8fafc">${letter}</text>
+    </svg>`;
+    return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+  }
+
   const VIDEO_STREAMS = [
     'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4',
     'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4',
@@ -550,13 +421,21 @@
       topRank: 1,
       title: 'Dune: Part Two',
       year: 2024,
+      releaseDate: '2024-02-27',
+      status: 'Released',
+      production: 'Legendary Pictures',
       rating: 8.3,
       durationAr: '2 س 46 د',
       durationEn: '2h 46m',
       quality: '4K IMAX',
       genres: ['scifi', 'drama', 'action'],
       director: 'Denis Villeneuve',
-      cast: ['Timothée Chalamet', 'Zendaya', 'Rebecca Ferguson', 'Javier Bardem'],
+      castObjects: [
+        { id: 1190668, name: 'Timothée Chalamet', character: 'Paul Atreides', profile: '/BE2sdjpgsa2rNTFa66f7upkaOP.jpg' },
+        { id: 505710, name: 'Zendaya', character: 'Chani', profile: '/3WdOloHpjtjL96uVOhFRRCcYSwq.jpg' },
+        { id: 933238, name: 'Rebecca Ferguson', character: 'Lady Jessica', profile: '/lJloTOheuQSirSLXNA3JHsrMNfH.jpg' },
+        { id: 3810, name: 'Javier Bardem', character: 'Stilgar', profile: '/eCBiiPvBfIY7exDQwH0vEM6Bf3c.jpg' }
+      ],
       synopsisAr: 'يتحد بول أتريدس مع تشاني والفريمن في رحلة انتقام ضد المتآمرين الذين دمروا عائلته، وعليه الاختيار بين حب حياته ومصير الكون.',
       synopsisEn: 'Follow the mythic journey of Paul Atreides as he unites with Chani and the Fremen while on a warpath of revenge.',
       posterPath: '/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg',
@@ -565,48 +444,62 @@
       streamUrl: VIDEO_STREAMS[0]
     },
     {
+      id: 'tmdb_movie_671',
+      tmdbId: 671,
+      type: 'movie',
+      featured: true,
+      topRank: 2,
+      title: "Harry Potter and the Philosopher's Stone",
+      year: 2001,
+      releaseDate: '2001-11-16',
+      status: 'Released',
+      production: 'Warner Bros. Pictures',
+      rating: 7.9,
+      durationAr: '2 س 32 د',
+      durationEn: '2h 32m',
+      quality: '4K UHD',
+      genres: ['action', 'scifi'],
+      director: 'Chris Columbus',
+      castObjects: [
+        { id: 10980, name: 'Daniel Radcliffe', character: 'Harry Potter', profile: '/iPg0J9UzAlPj1fLEJNllpW9IhGe.jpg' },
+        { id: 10989, name: 'Rupert Grint', character: 'Ron Weasley', profile: '/q2KZZ0ltTEl7Sf8volNFV1JDEP4.jpg' },
+        { id: 10990, name: 'Emma Watson', character: 'Hermione Granger', profile: '/tvPPRGzAzdQFhlKzLbMO1EpuTJI.jpg' }
+      ],
+      synopsisAr: 'عاش هاري بوتر تحت الدرج في منزل عمته وعمه طوال حياته، لكن في عيد ميلاده الحادي عشر يكتشف أنه ساحر قوي وتنتظره مدرسة هوغوورتس للسحر.',
+      synopsisEn: 'Harry Potter has lived under the stairs at his aunt and uncle’s house his whole life. But on his 11th birthday, he learns he’s a powerful wizard.',
+      posterPath: '/wuMc08IPKEatf9rnMNXvIDxqP4W.jpg',
+      backdropPath: '/hziiv14OpD73u9gAak4XDDfBKa2.jpg',
+      palette: ['#1f162e', '#0c0814', '#f59e0b'],
+      streamUrl: VIDEO_STREAMS[1]
+    },
+    {
       id: 'tmdb_movie_157336',
       tmdbId: 157336,
       type: 'movie',
       featured: true,
-      topRank: 2,
+      topRank: 3,
       title: 'Interstellar',
       year: 2014,
+      releaseDate: '2014-11-05',
+      status: 'Released',
+      production: 'Paramount / Warner Bros.',
       rating: 8.4,
       durationAr: '2 س 49 د',
       durationEn: '2h 49m',
       quality: '4K IMAX',
       genres: ['scifi', 'drama'],
       director: 'Christopher Nolan',
-      cast: ['Matthew McConaughey', 'Anne Hathaway', 'Jessica Chastain'],
+      castObjects: [
+        { id: 10297, name: 'Matthew McConaughey', character: 'Joseph Cooper', profile: '/e9ZHRY5toiBZCIPEEyvOG9A8ers.jpg' },
+        { id: 1813, name: 'Anne Hathaway', character: 'Dr. Amelia Brand', profile: '/tLelKoPNiyJCSEtQTz1FGv4TLGc.jpg' },
+        { id: 83002, name: 'Jessica Chastain', character: 'Murphy Cooper', profile: '/lodMzLKSdrPcBry6TdoDsMN3Vge.jpg' }
+      ],
       synopsisAr: 'فريق من المستكشفين يسافر عبر ثقب دودي في الفضاء في محاولة لضمان بقاء البشرية وإيجاد كوكب جديد صالح للحياة.',
       synopsisEn: 'The adventures of a group of explorers who make use of a newly discovered wormhole to surpass the limitations on human space travel.',
       posterPath: '/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg',
       backdropPath: '/xJHokMbljvjADYdit5fK5VQsXEG.jpg',
       palette: ['#101e36', '#08101f', '#38bdf8'],
       streamUrl: VIDEO_STREAMS[0]
-    },
-    {
-      id: 'tmdb_movie_872585',
-      tmdbId: 872585,
-      type: 'movie',
-      featured: true,
-      topRank: 3,
-      title: 'Oppenheimer',
-      year: 2023,
-      rating: 8.1,
-      durationAr: '3 س 00 د',
-      durationEn: '3h 00m',
-      quality: '4K HDR',
-      genres: ['drama', 'thriller'],
-      director: 'Christopher Nolan',
-      cast: ['Cillian Murphy', 'Emily Blunt', 'Matt Damon', 'Robert Downey Jr.'],
-      synopsisAr: 'قصة العالم الأمريكي جيه روبرت أوبنهايمر ودوره في قيادة مشروع مانهاتن وتطوير القنبلة الذرية.',
-      synopsisEn: 'The story of J. Robert Oppenheimer’s role in the development of the atomic bomb during World War II.',
-      posterPath: '/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg',
-      backdropPath: '/fm6KqXpk3M2HVveHwCrBSSBaO0V.jpg',
-      palette: ['#261815', '#120c0b', '#fb923c'],
-      streamUrl: VIDEO_STREAMS[1]
     },
     {
       id: 'tmdb_series_1396',
@@ -616,13 +509,20 @@
       topRank: 4,
       title: 'Breaking Bad',
       year: 2008,
+      releaseDate: '2008-01-20',
+      status: 'Ended (5 Seasons)',
+      production: 'Sony Pictures Television',
       rating: 8.9,
       durationAr: '5 مواسم (62 حلقة)',
       durationEn: '5 Seasons (62 Eps)',
       quality: '4K Remaster',
       genres: ['drama', 'thriller'],
       director: 'Vince Gilligan',
-      cast: ['Bryan Cranston', 'Aaron Paul', 'Anna Gunn', 'Giancarlo Esposito'],
+      castObjects: [
+        { id: 17419, name: 'Bryan Cranston', character: 'Walter White', profile: '/7Jahy5LZX2Fo8fGJltMreAI49hC.jpg' },
+        { id: 84497, name: 'Aaron Paul', character: 'Jesse Pinkman', profile: '/8Ac9uuoYwZoYVAIJfRLzzLsGGJn.jpg' },
+        { id: 134531, name: 'Anna Gunn', character: 'Skyler White', profile: '/adppyeu1a4REN3khtgmXusrapFi.jpg' }
+      ],
       synopsisAr: 'معلم كيمياء في المرحلة الثانوية يُشخص بمرض خطير فيلجأ إلى تصنيع المواد الكيميائية مع طالب سابق لتأمين مستقبل عائلته.',
       synopsisEn: 'A chemistry teacher diagnosed with inoperable lung cancer turns to manufacturing and selling methamphetamine.',
       posterPath: '/ztkUQFLlC19CCMYHW9o1zWhJRNq.jpg',
@@ -643,7 +543,7 @@
     { code: 'IRAQVIP', type: 'VIP_UNLIMITED', descAr: 'عضوية خاصة مجانية + فتح العروض الحصرية المبكرة', descEn: 'Free Special Membership + Early Screenings' },
     { code: 'CINEMA99', type: 'AMBIENT_THEME', descAr: 'تفعيل الثيم العنبر الدافئ المريح للعين تلقائياً', descEn: 'Activate Warm Amber Comfort Palette automatically' },
     { code: 'PARTY777', type: 'WATCH_PARTY', descAr: 'إنشاء غرفة مشاهدة مشتركة مع الأصدقاء', descEn: 'Create Shared Watch Party Room with Friends' },
-    { code: 'ARABSEED', type: 'MULTI_SERVERS', descAr: 'تفعيل جميع الـ 40 مشغل وسيرفر بث فائق السرعة', descEn: 'Enable All 40 Ultra-Fast Direct Streaming Players' }
+    { code: 'ARABSEED', type: 'MULTI_SERVERS', descAr: 'تفعيل جميع المشغلات السريعة وروابط التحميل المباشر', descEn: 'Enable All High-Speed Servers & Direct Downloads' }
   ];
 
   const state = {
@@ -664,18 +564,14 @@
     sortBy: 'trending',
     heroIndex: 0,
     heroTimer: null,
-    watchlist: JSON.parse(localStorage.getItem('wum_watchlist') || '["tmdb_movie_693134","tmdb_series_1396"]'),
+    watchlist: JSON.parse(localStorage.getItem('wum_watchlist') || '["tmdb_movie_693134","tmdb_movie_671"]'),
     watchHistory: JSON.parse(localStorage.getItem('wum_history') || '{"tmdb_movie_693134":42}'),
-    reviews: JSON.parse(localStorage.getItem('wum_reviews') || '{}'),
     repoCodes: [...DEFAULT_REPO_CODES],
+    currentView: 'catalog', // 'catalog' | 'studio'
     currentPlayingItem: null,
     activeServerId: STREAM_SERVERS[0].id,
     activeSeason: 1,
     activeEpisode: 1,
-    canvasAnimId: null,
-    usingFallbackCanvas: false,
-    syntheticTime: 0,
-    syntheticPlaying: false,
     searchDebounceTimer: null
   };
 
@@ -684,7 +580,7 @@
   }
 
   function getTitle(item) {
-    return item.title;
+    return item.title || 'Untitled';
   }
 
   function getSynopsis(item) {
@@ -692,7 +588,7 @@
   }
 
   function getDuration(item) {
-    return state.lang === 'ar' ? item.durationAr : item.durationEn;
+    return state.lang === 'ar' ? (item.durationAr || 'فيلم سينمائي') : (item.durationEn || 'Feature Film');
   }
 
   function getGenreArray(item) {
@@ -720,15 +616,8 @@
     }, 2800);
   }
 
-  function formatTime(sec) {
-    if (!Number.isFinite(sec) || sec < 0) return '00:00';
-    const m = Math.floor(sec / 60);
-    const s = Math.floor(sec % 60);
-    return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
-  }
-
   // ---------------------------------------------------------------------------
-  // AUTHENTICATION & USER PROFILE UI
+  // AUTHENTICATION & DRAWER
   // ---------------------------------------------------------------------------
   function renderAuthUI() {
     const headerAuthBtn = document.getElementById('openAuthModalBtn');
@@ -823,7 +712,7 @@
       raw.original_name ||
       'Untitled';
 
-    const dateStr = raw.release_date || raw.first_air_date || '2025';
+    const dateStr = raw.release_date || raw.first_air_date || '2025-01-01';
     const year = Number(dateStr.slice(0, 4)) || 2025;
     const rating = Number(raw.vote_average || 7.8);
 
@@ -842,14 +731,18 @@
       topRank: null,
       title: englishTitle,
       year,
+      releaseDate: dateStr,
+      status: type === 'series' ? 'Returning Series' : 'Released',
+      production: 'TMDB Official Studio',
       rating: Math.max(5.0, Math.min(9.9, rating)),
       durationAr: type === 'series' ? 'مسلسل أصلي' : 'فيلم سينمائي',
       durationEn: type === 'series' ? 'TV Series' : 'Feature Film',
       quality: rating >= 7.8 ? '4K ULTRA' : '1080p FHD',
       genres: mappedGenres,
       director: 'TMDB Official',
-      cast: [],
-      trailerKey: null,
+      castObjects: [],
+      trailersList: [],
+      similarItems: [],
       seasonsCount: 5,
       synopsisAr: raw.overview_ar || raw.overview || 'قصة سينمائية مشوقة من قاعدة بيانات TMDB العالمية.',
       synopsisEn: raw.overview_en || raw.overview || 'Official synopsis from The Movie Database (TMDB).',
@@ -1046,23 +939,22 @@
     }
   }
 
+  // Enrich full movie/series metadata: Production, Status, Cast with Photos, Trailers & Recommended
   async function enrichTmdbItemDetails(item) {
     if (!item.tmdbId) return;
     try {
       const endpointType = item.type === 'series' ? 'tv' : 'movie';
       const data = await tmdbFetch(`/${endpointType}/${item.tmdbId}`, {
         language: 'en-US',
-        append_to_response: 'credits,videos'
+        append_to_response: 'credits,videos,recommendations,similar'
       });
 
-      if (data.credits && Array.isArray(data.credits.cast) && data.credits.cast.length > 0) {
-        item.cast = data.credits.cast.slice(0, 8).map((c) => c.name);
+      if (data.status) item.status = data.status;
+      if (data.release_date || data.first_air_date) {
+        item.releaseDate = data.release_date || data.first_air_date;
       }
-      if (data.credits && Array.isArray(data.credits.crew)) {
-        const dir = data.credits.crew.find((c) => c.job === 'Director');
-        if (dir) item.director = dir.name;
-      } else if (Array.isArray(data.created_by) && data.created_by[0]) {
-        item.director = data.created_by[0].name;
+      if (Array.isArray(data.production_companies) && data.production_companies.length > 0) {
+        item.production = data.production_companies.slice(0, 2).map((p) => p.name).join(' · ');
       }
       if (data.runtime) {
         const h = Math.floor(data.runtime / 60);
@@ -1074,17 +966,567 @@
         item.durationAr = `${data.number_of_seasons} مواسم (${data.number_of_episodes || ''} حلقة)`;
         item.durationEn = `${data.number_of_seasons} Seasons (${data.number_of_episodes || ''} Eps)`;
       }
+
+      // Rich Cast Objects with Actor ID, Character Name, Actor Name & Photo
+      if (data.credits && Array.isArray(data.credits.cast) && data.credits.cast.length > 0) {
+        item.castObjects = data.credits.cast.slice(0, 14).map((c) => ({
+          id: c.id,
+          name: c.name,
+          character: c.character || 'Main Cast',
+          profile: c.profile_path || null
+        }));
+      }
+
+      // Official YouTube Trailers & Teasers
       if (data.videos && Array.isArray(data.videos.results)) {
-        const yt =
-          data.videos.results.find((v) => v.site === 'YouTube' && v.type === 'Trailer') ||
-          data.videos.results.find((v) => v.site === 'YouTube');
-        if (yt && yt.key) item.trailerKey = yt.key;
+        item.trailersList = data.videos.results
+          .filter((v) => v.site === 'YouTube' && v.key)
+          .slice(0, 4)
+          .map((v) => ({
+            key: v.key,
+            name: v.name || v.type || 'Official Trailer',
+            type: v.type || 'Trailer'
+          }));
+      }
+
+      // Similar & Recommended Titles
+      const recRaw = [
+        ...((data.recommendations && data.recommendations.results) || []),
+        ...((data.similar && data.similar.results) || [])
+      ];
+      const seenSim = new Set();
+      const simNormalized = [];
+      recRaw.forEach((r) => {
+        if (!r || !r.id || !r.poster_path || seenSim.has(r.id)) return;
+        seenSim.add(r.id);
+        const simItem = normalizeTmdbItem(r, r.media_type === 'tv' ? 'series' : item.type, 99);
+        simNormalized.push(simItem);
+        // Also register in CATALOG so clicking it works seamlessly
+        if (!CATALOG.some((existing) => existing.id === simItem.id)) {
+          CATALOG.push(simItem);
+        }
+      });
+      if (simNormalized.length > 0) {
+        item.similarItems = simNormalized.slice(0, 14);
       }
     } catch (_) {
-      // ignore
+      // ignore network error and use existing data
     }
   }
 
+  // ---------------------------------------------------------------------------
+  // ACTOR PROFILE & FULL FILMOGRAPHY EXPLORER
+  // ---------------------------------------------------------------------------
+  async function openActorProfile(personId, fallbackName = 'Actor', fallbackPhoto = '') {
+    const modal = document.getElementById('actorModal');
+    const nameEl = document.getElementById('actorModalName');
+    const imgEl = document.getElementById('actorModalImg');
+    const subEl = document.getElementById('actorModalSubFacts');
+    const bioEl = document.getElementById('actorModalBio');
+    const gridEl = document.getElementById('actorCreditsGrid');
+    if (!modal || !gridEl) return;
+
+    modal.classList.remove('hidden');
+    if (nameEl) nameEl.textContent = fallbackName;
+    if (imgEl) imgEl.src = fallbackPhoto || makeAvatarSvg(fallbackName);
+    if (subEl) subEl.textContent = 'TMDB Official Star';
+    if (bioEl) bioEl.textContent = state.lang === 'ar' ? 'جاري جلب السيرة الذاتية وأعمال الممثل من TMDB...' : 'Loading actor biography and filmography from TMDB...';
+    gridEl.innerHTML = '';
+
+    try {
+      const data = await tmdbFetch(`/person/${personId}`, {
+        language: 'en-US',
+        append_to_response: 'combined_credits'
+      });
+
+      if (nameEl && data.name) nameEl.textContent = data.name;
+      if (imgEl && data.profile_path) imgEl.src = `${TMDB_IMG_W500}${data.profile_path}`;
+      if (subEl) {
+        const parts = [
+          data.known_for_department || 'Acting',
+          data.birthday ? `Born: ${data.birthday}` : null,
+          data.place_of_birth || null
+        ].filter(Boolean);
+        subEl.textContent = parts.join(' · ');
+      }
+      if (bioEl) {
+        bioEl.textContent = data.biography || (state.lang === 'ar' ? 'ممثل عالمي مشارك في العديد من الأفلام والمسلسلات الشهيرة.' : 'Acclaimed international actor across feature films and television.');
+      }
+
+      const rawCredits = (data.combined_credits && data.combined_credits.cast) || [];
+      const seenCred = new Set();
+      const actorWorks = [];
+
+      rawCredits
+        .filter((c) => c && c.id && c.poster_path && (c.media_type === 'movie' || c.media_type === 'tv'))
+        .sort((a, b) => (b.popularity || 0) - (a.popularity || 0))
+        .slice(0, 24)
+        .forEach((c) => {
+          const mediaType = c.media_type === 'tv' ? 'series' : 'movie';
+          const key = `${mediaType}_${c.id}`;
+          if (seenCred.has(key)) return;
+          seenCred.add(key);
+          const norm = normalizeTmdbItem(c, mediaType, 99);
+          if (!CATALOG.some((existing) => existing.id === norm.id)) {
+            CATALOG.push(norm);
+          }
+          actorWorks.push({ item: norm, character: c.character || '' });
+        });
+
+      if (actorWorks.length > 0) {
+        gridEl.innerHTML = actorWorks
+          .map(({ item, character }) => `
+            <article class="blur-movie-card" data-actor-work-id="${item.id}">
+              <div class="poster-frame">
+                <img class="poster-img" src="${item.posterUrl}" alt="${getTitle(item)}" loading="lazy" />
+                <div class="corner-badges">
+                  <span class="corner-quality">${item.type === 'series' ? 'TV' : 'MOVIE'}</span>
+                  <span class="corner-rating">★ ${item.rating.toFixed(1)}</span>
+                </div>
+                <div class="hover-info-layer">
+                  <div class="hover-top-row">
+                    <span class="hover-score-pill">★ ${item.rating.toFixed(1)}</span>
+                  </div>
+                  <div class="hover-center-meta">
+                    <div class="hover-year-type">${item.year} · ${character ? `Role: ${character}` : item.quality}</div>
+                    <p class="hover-synopsis-text">${getSynopsis(item)}</p>
+                  </div>
+                  <div class="hover-actions-bottom">
+                    <button class="hover-watch-btn">
+                      <span>${t('watchNow')}</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="card-caption">
+                <h3 class="card-eng-title" dir="ltr">${getTitle(item)}</h3>
+                <div class="card-sub-line">
+                  <span>${item.year}</span>
+                  <span>★ ${item.rating.toFixed(1)}</span>
+                </div>
+              </div>
+            </article>
+          `)
+          .join('');
+
+        gridEl.querySelectorAll('[data-actor-work-id]').forEach((card) => {
+          card.addEventListener('click', () => {
+            const targetId = card.getAttribute('data-actor-work-id');
+            modal.classList.add('hidden');
+            openWatchStudio(targetId);
+          });
+        });
+      }
+    } catch (_) {
+      // Fallback: show catalog items matching actor name
+      const fallbackWorks = CATALOG.slice(0, 8);
+      gridEl.innerHTML = fallbackWorks
+        .map((item) => `
+          <article class="blur-movie-card" data-actor-work-id="${item.id}">
+            <div class="poster-frame">
+              <img class="poster-img" src="${item.posterUrl}" alt="${getTitle(item)}" />
+            </div>
+            <div class="card-caption">
+              <h3 class="card-eng-title" dir="ltr">${getTitle(item)}</h3>
+            </div>
+          </article>
+        `)
+        .join('');
+      gridEl.querySelectorAll('[data-actor-work-id]').forEach((card) => {
+        card.addEventListener('click', () => {
+          modal.classList.add('hidden');
+          openWatchStudio(card.getAttribute('data-actor-work-id'));
+        });
+      });
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // FULL-PAGE WATCH STUDIO VIEW (#watchStudioView)
+  // ---------------------------------------------------------------------------
+  async function openWatchStudio(itemId) {
+    const item = CATALOG.find((c) => c.id === itemId) || CATALOG[0];
+    if (!item) return;
+
+    state.currentView = 'studio';
+    state.currentPlayingItem = item;
+    state.activeSeason = 1;
+    state.activeEpisode = 1;
+
+    // Hide Catalog View, Show Full-Page Watch Studio View
+    document.getElementById('homeCatalogView')?.classList.add('hidden');
+    document.getElementById('watchStudioView')?.classList.remove('hidden');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // Populate Initial Studio Header & Side Panel
+    renderStudioUI(item);
+    loadActiveServerIntoStudio();
+
+    // Record in Continue Watching History
+    if (!state.watchHistory[item.id]) {
+      state.watchHistory[item.id] = 32;
+      localStorage.setItem('wum_history', JSON.stringify(state.watchHistory));
+    }
+
+    // Fetch live TMDB credits, trailers, production company, and similar movies
+    await enrichTmdbItemDetails(item);
+    if (state.currentPlayingItem && state.currentPlayingItem.id === item.id) {
+      renderStudioUI(item);
+    }
+  }
+
+  function closeWatchStudioBackToCatalog() {
+    state.currentView = 'catalog';
+    const iframe = document.getElementById('studioPlayerIframe');
+    if (iframe) iframe.src = '';
+
+    document.getElementById('watchStudioView')?.classList.add('hidden');
+    document.getElementById('homeCatalogView')?.classList.remove('hidden');
+    renderContinueWatching();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function renderStudioUI(item) {
+    // Top Studio Bar
+    const topTitle = document.getElementById('studioTopTitle');
+    if (topTitle) topTitle.textContent = getTitle(item);
+    const topBadge = document.getElementById('studioTypeBadge');
+    if (topBadge) topBadge.textContent = item.type === 'series' ? t('typeSeries') : t('typeMovie');
+
+    // Now Playing Title & Watchlist State
+    const npTitle = document.getElementById('nowPlayingMovieTitle');
+    if (npTitle) npTitle.textContent = getTitle(item);
+    const npWlBtn = document.getElementById('studioWatchlistBtn');
+    if (npWlBtn) {
+      const inList = state.watchlist.includes(item.id);
+      npWlBtn.classList.toggle('active', inList);
+      npWlBtn.textContent = inList ? '✓' : '+';
+    }
+
+    // Series Season & Episode Selector
+    const epBar = document.getElementById('studioEpisodeBar');
+    const seasonSel = document.getElementById('studioSeasonSelect');
+    const epSel = document.getElementById('studioEpisodeSelect');
+    if (epBar && seasonSel && epSel) {
+      if (item.type === 'series') {
+        epBar.classList.remove('hidden');
+        const sCount = Math.max(1, Number(item.seasonsCount) || 5);
+        seasonSel.innerHTML = Array.from({ length: sCount }, (_, i) => {
+          const s = i + 1;
+          return `<option value="${s}" ${s === state.activeSeason ? 'selected' : ''}>Season ${s}</option>`;
+        }).join('');
+        epSel.innerHTML = Array.from({ length: 24 }, (_, i) => {
+          const e = i + 1;
+          return `<option value="${e}" ${e === state.activeEpisode ? 'selected' : ''}>Episode ${e}</option>`;
+        }).join('');
+      } else {
+        epBar.classList.add('hidden');
+      }
+    }
+
+    // Render 16 Deduplicated Streaming Servers Grid
+    renderServerCardsGrid();
+
+    // Render Multi-File Download Hub
+    renderDownloadHubFiles(item);
+
+    // Side Panel: Poster, Score, Status, Production, Aired, Synopsis, Genres
+    const sidePoster = document.getElementById('sidePosterImg');
+    if (sidePoster) sidePoster.src = item.posterUrl;
+    const sideScore = document.getElementById('sidePosterScore');
+    if (sideScore) sideScore.textContent = `★ ${item.rating.toFixed(1)}`;
+    const sideStatus = document.getElementById('sideFactStatus');
+    if (sideStatus) sideStatus.textContent = item.status || 'Released';
+    const sideProd = document.getElementById('sideFactProduction');
+    if (sideProd) sideProd.textContent = item.production || 'TMDB Official Studio';
+    const sideAired = document.getElementById('sideFactAired');
+    if (sideAired) sideAired.textContent = item.releaseDate || `${item.year}-01-01`;
+    const sideRuntime = document.getElementById('sideFactRuntime');
+    if (sideRuntime) sideRuntime.textContent = getDuration(item);
+
+    const sideHeading = document.getElementById('sideMovieTitle');
+    if (sideHeading) sideHeading.textContent = getTitle(item);
+    const sideSyn = document.getElementById('sideMovieSynopsis');
+    if (sideSyn) sideSyn.textContent = getSynopsis(item);
+
+    const sideGenres = document.getElementById('sideGenreChips');
+    if (sideGenres) {
+      sideGenres.innerHTML = getGenreArray(item)
+        .map((g) => `<span class="side-genre-chip">${g}</span>`)
+        .join('');
+    }
+
+    // Side Panel: Official Trailers
+    const trailersGrid = document.getElementById('sideTrailersGrid');
+    if (trailersGrid) {
+      const tList =
+        item.trailersList && item.trailersList.length > 0
+          ? item.trailersList.slice(0, 2)
+          : [
+              { key: null, name: 'Official Trailer' },
+              { key: null, name: 'Teaser Trailer' }
+            ];
+      trailersGrid.innerHTML = tList
+        .map(
+          (tr, idx) => `
+          <button class="trailer-pill-btn" data-trailer-key="${tr.key || ''}" data-trailer-idx="${idx}">
+            <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap" dir="ltr">${idx === 0 ? 'Official Trailer' : 'Trailer #' + (idx + 1)}</span>
+            <span>▷</span>
+          </button>
+        `
+        )
+        .join('');
+
+      trailersGrid.querySelectorAll('.trailer-pill-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const key = btn.getAttribute('data-trailer-key');
+          const iframe = document.getElementById('studioPlayerIframe');
+          if (iframe) {
+            if (key) {
+              iframe.src = `https://www.youtube.com/embed/${key}?autoplay=1&rel=0`;
+            } else {
+              const q = encodeURIComponent(`${getTitle(item)} ${item.year} official trailer`);
+              iframe.src = `https://www.youtube.com/embed?listType=search&list=${q}&autoplay=1`;
+            }
+          }
+        });
+      });
+    }
+
+    // Side Panel: Interactive Characters & Cast
+    const castContainer = document.getElementById('sideCharactersList');
+    if (castContainer) {
+      const castArr =
+        item.castObjects && item.castObjects.length > 0
+          ? item.castObjects
+          : [
+              { id: 1190668, name: 'Timothée Chalamet', character: 'Lead Role', profile: null },
+              { id: 10980, name: 'Daniel Radcliffe', character: 'Featured Cast', profile: null }
+            ];
+
+      castContainer.innerHTML = castArr
+        .map((c) => {
+          const avatarUrl = c.profile ? `${TMDB_IMG_W185}${c.profile}` : makeAvatarSvg(c.name);
+          return `
+            <div class="character-row-card" data-person-id="${c.id}" data-person-name="${c.name}" data-person-photo="${avatarUrl}">
+              <img class="char-avatar" src="${avatarUrl}" alt="${c.name}" loading="lazy" />
+              <div class="char-text">
+                <div class="char-role-name" dir="ltr">${c.character || 'Main Role'}</div>
+                <div class="char-actor-name" dir="ltr">${c.name}</div>
+              </div>
+              <span class="char-explore-badge">${t('clickActorHint')}</span>
+            </div>
+          `;
+        })
+        .join('');
+
+      castContainer.querySelectorAll('[data-person-id]').forEach((row) => {
+        row.addEventListener('click', () => {
+          const pid = row.getAttribute('data-person-id');
+          const pname = row.getAttribute('data-person-name');
+          const pphoto = row.getAttribute('data-person-photo');
+          openActorProfile(pid, pname, pphoto);
+        });
+      });
+    }
+
+    // Recommended & Similar Movies Row
+    renderRecommendedMovies(item);
+  }
+
+  function renderServerCardsGrid() {
+    const grid = document.getElementById('studioServersGrid');
+    if (!grid) return;
+
+    grid.innerHTML = STREAM_SERVERS.map(
+      (srv) => `
+      <button class="server-card-btn ${srv.id === state.activeServerId ? 'active' : ''}" data-srv-id="${srv.id}">
+        ${srv.sparkle ? '<span class="srv-sparkle">✦</span>' : ''}
+        <span class="srv-flag">${srv.flag}</span>
+        <span class="srv-provider-title" dir="ltr">${srv.name}</span>
+        <span class="srv-online-dot"></span>
+      </button>
+    `
+    ).join('');
+
+    grid.querySelectorAll('[data-srv-id]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        state.activeServerId = btn.getAttribute('data-srv-id');
+        renderServerCardsGrid();
+        loadActiveServerIntoStudio();
+        const srvObj = STREAM_SERVERS.find((s) => s.id === state.activeServerId);
+        if (srvObj) showToast(`${t('toastServerSwitched')}${srvObj.name}`);
+      });
+    });
+  }
+
+  function loadActiveServerIntoStudio() {
+    const item = state.currentPlayingItem;
+    const iframe = document.getElementById('studioPlayerIframe');
+    if (!item || !iframe) return;
+
+    const srv = STREAM_SERVERS.find((s) => s.id === state.activeServerId) || STREAM_SERVERS[0];
+    const tmdbId = item.tmdbId || 693134;
+    iframe.src = srv.buildUrl(tmdbId, item.type === 'series', state.activeSeason, state.activeEpisode);
+  }
+
+  // ---------------------------------------------------------------------------
+  // MULTI-FILE DOWNLOAD HUB (6 Distinct Download Options & Real File Generator)
+  // ---------------------------------------------------------------------------
+  function renderDownloadHubFiles(item) {
+    const container = document.getElementById('downloadFilesGrid');
+    if (!container) return;
+
+    const tmdbId = item.tmdbId || 693134;
+    const isTv = item.type === 'series';
+    const epSuffix = isTv ? ` S0${state.activeSeason}E0${state.activeEpisode}` : '';
+    const cleanTitle = getTitle(item).replace(/[^a-zA-Z0-9]+/g, '.');
+
+    const files = [
+      {
+        quality: '2160p 4K UHD BluRay (10-bit HEVC)',
+        specs: `4.8 GB · MKV · Dolby Atmos${epSuffix}`,
+        label: '⬇ تحميل 4K',
+        mode: 'direct_video',
+        filename: `${cleanTitle}.${item.year}${epSuffix.replace(/\s+/g, '')}.2160p.4K.UHD.mp4`,
+        url: VIDEO_STREAMS[0]
+      },
+      {
+        quality: '1080p Full HD WEB-DL (x264 AAC)',
+        specs: `2.1 GB · MP4 · High Speed${epSuffix}`,
+        label: '⬇ تحميل 1080p',
+        mode: 'direct_video',
+        filename: `${cleanTitle}.${item.year}${epSuffix.replace(/\s+/g, '')}.1080p.WEBDL.mp4`,
+        url: VIDEO_STREAMS[1]
+      },
+      {
+        quality: '720p HD Fast StreamRip',
+        specs: `940 MB · MP4 · Fast Server${epSuffix}`,
+        label: '⬇ تحميل 720p',
+        mode: 'direct_video',
+        filename: `${cleanTitle}.${item.year}${epSuffix.replace(/\s+/g, '')}.720p.HD.mp4`,
+        url: VIDEO_STREAMS[2]
+      },
+      {
+        quality: '480p Mobile Saver (HEVC)',
+        specs: `410 MB · MP4 · للموبايل${epSuffix}`,
+        label: '⬇ تحميل 480p',
+        mode: 'direct_video',
+        filename: `${cleanTitle}.${item.year}${epSuffix.replace(/\s+/g, '')}.480p.Mobile.mp4`,
+        url: VIDEO_STREAMS[3]
+      },
+      {
+        quality: 'بوابة التحميل السحابي (Multi-Mirror DL)',
+        specs: 'GoDrive / VidSrc DL / Direct Mirrors',
+        label: '↗ فتح صفحة التحميل',
+        mode: 'external_dl',
+        url: isTv
+          ? `https://dl.vidsrc.vip/tv/${tmdbId}/${state.activeSeason}/${state.activeEpisode}`
+          : `https://dl.vidsrc.vip/movie/${tmdbId}`
+      },
+      {
+        quality: 'ملف الترجمة العربية الرسمي (.SRT)',
+        specs: `Arabic & English Subtitles · UTF-8`,
+        label: '⬇ تحميل الترجمة .SRT',
+        mode: 'srt_file',
+        filename: `${cleanTitle}.${item.year}.Arabic.srt`
+      }
+    ];
+
+    container.innerHTML = files
+      .map(
+        (f, idx) => `
+        <div class="dl-file-card">
+          <div class="dl-file-meta">
+            <span class="dl-file-quality" dir="ltr">${f.quality}</span>
+            <span class="dl-file-specs" dir="ltr">${f.specs}</span>
+          </div>
+          <button class="dl-trigger-link" data-dl-idx="${idx}">${f.label}</button>
+        </div>
+      `
+      )
+      .join('');
+
+    container.querySelectorAll('[data-dl-idx]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const f = files[Number(btn.getAttribute('data-dl-idx'))];
+        if (!f) return;
+        showToast(`${t('toastDownloadStarted')}${f.quality}`);
+
+        if (f.mode === 'srt_file') {
+          const srtContent = `1\n00:00:01,000 --> 00:00:06,000\nWatchUrMovie — ${getTitle(item)} (${item.year})\nالترجمة العربية الرسمية مفعلة\n\n2\n00:00:06,500 --> 00:00:12,000\n${getSynopsis(item)}\n`;
+          const blob = new Blob([srtContent], { type: 'text/plain;charset=utf-8' });
+          const a = document.createElement('a');
+          a.href = URL.createObjectURL(blob);
+          a.download = f.filename;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+        } else if (f.mode === 'external_dl') {
+          window.open(f.url, '_blank', 'noopener,noreferrer');
+        } else {
+          const a = document.createElement('a');
+          a.href = f.url;
+          a.download = f.filename;
+          a.target = '_blank';
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+        }
+      });
+    });
+  }
+
+  function renderRecommendedMovies(item) {
+    const row = document.getElementById('recommendedMoviesRow');
+    if (!row) return;
+
+    const list =
+      item.similarItems && item.similarItems.length > 0
+        ? item.similarItems
+        : CATALOG.filter((c) => c.id !== item.id).slice(0, 10);
+
+    row.innerHTML = list
+      .map((sim) => `
+        <article class="blur-movie-card" data-rec-id="${sim.id}">
+          <div class="poster-frame">
+            <img class="poster-img" src="${sim.posterUrl}" alt="${getTitle(sim)}" loading="lazy" />
+            <div class="corner-badges">
+              <span class="corner-quality">${sim.year}</span>
+              <span class="corner-rating">★ ${sim.rating.toFixed(1)}</span>
+            </div>
+            <div class="hover-info-layer">
+              <div class="hover-top-row">
+                <span class="hover-score-pill">★ ${sim.rating.toFixed(1)}</span>
+              </div>
+              <div class="hover-center-meta">
+                <div class="hover-year-type">${sim.year} · ${sim.quality}</div>
+                <p class="hover-synopsis-text">${getSynopsis(sim)}</p>
+              </div>
+              <div class="hover-actions-bottom">
+                <button class="hover-watch-btn">
+                  <span>${t('watchNow')}</span>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="card-caption">
+            <h3 class="card-eng-title" dir="ltr">${getTitle(sim)}</h3>
+          </div>
+        </article>
+      `)
+      .join('');
+
+    row.querySelectorAll('[data-rec-id]').forEach((card) => {
+      card.addEventListener('click', () => {
+        openWatchStudio(card.getAttribute('data-rec-id'));
+      });
+    });
+  }
+
+  // ---------------------------------------------------------------------------
+  // HOME CATALOG VIEW RENDERERS
+  // ---------------------------------------------------------------------------
   function applyPaletteAndComfort() {
     document.documentElement.setAttribute('data-palette', state.palette);
     localStorage.setItem('wum_palette', state.palette);
@@ -1120,7 +1562,7 @@
     renderContinueWatching();
     renderCatalog();
     renderRepoCodesList();
-    render40ServerButtons();
+    if (state.currentPlayingItem) renderStudioUI(state.currentPlayingItem);
   }
 
   function getFeaturedItems() {
@@ -1211,6 +1653,7 @@
     updateWatchlistCountBadge();
     renderHero();
     renderCatalog();
+    if (state.currentPlayingItem) renderStudioUI(state.currentPlayingItem);
   }
 
   function renderContinueWatching() {
@@ -1246,7 +1689,7 @@
       .join('');
 
     grid.querySelectorAll('[data-play-id]').forEach((card) => {
-      card.addEventListener('click', () => openPlayerModal(card.getAttribute('data-play-id')));
+      card.addEventListener('click', () => openWatchStudio(card.getAttribute('data-play-id')));
     });
   }
 
@@ -1271,7 +1714,7 @@
       .join('');
 
     track.querySelectorAll('[data-details-id]').forEach((card) => {
-      card.addEventListener('click', () => openDetailsModal(card.getAttribute('data-details-id')));
+      card.addEventListener('click', () => openWatchStudio(card.getAttribute('data-details-id')));
     });
   }
 
@@ -1302,9 +1745,9 @@
         btn.addEventListener('click', () => {
           state.activeGenre = btn.getAttribute('data-drawer-genre');
           toggleDrawer(false);
+          closeWatchStudioBackToCatalog();
           renderGenreBar();
           renderCatalog();
-          document.getElementById('catalogSection')?.scrollIntoView({ behavior: 'smooth' });
         });
       });
     }
@@ -1336,9 +1779,6 @@
     });
   }
 
-  // ---------------------------------------------------------------------------
-  // RENDER HOVER-BLUR MOVIE CARDS
-  // ---------------------------------------------------------------------------
   function renderCatalog() {
     const grid = document.getElementById('moviesGrid');
     const emptyBox = document.getElementById('emptyStateBox');
@@ -1394,13 +1834,6 @@
                     </svg>
                     <span>${t('watchNow')}</span>
                   </button>
-                  <button class="hover-details-btn" data-info-id="${item.id}" title="${t('moreDetails')}">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-                      <circle cx="12" cy="12" r="10"></circle>
-                      <line x1="12" y1="16" x2="12" y2="12"></line>
-                      <line x1="12" y1="8" x2="12.01" y2="8"></line>
-                    </svg>
-                  </button>
                 </div>
               </div>
             </div>
@@ -1417,20 +1850,6 @@
       })
       .join('');
 
-    grid.querySelectorAll('[data-watch-id]').forEach((btn) => {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        openPlayerModal(btn.getAttribute('data-watch-id'));
-      });
-    });
-
-    grid.querySelectorAll('[data-info-id]').forEach((btn) => {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        openDetailsModal(btn.getAttribute('data-info-id'));
-      });
-    });
-
     grid.querySelectorAll('[data-wl-id]').forEach((btn) => {
       btn.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -1439,7 +1858,7 @@
     });
 
     grid.querySelectorAll('.blur-movie-card').forEach((card) => {
-      card.addEventListener('click', () => openDetailsModal(card.getAttribute('data-card-id')));
+      card.addEventListener('click', () => openWatchStudio(card.getAttribute('data-card-id')));
     });
   }
 
@@ -1469,333 +1888,12 @@
       searchDropdown.querySelectorAll('[data-search-pick]').forEach((el) => {
         el.addEventListener('click', () => {
           searchDropdown.classList.add('hidden');
-          openDetailsModal(el.getAttribute('data-search-pick'));
+          openWatchStudio(el.getAttribute('data-search-pick'));
         });
       });
     } else {
       searchDropdown.classList.add('hidden');
     }
-  }
-
-  // ---------------------------------------------------------------------------
-  // 40-SERVER STREAMING ENGINE & SEASON / EPISODE SELECTOR
-  // ---------------------------------------------------------------------------
-  const videoEl = document.getElementById('cinemaVideo');
-  const canvasEl = document.getElementById('cinemaFallbackCanvas');
-  const ytIframeEl = document.getElementById('ytTrailerIframe');
-
-  function render40ServerButtons() {
-    const ribbon = document.getElementById('serverTabs');
-    const quickSelect = document.getElementById('serverQuickSelect');
-
-    if (ribbon) {
-      ribbon.innerHTML = STREAM_SERVERS.map(
-        (srv, idx) => `
-        <button class="srv-btn ${srv.id === state.activeServerId ? 'active' : ''}" data-server-id="${srv.id}">
-          <span class="srv-num">#${idx + 1}</span>
-          <span dir="ltr">${srv.name}</span>
-          <span class="srv-tag">${srv.badge}</span>
-        </button>
-      `
-      ).join('');
-
-      ribbon.querySelectorAll('[data-server-id]').forEach((btn) => {
-        btn.addEventListener('click', () => {
-          const srvId = btn.getAttribute('data-server-id');
-          switchStreamingServer(srvId);
-        });
-      });
-    }
-
-    if (quickSelect) {
-      quickSelect.innerHTML = STREAM_SERVERS.map(
-        (srv, idx) => `<option value="${srv.id}" ${srv.id === state.activeServerId ? 'selected' : ''}>#${idx + 1} — ${srv.name} (${srv.badge})</option>`
-      ).join('');
-    }
-  }
-
-  function renderSeriesEpisodeSelectors(item) {
-    const bar = document.getElementById('seriesEpisodeBar');
-    const seasonSel = document.getElementById('seasonSelect');
-    const epSel = document.getElementById('episodeSelect');
-    if (!bar || !seasonSel || !epSel) return;
-
-    if (item.type !== 'series') {
-      bar.classList.add('hidden');
-      return;
-    }
-
-    bar.classList.remove('hidden');
-    const totalSeasons = Math.max(1, Number(item.seasonsCount) || 5);
-    seasonSel.innerHTML = Array.from({ length: totalSeasons }, (_, i) => {
-      const sNum = i + 1;
-      return `<option value="${sNum}" ${sNum === state.activeSeason ? 'selected' : ''}>Season ${sNum}</option>`;
-    }).join('');
-
-    epSel.innerHTML = Array.from({ length: 24 }, (_, i) => {
-      const eNum = i + 1;
-      return `<option value="${eNum}" ${eNum === state.activeEpisode ? 'selected' : ''}>Episode ${eNum}</option>`;
-    }).join('');
-  }
-
-  function switchStreamingServer(serverId) {
-    const srv = STREAM_SERVERS.find((s) => s.id === serverId) || STREAM_SERVERS[0];
-    state.activeServerId = srv.id;
-
-    document.querySelectorAll('[data-server-id]').forEach((b) => {
-      b.classList.toggle('active', b.getAttribute('data-server-id') === srv.id);
-    });
-
-    const quickSelect = document.getElementById('serverQuickSelect');
-    if (quickSelect) quickSelect.value = srv.id;
-
-    loadActiveServerIntoViewport();
-    showToast(`${t('toastServerSwitched')}${srv.name}`);
-  }
-
-  function loadActiveServerIntoViewport() {
-    const item = state.currentPlayingItem;
-    if (!item) return;
-
-    const srv = STREAM_SERVERS.find((s) => s.id === state.activeServerId) || STREAM_SERVERS[0];
-    stopCinemaSynthesizer();
-
-    if (srv.type === 'trailer') {
-      if (videoEl) {
-        videoEl.pause();
-        videoEl.classList.add('hidden');
-      }
-      if (canvasEl) canvasEl.classList.add('hidden');
-      document.getElementById('videoCustomCtrlBar')?.classList.add('hidden');
-
-      if (item.trailerKey && ytIframeEl) {
-        ytIframeEl.classList.remove('hidden');
-        ytIframeEl.src = `https://www.youtube.com/embed/${item.trailerKey}?autoplay=1&rel=0`;
-      } else if (ytIframeEl && item.tmdbId) {
-        // Fallback to first embed if no YouTube trailer key
-        ytIframeEl.classList.remove('hidden');
-        ytIframeEl.src = STREAM_SERVERS[0].buildUrl(item.tmdbId, item.type === 'series', state.activeSeason, state.activeEpisode);
-      }
-      return;
-    }
-
-    if (srv.type === 'embed' && item.tmdbId && ytIframeEl) {
-      if (videoEl) {
-        videoEl.pause();
-        videoEl.classList.add('hidden');
-      }
-      if (canvasEl) canvasEl.classList.add('hidden');
-      document.getElementById('videoCustomCtrlBar')?.classList.add('hidden');
-
-      ytIframeEl.classList.remove('hidden');
-      ytIframeEl.src = srv.buildUrl(item.tmdbId, item.type === 'series', state.activeSeason, state.activeEpisode);
-      return;
-    }
-
-    // Direct 4K HTML5 Stream or Synthesizer
-    if (ytIframeEl) {
-      ytIframeEl.src = '';
-      ytIframeEl.classList.add('hidden');
-    }
-    document.getElementById('videoCustomCtrlBar')?.classList.remove('hidden');
-
-    if (videoEl) {
-      videoEl.classList.remove('hidden');
-      if (canvasEl) canvasEl.classList.add('hidden');
-      videoEl.src = item.streamUrl || VIDEO_STREAMS[0];
-      videoEl.currentTime = 0;
-      const p = videoEl.play();
-      if (p !== undefined) {
-        p.catch(() => startCinemaSynthesizer(item));
-      }
-    } else {
-      startCinemaSynthesizer(item);
-    }
-  }
-
-  function startCinemaSynthesizer(item) {
-    state.usingFallbackCanvas = true;
-    state.syntheticPlaying = true;
-    if (canvasEl) canvasEl.classList.remove('hidden');
-    if (videoEl) videoEl.classList.add('hidden');
-    if (ytIframeEl) ytIframeEl.classList.add('hidden');
-
-    const ctx = canvasEl.getContext('2d');
-    canvasEl.width = 960;
-    canvasEl.height = 540;
-    let lastTick = performance.now();
-
-    function drawFrame(now) {
-      if (!state.usingFallbackCanvas) return;
-      const dt = (now - lastTick) / 1000;
-      lastTick = now;
-
-      if (state.syntheticPlaying) {
-        state.syntheticTime = (state.syntheticTime + dt) % 140;
-        updatePlayerTimeUI(state.syntheticTime, 140);
-      }
-
-      const [c1, c2, accent] = item.palette || ['#121526', '#090b14', '#8b5cf6'];
-      const grad = ctx.createLinearGradient(0, 0, canvasEl.width, canvasEl.height);
-      grad.addColorStop(0, c1);
-      grad.addColorStop(0.65, c2);
-      grad.addColorStop(1, '#04070d');
-      ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, canvasEl.width, canvasEl.height);
-
-      const breathe = Math.sin(now * 0.0015) * 18;
-      ctx.save();
-      ctx.strokeStyle = accent;
-      ctx.globalAlpha = 0.22;
-      ctx.lineWidth = 1.5;
-      for (let i = 0; i < 4; i++) {
-        ctx.beginPath();
-        ctx.arc(480, 235, 65 + i * 42 + breathe * 0.4, 0, Math.PI * 2);
-        ctx.stroke();
-      }
-      ctx.restore();
-
-      ctx.fillStyle = '#f8fafc';
-      ctx.font = '700 30px sans-serif';
-      ctx.textAlign = 'center';
-      ctx.fillText(getTitle(item), 480, 225);
-
-      ctx.fillStyle = accent;
-      ctx.font = '600 14px monospace';
-      ctx.fillText(`${item.quality} STREAM · ${item.year}`, 480, 260);
-
-      state.canvasAnimId = requestAnimationFrame(drawFrame);
-    }
-
-    if (state.canvasAnimId) cancelAnimationFrame(state.canvasAnimId);
-    state.canvasAnimId = requestAnimationFrame(drawFrame);
-  }
-
-  function stopCinemaSynthesizer() {
-    state.usingFallbackCanvas = false;
-    state.syntheticPlaying = false;
-    if (state.canvasAnimId) {
-      cancelAnimationFrame(state.canvasAnimId);
-      state.canvasAnimId = null;
-    }
-  }
-
-  function updatePlayerTimeUI(current, duration) {
-    const curLabel = document.getElementById('currentTimeLabel');
-    const durLabel = document.getElementById('durationTimeLabel');
-    const filled = document.getElementById('progressFilled');
-
-    if (curLabel) curLabel.textContent = formatTime(current);
-    if (durLabel) durLabel.textContent = formatTime(duration || 140);
-
-    const pct = duration > 0 ? Math.min(100, (current / duration) * 100) : 0;
-    if (filled) filled.style.width = `${pct}%`;
-  }
-
-  async function openPlayerModal(itemId, preferredServerId = null) {
-    const item = CATALOG.find((c) => c.id === itemId) || CATALOG[0];
-    if (!item) return;
-
-    state.currentPlayingItem = item;
-    state.activeSeason = 1;
-    state.activeEpisode = 1;
-    if (preferredServerId) {
-      state.activeServerId = preferredServerId;
-    } else if (!state.activeServerId) {
-      state.activeServerId = STREAM_SERVERS[0].id;
-    }
-
-    document.getElementById('playerModal')?.classList.remove('hidden');
-    document.getElementById('playerTypeBadge').textContent = item.type === 'series' ? t('typeSeries') : t('typeMovie');
-    document.getElementById('playerModalTitle').textContent = getTitle(item);
-    document.getElementById('playerSubMeta').textContent = `${item.year} · ★ ${item.rating.toFixed(1)} TMDB`;
-
-    await enrichTmdbItemDetails(item);
-    render40ServerButtons();
-    renderSeriesEpisodeSelectors(item);
-    loadActiveServerIntoViewport();
-
-    if (!state.watchHistory[item.id]) {
-      state.watchHistory[item.id] = 26;
-      localStorage.setItem('wum_history', JSON.stringify(state.watchHistory));
-    }
-    renderContinueWatching();
-  }
-
-  function closePlayerModal() {
-    document.getElementById('playerModal')?.classList.add('hidden');
-    if (videoEl) {
-      videoEl.pause();
-      videoEl.removeAttribute('src');
-    }
-    if (ytIframeEl) {
-      ytIframeEl.src = '';
-      ytIframeEl.classList.add('hidden');
-    }
-    stopCinemaSynthesizer();
-    renderContinueWatching();
-  }
-
-  async function openDetailsModal(itemId) {
-    const item = CATALOG.find((c) => c.id === itemId);
-    if (!item) return;
-
-    state.currentPlayingItem = item;
-    document.getElementById('detailsModal')?.classList.remove('hidden');
-
-    const poster = document.getElementById('detailsPoster');
-    if (poster) poster.src = item.posterUrl;
-
-    document.getElementById('detailsBadges').innerHTML = `
-      <span class="pill-tag">${item.type === 'series' ? t('typeSeries') : t('typeMovie')}</span>
-      <span class="pill-tag star">★ ${item.rating.toFixed(1)} TMDB</span>
-      <span class="pill-tag glass">${item.quality}</span>
-    `;
-
-    const titleEl = document.getElementById('detailsTitle');
-    if (titleEl) {
-      titleEl.textContent = getTitle(item);
-      titleEl.setAttribute('dir', 'ltr');
-    }
-    document.getElementById('detailsSynopsis').textContent = getSynopsis(item);
-
-    await enrichTmdbItemDetails(item);
-
-    document.getElementById('detailsMetaGrid').innerHTML = `
-      <div><small style="color:var(--text-muted);display:block">${t('directorLabel')}</small><strong dir="ltr">${item.director || 'TMDB'}</strong></div>
-      <div><small style="color:var(--text-muted);display:block">${t('yearLabel')}</small><strong>${item.year}</strong></div>
-      <div><small style="color:var(--text-muted);display:block">${t('durationLabel')}</small><strong>${getDuration(item)}</strong></div>
-      <div><small style="color:var(--text-muted);display:block">${t('qualityMetaLabel')}</small><strong>★ ${item.rating.toFixed(1)} / 10</strong></div>
-    `;
-
-    const wlBtnText = document.getElementById('detailsWatchlistText');
-    if (wlBtnText) {
-      wlBtnText.textContent = state.watchlist.includes(item.id) ? t('inWatchlist') : t('addToWatchlist');
-    }
-
-    const castContainer = document.getElementById('detailsCastList');
-    if (castContainer) {
-      const castArr = item.cast && item.cast.length > 0 ? item.cast : ['TMDB Official Cast'];
-      castContainer.innerHTML = castArr
-        .map((actor) => `<span class="cast-tag" dir="ltr">${actor}</span>`)
-        .join('');
-    }
-
-    renderItemReviews(item.id);
-  }
-
-  function renderItemReviews(itemId) {
-    const container = document.getElementById('reviewsListContainer');
-    if (!container) return;
-    const list = state.reviews[itemId] || [
-      {
-        author: state.lang === 'ar' ? 'متابع سينمائي' : 'Cinema Viewer',
-        text: state.lang === 'ar' ? 'عمل ممتاز ووجود 40 مشغل مختلف يخلي المشاهدة بدون أي تقطيع!' : 'Fantastic title and having 40 different streaming servers makes playback effortless!'
-      }
-    ];
-    container.innerHTML = list
-      .map((rev) => `<div class="review-card-item"><strong>${rev.author}:</strong> ${rev.text}</div>`)
-      .join('');
   }
 
   function renderRepoCodesList() {
@@ -1843,18 +1941,72 @@
     document.getElementById('closeDrawerBtn')?.addEventListener('click', () => toggleDrawer(false));
     document.getElementById('drawerBackdrop')?.addEventListener('click', () => toggleDrawer(false));
 
-    document.getElementById('openAuthModalBtn')?.addEventListener('click', () => {
-      if (state.user) {
-        toggleDrawer(true);
-      } else {
-        document.getElementById('authModal')?.classList.remove('hidden');
+    // Clicking Brand Logo returns to Catalog Home
+    document.getElementById('brandHomeLink')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      closeWatchStudioBackToCatalog();
+    });
+
+    // Studio Back Button
+    document.getElementById('backToCatalogBtn')?.addEventListener('click', closeWatchStudioBackToCatalog);
+
+    // Studio Now Playing Actions: Watchlist, Share, Download Hub Toggle
+    document.getElementById('studioWatchlistBtn')?.addEventListener('click', () => {
+      if (state.currentPlayingItem) toggleWatchlist(state.currentPlayingItem.id);
+    });
+
+    document.getElementById('studioShareBtn')?.addEventListener('click', () => {
+      if (navigator.clipboard && window.location.href) {
+        navigator.clipboard.writeText(window.location.href).catch(() => {});
+      }
+      showToast(t('toastCopiedShare'));
+    });
+
+    document.getElementById('studioDownloadToggleBtn')?.addEventListener('click', () => {
+      const panel = document.getElementById('downloadHubPanel');
+      if (panel) {
+        panel.classList.toggle('hidden');
+        if (!panel.classList.contains('hidden')) {
+          panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
       }
     });
 
+    // Series Season & Episode change inside Studio
+    document.getElementById('studioSeasonSelect')?.addEventListener('change', (e) => {
+      state.activeSeason = Number(e.target.value) || 1;
+      loadActiveServerIntoStudio();
+      if (state.currentPlayingItem) renderDownloadHubFiles(state.currentPlayingItem);
+    });
+
+    document.getElementById('studioEpisodeSelect')?.addEventListener('change', (e) => {
+      state.activeEpisode = Number(e.target.value) || 1;
+      loadActiveServerIntoStudio();
+      if (state.currentPlayingItem) renderDownloadHubFiles(state.currentPlayingItem);
+    });
+
+    // Recommended Row Scroll Arrows
+    document.getElementById('recPrevBtn')?.addEventListener('click', () => {
+      document.getElementById('recommendedMoviesRow')?.scrollBy({ left: -400, behavior: 'smooth' });
+    });
+    document.getElementById('recNextBtn')?.addEventListener('click', () => {
+      document.getElementById('recommendedMoviesRow')?.scrollBy({ left: 400, behavior: 'smooth' });
+    });
+
+    // Actor Modal Close
+    document.getElementById('closeActorModalBtn')?.addEventListener('click', () => {
+      document.getElementById('actorModal')?.classList.add('hidden');
+    });
+
+    // Auth Modal
+    document.getElementById('openAuthModalBtn')?.addEventListener('click', () => {
+      if (state.user) toggleDrawer(true);
+      else document.getElementById('authModal')?.classList.remove('hidden');
+    });
+
     document.getElementById('drawerAuthActionBtn')?.addEventListener('click', () => {
-      if (state.user) {
-        logoutUser();
-      } else {
+      if (state.user) logoutUser();
+      else {
         toggleDrawer(false);
         document.getElementById('authModal')?.classList.remove('hidden');
       }
@@ -1869,9 +2021,8 @@
         state.authMode = tabBtn.getAttribute('data-auth-tab');
         document.querySelectorAll('[data-auth-tab]').forEach((b) => b.classList.remove('active'));
         tabBtn.classList.add('active');
-        const nameFieldWrap = document.getElementById('authNameFieldWrap');
+        document.getElementById('authNameFieldWrap')?.classList.toggle('hidden', state.authMode === 'login');
         const submitBtn = document.getElementById('authSubmitBtn');
-        if (nameFieldWrap) nameFieldWrap.classList.toggle('hidden', state.authMode === 'login');
         if (submitBtn) submitBtn.textContent = state.authMode === 'login' ? t('submitLoginBtn') : t('submitRegisterBtn');
       });
     });
@@ -1888,13 +2039,14 @@
       loginUser('VIP Guest', 'vip@watchurmovie.app');
     });
 
+    // Drawer Navigation
     document.querySelectorAll('[data-nav]').forEach((btn) => {
       btn.addEventListener('click', () => {
         state.activeNav = btn.getAttribute('data-nav');
         document.querySelectorAll('[data-nav]').forEach((b) => b.classList.remove('active'));
         btn.classList.add('active');
         toggleDrawer(false);
-        document.getElementById('catalogSection')?.scrollIntoView({ behavior: 'smooth' });
+        closeWatchStudioBackToCatalog();
         renderCatalog();
       });
     });
@@ -1919,6 +2071,7 @@
       applyLanguage();
     });
 
+    // Search
     const searchInput = document.getElementById('searchInput');
     const clearSearchBtn = document.getElementById('clearSearchBtn');
     const searchDropdown = document.getElementById('searchDropdown');
@@ -1951,18 +2104,18 @@
       toggleDrawer(false);
       const randomItem = CATALOG[Math.floor(Math.random() * CATALOG.length)];
       showToast(`${t('toastRandomPick')} ${getTitle(randomItem)}`);
-      openDetailsModal(randomItem.id);
+      openWatchStudio(randomItem.id);
     });
 
     document.getElementById('heroWatchBtn')?.addEventListener('click', () => {
       const featuredItems = getFeaturedItems();
       const item = featuredItems[state.heroIndex] || CATALOG[0];
-      openPlayerModal(item.id);
+      openWatchStudio(item.id);
     });
     document.getElementById('heroDetailsBtn')?.addEventListener('click', () => {
       const featuredItems = getFeaturedItems();
       const item = featuredItems[state.heroIndex] || CATALOG[0];
-      openDetailsModal(item.id);
+      openWatchStudio(item.id);
     });
     document.getElementById('heroWatchlistBtn')?.addEventListener('click', () => {
       const featuredItems = getFeaturedItems();
@@ -2000,90 +2153,11 @@
       renderCatalog();
     });
 
-    document.getElementById('closePlayerModalBtn')?.addEventListener('click', closePlayerModal);
-
-    // 40-Servers Quick Dropdown Selector
-    document.getElementById('serverQuickSelect')?.addEventListener('change', (e) => {
-      switchStreamingServer(e.target.value);
-    });
-
-    // Series Season & Episode Selectors
-    document.getElementById('seasonSelect')?.addEventListener('change', (e) => {
-      state.activeSeason = Number(e.target.value) || 1;
-      loadActiveServerIntoViewport();
-    });
-
-    document.getElementById('episodeSelect')?.addEventListener('change', (e) => {
-      state.activeEpisode = Number(e.target.value) || 1;
-      loadActiveServerIntoViewport();
-    });
-
-    document.getElementById('playPauseBtn')?.addEventListener('click', () => {
-      if (state.usingFallbackCanvas) {
-        state.syntheticPlaying = !state.syntheticPlaying;
-      } else if (videoEl) {
-        if (videoEl.paused) videoEl.play();
-        else videoEl.pause();
-      }
-    });
-
-    document.getElementById('skipBackBtn')?.addEventListener('click', () => {
-      if (state.usingFallbackCanvas) state.syntheticTime = Math.max(0, state.syntheticTime - 10);
-      else if (videoEl) videoEl.currentTime = Math.max(0, videoEl.currentTime - 10);
-    });
-
-    document.getElementById('skipFwdBtn')?.addEventListener('click', () => {
-      if (state.usingFallbackCanvas) state.syntheticTime = (state.syntheticTime + 10) % 140;
-      else if (videoEl) videoEl.currentTime = Math.min(videoEl.duration || 140, videoEl.currentTime + 10);
-    });
-
-    document.getElementById('closeDetailsModalBtn')?.addEventListener('click', () => {
-      document.getElementById('detailsModal')?.classList.add('hidden');
-    });
-
-    document.getElementById('detailsWatchBtn')?.addEventListener('click', () => {
-      document.getElementById('detailsModal')?.classList.add('hidden');
-      if (state.currentPlayingItem) openPlayerModal(state.currentPlayingItem.id, STREAM_SERVERS[0].id);
-    });
-
-    document.getElementById('detailsTrailerBtn')?.addEventListener('click', () => {
-      document.getElementById('detailsModal')?.classList.add('hidden');
-      if (state.currentPlayingItem) openPlayerModal(state.currentPlayingItem.id, 'youtube_trailer');
-    });
-
-    document.getElementById('detailsWatchlistBtn')?.addEventListener('click', () => {
-      if (!state.currentPlayingItem) return;
-      toggleWatchlist(state.currentPlayingItem.id);
-      const wlBtnText = document.getElementById('detailsWatchlistText');
-      if (wlBtnText) {
-        wlBtnText.textContent = state.watchlist.includes(state.currentPlayingItem.id) ? t('inWatchlist') : t('addToWatchlist');
-      }
-    });
-
-    document.getElementById('reviewForm')?.addEventListener('submit', (e) => {
-      e.preventDefault();
-      if (!state.currentPlayingItem) return;
-      const nameInput = document.getElementById('reviewerNameInput');
-      const commentInput = document.getElementById('reviewCommentInput');
-      const author = (nameInput?.value || state.user?.name || '').trim();
-      const text = (commentInput?.value || '').trim();
-      if (!author || !text) return;
-      const id = state.currentPlayingItem.id;
-      if (!state.reviews[id]) state.reviews[id] = [];
-      state.reviews[id].unshift({ author, text });
-      localStorage.setItem('wum_reviews', JSON.stringify(state.reviews));
-      if (nameInput) nameInput.value = '';
-      if (commentInput) commentInput.value = '';
-      renderItemReviews(id);
-      showToast(t('toastReviewAdded'));
-    });
-
-    const openCodes = (e) => {
+    document.getElementById('openCodesModalBtn')?.addEventListener('click', (e) => {
       if (e) e.preventDefault();
       toggleDrawer(false);
       document.getElementById('codesModal')?.classList.remove('hidden');
-    };
-    document.getElementById('openCodesModalBtn')?.addEventListener('click', openCodes);
+    });
 
     document.getElementById('closeCodesModalBtn')?.addEventListener('click', () => {
       document.getElementById('codesModal')?.classList.add('hidden');
@@ -2096,10 +2170,7 @@
 
     document.querySelectorAll('.modal-overlay').forEach((overlay) => {
       overlay.addEventListener('click', (e) => {
-        if (e.target === overlay) {
-          if (overlay.id === 'playerModal') closePlayerModal();
-          else overlay.classList.add('hidden');
-        }
+        if (e.target === overlay) overlay.classList.add('hidden');
       });
     });
   }

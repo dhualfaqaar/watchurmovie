@@ -1,19 +1,20 @@
 /* ==========================================================================
-   WatchUrMovie — Streamex.sh Inspired Luxury Cinema UI (style.css)
-   - Floating Minimal Header (3-Lines Drawer Trigger ☰, Logo, Search, Login)
-   - Slide-Out Glassmorphic Sidebar Drawer
-   - Signature Hover-Blur Movie Cards with Genre Tags, Synopsis & Watch CTA
-   - 40 Multi-Server Streaming Players Bar + Season/Episode Selector
+   WatchUrMovie — Streamex-Inspired Full-Page Watch Studio & Cinema UI
+   - Floating Minimal Header + 3-Lines Slide-Out Drawer (☰)
+   - Home Catalog with Ambient Hero & Hover-Blur Movie Cards
+   - Full-Page Watch Studio View (Player + 16 Distinct Servers + Multi-File
+     Download Hub + Recommended + Side Info Panel + Trailers + Interactive Cast)
+   - Actor Profile & Full Filmography Explorer (TMDB /person/{id}/combined_credits)
    ========================================================================== */
 
 :root,
 html[data-palette="streamex"] {
-  --bg-body: #06070b;
-  --bg-surface: #0d0f17;
-  --bg-card: #121521;
-  --bg-elevated: #191d2d;
-  --bg-glass: rgba(12, 14, 22, 0.84);
-  --bg-drawer: rgba(10, 12, 20, 0.96);
+  --bg-body: #07080d;
+  --bg-surface: #0e1018;
+  --bg-card: #141722;
+  --bg-elevated: #1c2030;
+  --bg-glass: rgba(14, 16, 24, 0.86);
+  --bg-drawer: rgba(11, 13, 20, 0.97);
 
   --accent: #8b5cf6;
   --accent-light: #a78bfa;
@@ -23,13 +24,14 @@ html[data-palette="streamex"] {
   --on-accent: #ffffff;
 
   --gold: #fbbf24;
+  --green-online: #10b981;
   --text-primary: #f8fafc;
   --text-secondary: #cbd5e1;
   --text-muted: #7c8ba1;
 
   --border: rgba(255, 255, 255, 0.08);
   --border-hover: rgba(167, 139, 250, 0.48);
-  --shadow-lg: 0 22px 55px rgba(0, 0, 0, 0.75);
+  --shadow-lg: 0 22px 55px rgba(0, 0, 0, 0.78);
 }
 
 html[data-palette="aurora"] {
@@ -37,8 +39,8 @@ html[data-palette="aurora"] {
   --bg-surface: #0c131d;
   --bg-card: #111b29;
   --bg-elevated: #182638;
-  --bg-glass: rgba(12, 19, 29, 0.84);
-  --bg-drawer: rgba(10, 16, 25, 0.96);
+  --bg-glass: rgba(12, 19, 29, 0.86);
+  --bg-drawer: rgba(10, 16, 25, 0.97);
 
   --accent: #10b981;
   --accent-light: #34d399;
@@ -54,8 +56,8 @@ html[data-palette="amber"] {
   --bg-surface: #15120e;
   --bg-card: #1d1914;
   --bg-elevated: #28221b;
-  --bg-glass: rgba(21, 18, 14, 0.84);
-  --bg-drawer: rgba(18, 15, 12, 0.96);
+  --bg-glass: rgba(21, 18, 14, 0.86);
+  --bg-drawer: rgba(18, 15, 12, 0.97);
 
   --accent: #f59e0b;
   --accent-light: #fbbf24;
@@ -71,8 +73,8 @@ html[data-palette="crimson"] {
   --bg-surface: #120d11;
   --bg-card: #1a1218;
   --bg-elevated: #261a22;
-  --bg-glass: rgba(18, 13, 17, 0.84);
-  --bg-drawer: rgba(15, 10, 14, 0.96);
+  --bg-glass: rgba(18, 13, 17, 0.86);
+  --bg-drawer: rgba(15, 10, 14, 0.97);
 
   --accent: #e11d48;
   --accent-light: #fb7185;
@@ -158,7 +160,7 @@ svg {
 }
 
 /* ==========================================================================
-   FLOATING STREAMEX HEADER (Only 3-Lines Drawer Trigger, Logo, Search, Login)
+   FLOATING MINIMALIST HEADER
    ========================================================================== */
 .site-header {
   position: sticky;
@@ -171,10 +173,10 @@ svg {
 }
 
 .header-inner {
-  max-width: 1420px;
+  max-width: 1480px;
   margin: 0 auto;
   padding: 0 24px;
-  height: 70px;
+  height: 68px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -187,7 +189,6 @@ svg {
   gap: 14px;
 }
 
-/* 3-Lines Hamburger Button (☰) */
 .menu-trigger-btn {
   width: 42px;
   height: 42px;
@@ -232,6 +233,7 @@ svg {
   display: inline-flex;
   align-items: center;
   gap: 10px;
+  cursor: pointer;
 }
 
 .brand-logo {
@@ -262,10 +264,9 @@ svg {
   font-size: 0.62rem;
   font-weight: 700;
   color: var(--accent-light);
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
 }
 
-/* Center Glass Search Pill */
 .header-search-wrap {
   flex: 1;
   max-width: 480px;
@@ -372,7 +373,6 @@ svg {
   color: var(--text-muted);
 }
 
-/* Header Right: Language + Login Button */
 .header-end {
   display: flex;
   align-items: center;
@@ -461,7 +461,7 @@ svg {
   top: 0;
   bottom: 0;
   inset-inline-start: 0;
-  width: 320px;
+  width: 310px;
   max-width: 88vw;
   z-index: 260;
   background: var(--bg-drawer);
@@ -471,7 +471,7 @@ svg {
   padding: 20px 18px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 18px;
   overflow-y: auto;
   transform: translateX(105%);
   transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
@@ -559,11 +559,6 @@ html[dir="ltr"] .nav-drawer {
   font-size: 0.75rem;
   font-weight: 700;
   white-space: nowrap;
-}
-
-.drawer-user-action:hover {
-  background: var(--accent);
-  color: var(--on-accent);
 }
 
 .drawer-group {
@@ -684,10 +679,10 @@ html[dir="ltr"] .nav-drawer {
 }
 
 /* ==========================================================================
-   MAIN CONTAINER & STREAMEX AMBIENT HERO SPOTLIGHT
+   MAIN CONTAINER & HOME CATALOG VIEW
    ========================================================================== */
 .main-container {
-  max-width: 1420px;
+  max-width: 1480px;
   margin: 0 auto;
   padding: 0 24px 60px;
 }
@@ -698,7 +693,7 @@ html[dir="ltr"] .nav-drawer {
   margin-bottom: 34px;
   border-radius: 26px;
   overflow: hidden;
-  min-height: 450px;
+  min-height: 440px;
   background: var(--bg-surface);
   border: 1px solid var(--border);
   box-shadow: var(--shadow-lg);
@@ -725,7 +720,7 @@ html[dir="ltr"] .nav-drawer {
   inset: 0;
   background:
     radial-gradient(circle at 80% 25%, var(--accent-soft), transparent 55%),
-    linear-gradient(180deg, rgba(6, 7, 11, 0.15) 0%, rgba(6, 7, 11, 0.74) 58%, rgba(6, 7, 11, 0.97) 100%);
+    linear-gradient(180deg, rgba(7, 8, 13, 0.15) 0%, rgba(7, 8, 13, 0.75) 58%, rgba(7, 8, 13, 0.98) 100%);
   z-index: 2;
 }
 
@@ -913,11 +908,6 @@ html[dir="ltr"] .nav-drawer {
   object-fit: cover;
 }
 
-.hero-thumb-card:hover {
-  opacity: 0.88;
-  transform: translateY(-3px);
-}
-
 .hero-thumb-card.active {
   opacity: 1;
   border-color: var(--accent-light);
@@ -926,7 +916,7 @@ html[dir="ltr"] .nav-drawer {
 }
 
 /* ==========================================================================
-   TOOLBAR & GENRE FILTER PILLS
+   TOOLBAR & HOVER-BLUR MOVIE CARDS GRID
    ========================================================================== */
 .toolbar-surface {
   display: flex;
@@ -998,15 +988,6 @@ html[dir="ltr"] .nav-drawer {
   cursor: pointer;
 }
 
-.clean-select:hover,
-.clean-select:focus {
-  border-color: var(--border-hover);
-  color: var(--text-primary);
-}
-
-/* ==========================================================================
-   SECTIONS & SIGNATURE HOVER-BLUR MOVIE CARDS GRID
-   ========================================================================== */
 .continue-block,
 .catalog-section,
 .top-ten-section {
@@ -1055,13 +1036,7 @@ html[dir="ltr"] .nav-drawer {
   font-weight: 600;
 }
 
-.text-btn:hover {
-  color: var(--accent-light);
-}
-
-/* Movies Grid (Supports both .movies-grid and .movies-Blur-grid) */
-.movies-grid,
-.movies-Blur-grid {
+.movies-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(195px, 1fr));
   gap: 22px;
@@ -1100,7 +1075,6 @@ html[dir="ltr"] .nav-drawer {
   transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), filter 0.35s ease;
 }
 
-/* HOVER BLUR ON MOVIE POSTER */
 .blur-movie-card:hover .poster-img {
   transform: scale(1.08);
   filter: blur(6px) brightness(0.32) saturate(1.2);
@@ -1122,7 +1096,7 @@ html[dir="ltr"] .nav-drawer {
 }
 
 .corner-quality {
-  background: rgba(6, 7, 11, 0.8);
+  background: rgba(6, 7, 11, 0.82);
   backdrop-filter: blur(6px);
   color: #f8fafc;
   font-size: 0.68rem;
@@ -1132,7 +1106,7 @@ html[dir="ltr"] .nav-drawer {
 }
 
 .corner-rating {
-  background: rgba(6, 7, 11, 0.84);
+  background: rgba(6, 7, 11, 0.86);
   backdrop-filter: blur(6px);
   color: #fbbf24;
   font-size: 0.73rem;
@@ -1141,7 +1115,6 @@ html[dir="ltr"] .nav-drawer {
   border-radius: 7px;
 }
 
-/* Hover Overlay Layer with Genres, Rating, Synopsis & Watch Button */
 .hover-info-layer {
   position: absolute;
   inset: 0;
@@ -1153,7 +1126,7 @@ html[dir="ltr"] .nav-drawer {
   opacity: 0;
   transform: translateY(10px);
   transition: opacity 0.28s ease, transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
-  background: linear-gradient(180deg, rgba(6, 7, 11, 0.25) 0%, rgba(6, 7, 11, 0.88) 100%);
+  background: linear-gradient(180deg, rgba(6, 7, 11, 0.25) 0%, rgba(6, 7, 11, 0.9) 100%);
 }
 
 .blur-movie-card:hover .hover-info-layer {
@@ -1190,7 +1163,6 @@ html[dir="ltr"] .nav-drawer {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.18s ease;
 }
 
 .hover-save-icon-btn.active,
@@ -1257,27 +1229,6 @@ html[dir="ltr"] .nav-drawer {
   justify-content: center;
   gap: 6px;
   box-shadow: 0 4px 14px var(--accent-glow);
-  transition: transform 0.18s ease;
-}
-
-.hover-watch-btn:hover {
-  transform: scale(1.03);
-}
-
-.hover-details-btn {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.14);
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  color: #ffffff;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.hover-details-btn:hover {
-  background: rgba(255, 255, 255, 0.25);
 }
 
 .card-caption {
@@ -1441,13 +1392,651 @@ html[dir="ltr"] .nav-drawer {
 }
 
 /* ==========================================================================
-   MODALS: AUTH, 40-SERVER PLAYER, DETAILS & CODES
+   FULL-PAGE WATCH STUDIO VIEW (#watchStudioView)
+   Replaces the Home Catalog completely when a movie/series is opened!
+   ========================================================================== */
+.watch-studio-view {
+  padding-top: 18px;
+  animation: fadeInStudio 0.28s ease;
+}
+
+@keyframes fadeInStudio {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.studio-top-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 16px;
+  padding: 12px 18px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  flex-wrap: wrap;
+}
+
+.studio-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px;
+  border-radius: 11px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  font-size: 0.88rem;
+  font-weight: 700;
+  transition: all 0.2s ease;
+}
+
+.studio-back-btn:hover {
+  background: var(--accent-soft);
+  border-color: var(--border-hover);
+  color: var(--accent-light);
+}
+
+.studio-top-title-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.studio-top-title {
+  font-size: 1.18rem;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+/* 2-Column Studio Architecture: Center Player Column + Side Info/Cast Panel */
+.studio-layout-grid {
+  display: grid;
+  grid-template-columns: 1fr 370px;
+  gap: 22px;
+  align-items: start;
+}
+
+.studio-main-col {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-width: 0;
+}
+
+/* Video Stage */
+.studio-player-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000000;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid var(--border-hover);
+  box-shadow: var(--shadow-lg);
+}
+
+.studio-player-frame video,
+.studio-player-frame iframe,
+.studio-player-frame canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border: 0;
+}
+
+/* Series Season & Episode Bar */
+.studio-episode-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 12px 18px;
+  border-radius: 16px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-hover);
+}
+
+.ep-selectors-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.ep-selectors-group label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--accent-light);
+}
+
+/* Now Playing Control Bar + Quick Actions (+ Watchlist, Share, Download) */
+.now-playing-panel {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.now-playing-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.now-playing-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  display: block;
+}
+
+.now-playing-movie-name {
+  font-size: 1.08rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.now-playing-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.np-icon-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 11px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.05rem;
+  font-weight: 700;
+  transition: all 0.2s ease;
+}
+
+.np-icon-btn:hover,
+.np-icon-btn.active {
+  background: var(--accent-soft);
+  border-color: var(--border-hover);
+  color: var(--accent-light);
+}
+
+.np-download-btn {
+  height: 40px;
+  padding: 0 16px;
+  border-radius: 11px;
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: #ffffff;
+  font-size: 0.84rem;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 6px 18px rgba(16, 185, 129, 0.32);
+  transition: all 0.2s ease;
+}
+
+.np-download-btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.08);
+}
+
+.server-hint-line {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ==========================================================================
+   DEDUPLICATED 16-PROVIDER SERVER GRID (Unique Domains, Flags, Green Dots)
+   ========================================================================== */
+.server-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
+  gap: 10px;
+}
+
+.server-card-btn {
+  position: relative;
+  height: 46px;
+  padding: 0 14px;
+  border-radius: 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.server-card-btn:hover {
+  background: var(--bg-elevated);
+  border-color: var(--border-hover);
+  color: var(--text-primary);
+  transform: translateY(-2px);
+}
+
+.server-card-btn.active {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.28), rgba(6, 182, 212, 0.22));
+  border-color: var(--accent-light);
+  color: #ffffff;
+  box-shadow: 0 6px 20px var(--accent-soft);
+}
+
+.srv-sparkle {
+  position: absolute;
+  top: 5px;
+  inset-inline-start: 7px;
+  font-size: 0.65rem;
+  color: #f43f5e;
+}
+
+.srv-flag {
+  font-size: 0.92rem;
+}
+
+.srv-provider-title {
+  letter-spacing: 0.01em;
+}
+
+.srv-online-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--green-online);
+  box-shadow: 0 0 8px var(--green-online);
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   MULTI-FILE DOWNLOAD HUB PANEL (#downloadHubPanel)
+   ========================================================================== */
+.download-hub-panel {
+  background: linear-gradient(145deg, var(--bg-surface), var(--bg-card));
+  border: 1px solid rgba(16, 185, 129, 0.45);
+  border-radius: 18px;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.download-hub-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.download-hub-title {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #34d399;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.download-files-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 10px;
+}
+
+.dl-file-card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  transition: all 0.2s ease;
+}
+
+.dl-file-card:hover {
+  border-color: #34d399;
+  transform: translateY(-2px);
+}
+
+.dl-file-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dl-file-quality {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.dl-file-specs {
+  font-size: 0.73rem;
+  color: var(--text-muted);
+}
+
+.dl-trigger-link {
+  padding: 7px 13px;
+  border-radius: 9px;
+  background: rgba(16, 185, 129, 0.18);
+  border: 1px solid rgba(16, 185, 129, 0.45);
+  color: #34d399;
+  font-size: 0.76rem;
+  font-weight: 800;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.dl-trigger-link:hover {
+  background: #10b981;
+  color: #04130e;
+}
+
+/* ==========================================================================
+   RECOMMENDED & SIMILAR MOVIES SECTION (Inside Watch Studio)
+   ========================================================================== */
+.studio-recommended-box {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 18px 20px;
+}
+
+.rec-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.rec-nav-arrows {
+  display: flex;
+  gap: 6px;
+}
+
+.rec-arrow-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rec-arrow-btn:hover {
+  border-color: var(--border-hover);
+  color: var(--accent-light);
+}
+
+.recommended-scroll-row {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 165px;
+  gap: 14px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent) var(--bg-elevated);
+}
+
+/* ==========================================================================
+   STUDIO SIDE PANEL (Poster, Status, Production, Synopsis, Trailers, Cast)
+   ========================================================================== */
+.studio-side-col {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.side-top-card {
+  display: grid;
+  grid-template-columns: 125px 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+.side-poster-wrap {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  aspect-ratio: 2 / 3;
+  border: 1px solid var(--border);
+}
+
+.side-poster-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.side-poster-score {
+  position: absolute;
+  top: 7px;
+  inset-inline-end: 7px;
+  background: rgba(6, 7, 11, 0.86);
+  color: #fbbf24;
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: 6px;
+}
+
+.side-facts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.fact-item {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.fact-label {
+  font-size: 0.74rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.fact-value {
+  font-size: 0.86rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.side-movie-heading {
+  font-size: 1.22rem;
+  font-weight: 800;
+  line-height: 1.25;
+  color: #ffffff;
+}
+
+.side-synopsis-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-size: 0.83rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+  max-height: 135px;
+  overflow-y: auto;
+}
+
+.side-genre-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.side-genre-chip {
+  padding: 5px 11px;
+  border-radius: 8px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+/* Trailers Strip inside Side Panel */
+.side-block-heading {
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.side-trailers-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.trailer-pill-btn {
+  height: 40px;
+  padding: 0 12px;
+  border-radius: 10px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  font-size: 0.78rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.trailer-pill-btn:hover {
+  border-color: var(--border-hover);
+  background: var(--accent-soft);
+  color: var(--accent-light);
+}
+
+/* Interactive Characters & Actors List */
+.characters-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 360px;
+  overflow-y: auto;
+  padding-inline-end: 2px;
+}
+
+.character-row-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.character-row-card:hover {
+  border-color: var(--border-hover);
+  background: var(--bg-elevated);
+  transform: translateX(-3px);
+}
+
+html[dir="ltr"] .character-row-card:hover {
+  transform: translateX(3px);
+}
+
+.char-avatar {
+  width: 48px;
+  height: 58px;
+  border-radius: 9px;
+  object-fit: cover;
+  background: var(--bg-elevated);
+  flex-shrink: 0;
+}
+
+.char-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.char-role-name {
+  font-size: 0.84rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.char-actor-name {
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.char-explore-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--accent-light);
+  padding: 3px 8px;
+  border-radius: 99px;
+  background: var(--accent-soft);
+  white-space: nowrap;
+}
+
+/* ==========================================================================
+   ACTOR PROFILE & FILMOGRAPHY MODAL (#actorModal)
    ========================================================================== */
 .modal-overlay {
   position: fixed;
   inset: 0;
   z-index: 400;
-  background: rgba(3, 5, 10, 0.84);
+  background: rgba(3, 5, 10, 0.86);
   backdrop-filter: blur(14px);
   display: flex;
   align-items: center;
@@ -1476,18 +2065,6 @@ html[dir="ltr"] .nav-drawer {
   border-bottom: 1px solid var(--border);
 }
 
-.modal-title-wrap {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.modal-sub-meta {
-  font-size: 0.8rem;
-  color: var(--text-muted);
-}
-
 .modal-close-x {
   width: 34px;
   height: 34px;
@@ -1505,14 +2082,70 @@ html[dir="ltr"] .nav-drawer {
   color: var(--on-accent);
 }
 
-.floating-x {
-  position: absolute;
-  top: 14px;
-  inset-inline-end: 14px;
-  z-index: 10;
+.actor-modal-box {
+  max-width: 980px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
 }
 
-/* Auth Modal */
+.actor-modal-body {
+  padding: 22px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.actor-hero-header {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.actor-profile-img {
+  width: 120px;
+  height: 160px;
+  border-radius: 16px;
+  object-fit: cover;
+  border: 2px solid var(--border-hover);
+  flex-shrink: 0;
+}
+
+.actor-bio-col {
+  flex: 1;
+  min-width: 240px;
+}
+
+.actor-name-heading {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+
+.actor-sub-facts {
+  font-size: 0.82rem;
+  color: var(--accent-light);
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.actor-bio-text {
+  font-size: 0.83rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+  max-height: 110px;
+  overflow-y: auto;
+}
+
+.actor-credits-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 14px;
+}
+
+/* Auth & Codes Modals */
 .auth-modal-box {
   max-width: 430px;
 }
@@ -1572,10 +2205,6 @@ html[dir="ltr"] .nav-drawer {
   outline: none;
 }
 
-.auth-field input:focus {
-  border-color: var(--accent-light);
-}
-
 .auth-submit-btn {
   height: 44px;
   border-radius: 11px;
@@ -1604,340 +2233,6 @@ html[dir="ltr"] .nav-drawer {
   color: var(--accent-light);
 }
 
-.quick-guest-btn:hover {
-  background: var(--accent-soft);
-  border-color: var(--border-hover);
-}
-
-/* ==========================================================================
-   40-SERVER STREAMING PLAYER MODAL
-   ========================================================================== */
-.player-modal-box {
-  max-width: 1080px;
-}
-
-.player-controls-deck {
-  background: var(--bg-card);
-  border-bottom: 1px solid var(--border);
-  padding: 12px 18px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.player-top-filters {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-}
-
-.server-search-group {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex: 1;
-  min-width: 240px;
-}
-
-.server-count-pill {
-  background: var(--accent-soft);
-  color: var(--accent-light);
-  border: 1px solid var(--border-hover);
-  padding: 4px 10px;
-  border-radius: 99px;
-  font-size: 0.75rem;
-  font-weight: 800;
-  white-space: nowrap;
-}
-
-.server-quick-select {
-  height: 36px;
-  padding: 0 12px;
-  border-radius: 10px;
-  background: var(--bg-elevated);
-  border: 1px solid var(--border);
-  font-size: 0.8rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  outline: none;
-  flex: 1;
-  max-width: 280px;
-}
-
-.series-ep-bar {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.series-ep-bar label {
-  font-size: 0.76rem;
-  font-weight: 700;
-  color: var(--accent-light);
-}
-
-/* Scrollable 40-Servers Ribbon */
-.servers-scroll-ribbon {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  overflow-x: auto;
-  padding: 4px 2px 6px;
-  scrollbar-width: thin;
-  scrollbar-color: var(--accent) var(--bg-elevated);
-}
-
-.servers-scroll-ribbon::-webkit-scrollbar {
-  height: 5px;
-}
-
-.servers-scroll-ribbon::-webkit-scrollbar-track {
-  background: var(--bg-elevated);
-  border-radius: 99px;
-}
-
-.servers-scroll-ribbon::-webkit-scrollbar-thumb {
-  background: var(--accent);
-  border-radius: 99px;
-}
-
-.srv-btn {
-  padding: 6px 12px;
-  border-radius: 9px;
-  background: var(--bg-elevated);
-  border: 1px solid var(--border);
-  font-size: 0.76rem;
-  font-weight: 700;
-  color: var(--text-secondary);
-  white-space: nowrap;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  transition: all 0.18s ease;
-  flex-shrink: 0;
-}
-
-.srv-btn:hover {
-  border-color: var(--border-hover);
-  color: var(--text-primary);
-  transform: translateY(-1px);
-}
-
-.srv-btn.active {
-  background: linear-gradient(135deg, var(--accent), var(--accent-2));
-  border-color: transparent;
-  color: var(--on-accent);
-  box-shadow: 0 4px 14px var(--accent-glow);
-}
-
-.srv-num {
-  font-size: 0.66rem;
-  opacity: 0.75;
-  padding: 1px 5px;
-  border-radius: 5px;
-  background: rgba(0, 0, 0, 0.25);
-}
-
-.srv-tag {
-  font-size: 0.64rem;
-  padding: 1px 5px;
-  border-radius: 5px;
-  background: rgba(255, 255, 255, 0.12);
-  color: #fbbf24;
-}
-
-.srv-btn.active .srv-tag {
-  background: rgba(0, 0, 0, 0.28);
-  color: #ffffff;
-}
-
-.video-stage {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  background: #000000;
-  overflow: hidden;
-}
-
-.video-stage video,
-.video-stage iframe,
-.video-stage canvas {
-  width: 100%;
-  height: 100%;
-  display: block;
-  border: 0;
-}
-
-.video-custom-controls {
-  position: absolute;
-  inset-inline: 0;
-  bottom: 0;
-  padding: 12px 16px;
-  background: linear-gradient(0deg, rgba(0, 0, 0, 0.88), transparent);
-}
-
-.timeline-bar {
-  height: 5px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 99px;
-  margin-bottom: 10px;
-  cursor: pointer;
-  overflow: hidden;
-}
-
-.timeline-fill {
-  height: 100%;
-  width: 0%;
-  background: linear-gradient(90deg, var(--accent), var(--accent-2));
-}
-
-.controls-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.controls-side {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.v-ctrl-btn {
-  padding: 4px 10px;
-  border-radius: 7px;
-  background: rgba(255, 255, 255, 0.14);
-  color: #ffffff;
-  font-size: 0.76rem;
-  font-weight: 700;
-}
-
-.v-time {
-  font-size: 0.76rem;
-  color: #cbd5e1;
-  font-family: monospace;
-}
-
-/* Details Modal */
-.details-modal-box {
-  max-width: 880px;
-  max-height: 90vh;
-  overflow-y: auto;
-}
-
-.details-layout {
-  display: grid;
-  grid-template-columns: 250px 1fr;
-  gap: 26px;
-  padding: 26px;
-}
-
-.details-poster-col img {
-  width: 100%;
-  aspect-ratio: 2 / 3;
-  object-fit: cover;
-  border-radius: 16px;
-  border: 1px solid var(--border);
-}
-
-.details-heading {
-  font-size: 1.7rem;
-  font-weight: 800;
-  margin: 8px 0 10px;
-}
-
-.details-story {
-  font-size: 0.9rem;
-  color: var(--text-secondary);
-  line-height: 1.7;
-  margin-bottom: 16px;
-}
-
-.details-specs-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-  padding: 12px 14px;
-  border-radius: 14px;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  margin-bottom: 18px;
-  font-size: 0.84rem;
-}
-
-.details-cta-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-.sub-heading {
-  font-size: 0.86rem;
-  font-weight: 800;
-  color: var(--text-secondary);
-  margin-bottom: 8px;
-}
-
-.cast-pills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-bottom: 18px;
-}
-
-.cast-tag {
-  padding: 4px 10px;
-  border-radius: 99px;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  font-size: 0.76rem;
-}
-
-.review-form-row {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 12px;
-  flex-wrap: wrap;
-}
-
-.review-form-row input {
-  flex: 1;
-  min-width: 140px;
-  height: 38px;
-  padding: 0 12px;
-  border-radius: 10px;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  font-size: 0.82rem;
-  outline: none;
-}
-
-.compact-btn {
-  height: 38px;
-  padding: 0 16px;
-  font-size: 0.8rem;
-}
-
-.reviews-list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  max-height: 140px;
-  overflow-y: auto;
-}
-
-.review-card-item {
-  padding: 8px 12px;
-  border-radius: 10px;
-  background: var(--bg-card);
-  font-size: 0.8rem;
-}
-
-/* VIP Codes Modal */
 .codes-modal-box {
   max-width: 500px;
 }
@@ -1985,11 +2280,6 @@ html[dir="ltr"] .nav-drawer {
   background: var(--bg-card);
   border: 1px solid var(--border);
   cursor: pointer;
-  transition: border-color 0.18s ease;
-}
-
-.code-row-item:hover {
-  border-color: var(--border-hover);
 }
 
 .code-key-pill {
@@ -2032,7 +2322,7 @@ html[dir="ltr"] .nav-drawer {
 }
 
 .footer-wrap {
-  max-width: 1420px;
+  max-width: 1480px;
   margin: 0 auto;
   display: flex;
   align-items: center;
@@ -2043,31 +2333,19 @@ html[dir="ltr"] .nav-drawer {
   color: var(--text-muted);
 }
 
-.footer-brand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.footer-brand strong {
-  color: var(--text-primary);
-}
-
 /* Responsive Breakpoints */
+@media (max-width: 1080px) {
+  .studio-layout-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 820px) {
   .hero-spotlight {
     padding: 24px;
     min-height: 380px;
   }
-  .details-layout {
-    grid-template-columns: 1fr;
-  }
-  .details-poster-col img {
-    max-width: 200px;
-    margin: 0 auto;
-  }
-  .movies-grid,
-  .movies-Blur-grid {
+  .movies-grid {
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: 14px;
   }
