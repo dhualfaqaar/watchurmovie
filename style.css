@@ -1,9 +1,9 @@
 /* ==========================================================================
-   WatchUrMovie — Streamex Studio + Live Football/TV + Full-Page Search Edition
+   WatchUrMovie — Streamex Studio + 10-Server Live TV Hub + Full-Page Search
    - Clean Slide-Out Drawer (Home, Movies, Series, Football & Live TV, Watchlist)
-   - Full-Page Watch Studio (#watchStudioView) + 28 Distinct Servers + Season Pack DL
-   - Live Football & TV Channels Hub (#liveTvView): Iraqi League, EPL, La Liga, MBC, CN
-   - Full-Page Search View & Massive Multi-Page TMDB Library
+   - Header Bar without clutter (Live TV button exclusively in Drawer)
+   - Luxury Live TV & Football Broadcast Studio (10 Working Servers per Channel)
+   - Full-Page Watch Studio (#watchStudioView) + 28 Movie Servers + Season Pack DL
    ========================================================================== */
 
 :root,
@@ -151,7 +151,7 @@ a {
 }
 
 /* ==========================================================================
-   CLEAN TOP HEADER BAR
+   CLEAN TOP HEADER BAR (No Extra Clutter Next to Sign-In)
    ========================================================================== */
 .site-header {
   position: sticky;
@@ -384,42 +384,13 @@ a {
   gap: 10px;
 }
 
-/* Header Quick Football & Live TV Button */
-.header-live-tv-btn {
-  height: 38px;
-  padding: 0 14px;
-  border-radius: var(--radius-pill);
-  background: rgba(239, 68, 68, 0.14);
-  border: 1px solid rgba(239, 68, 68, 0.4);
-  color: #fca5a5;
-  font-size: 0.84rem;
-  font-weight: 800;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  transition: var(--transition);
-}
-
-.header-live-tv-btn:hover,
-.header-live-tv-btn.active {
-  background: #ef4444;
-  border-color: #ef4444;
-  color: #fff;
-  box-shadow: 0 6px 18px rgba(239, 68, 68, 0.35);
-}
-
 .live-dot-pulse {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #ef4444;
-  box-shadow: 0 0 10px #ef4444;
+  background: #10b981;
+  box-shadow: 0 0 10px #10b981;
   animation: livePulse 1.4s infinite;
-}
-
-.header-live-tv-btn:hover .live-dot-pulse,
-.header-live-tv-btn.active .live-dot-pulse {
-  background: #fff;
 }
 
 @keyframes livePulse {
@@ -483,7 +454,7 @@ a {
 }
 
 /* ==========================================================================
-   SLIDE-OUT SIDEBAR DRAWER (Cleaned Up)
+   SLIDE-OUT SIDEBAR DRAWER
    ========================================================================== */
 .drawer-backdrop {
   position: fixed;
@@ -651,16 +622,18 @@ html[dir="ltr"] .nav-drawer {
 }
 
 .drawer-nav-item.live-tv-item {
-  background: rgba(239, 68, 68, 0.1);
-  border: 1px solid rgba(239, 68, 68, 0.3);
-  color: #fca5a5;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.14), rgba(6, 182, 212, 0.12));
+  border: 1px solid rgba(16, 185, 129, 0.38);
+  color: #6ee7b7;
+  font-weight: 800;
 }
 
 .drawer-nav-item.live-tv-item:hover,
 .drawer-nav-item.live-tv-item.active {
-  background: #ef4444;
+  background: linear-gradient(135deg, #10b981, #06b6d4);
   color: #fff;
-  border-color: #ef4444;
+  border-color: transparent;
+  box-shadow: 0 6px 18px rgba(16, 185, 129, 0.3);
 }
 
 .drawer-count-pill {
@@ -916,7 +889,11 @@ html[dir="ltr"] .nav-drawer {
   gap: 28px;
 }
 
-/* Search Mode Banner (When User Presses Enter in Search) */
+.catalog-section {
+  display: flex;
+  flex-direction: column;
+}
+
 .search-mode-banner {
   background: linear-gradient(135deg, rgba(139, 92, 246, 0.18), rgba(6, 182, 212, 0.14));
   border: 1px solid var(--border-strong);
@@ -1665,7 +1642,6 @@ html[dir="ltr"] .nav-drawer {
   gap: 8px;
 }
 
-/* Full Season Pack Highlight Box (For TV Series) */
 .season-pack-box {
   background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(6, 182, 212, 0.12));
   border: 1px solid rgba(52, 211, 153, 0.45);
@@ -1764,7 +1740,6 @@ html[dir="ltr"] .nav-drawer {
   color: #fff;
 }
 
-/* Recommended Section */
 .studio-recommended-section {
   margin-top: 8px;
   display: flex;
@@ -1815,7 +1790,6 @@ html[dir="ltr"] .nav-drawer {
   scrollbar-width: thin;
 }
 
-/* Right Sidebar Info Panel */
 .studio-info-sidebar {
   background: var(--bg-secondary);
   border: 1px solid var(--border);
@@ -2016,7 +1990,7 @@ html[dir="ltr"] .nav-drawer {
 }
 
 /* ==========================================================================
-   VIEW 3: FOOTBALL & LIVE TV CHANNELS HUB (#liveTvView)
+   VIEW 3: SLEEK, ORGANIZED 10-SERVER LIVE TV & FOOTBALL HUB (#liveTvView)
    ========================================================================== */
 .live-tv-view {
   max-width: 1620px;
@@ -2026,20 +2000,21 @@ html[dir="ltr"] .nav-drawer {
 }
 
 .live-tv-hero-banner {
-  background: linear-gradient(135deg, rgba(16, 185, 129, 0.18), rgba(6, 182, 212, 0.15), rgba(139, 92, 246, 0.18));
+  background: linear-gradient(135deg, rgba(19, 22, 34, 0.96), rgba(13, 15, 23, 0.96));
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-xl);
-  padding: 22px 26px;
-  margin-bottom: 20px;
+  padding: 20px 24px;
+  margin-bottom: 18px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 18px;
   flex-wrap: wrap;
+  box-shadow: var(--shadow-card);
 }
 
 .live-tv-title-wrap h2 {
-  font-size: 1.45rem;
+  font-size: 1.35rem;
   font-weight: 800;
   display: flex;
   align-items: center;
@@ -2047,9 +2022,43 @@ html[dir="ltr"] .nav-drawer {
 }
 
 .live-tv-title-wrap p {
-  font-size: 0.88rem;
+  font-size: 0.84rem;
   color: var(--text-secondary);
-  margin-top: 4px;
+  margin-top: 3px;
+}
+
+.live-tv-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.channel-search-box {
+  height: 40px;
+  min-width: 240px;
+  padding: 0 14px;
+  border-radius: var(--radius-pill);
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.channel-search-box:focus-within {
+  border-color: var(--border-strong);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.channel-search-input {
+  width: 100%;
+  font-size: 0.85rem;
+  color: var(--text-primary);
+}
+
+.channel-search-input::placeholder {
+  color: var(--text-muted);
 }
 
 .league-tabs-bar {
@@ -2058,7 +2067,12 @@ html[dir="ltr"] .nav-drawer {
   gap: 8px;
   overflow-x: auto;
   padding-bottom: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 18px;
+  scrollbar-width: none;
+}
+
+.league-tabs-bar::-webkit-scrollbar {
+  display: none;
 }
 
 .league-tab-btn {
@@ -2082,15 +2096,15 @@ html[dir="ltr"] .nav-drawer {
 }
 
 .league-tab-btn.active {
-  background: linear-gradient(135deg, #10b981, #06b6d4);
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
   color: #fff;
   border-color: transparent;
-  box-shadow: 0 6px 18px rgba(16, 185, 129, 0.35);
+  box-shadow: 0 6px 18px var(--accent-glow);
 }
 
 .live-workspace-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 410px;
+  grid-template-columns: minmax(0, 1fr) 370px;
   gap: 22px;
   align-items: start;
   margin-bottom: 28px;
@@ -2100,6 +2114,7 @@ html[dir="ltr"] .nav-drawer {
   display: flex;
   flex-direction: column;
   gap: 14px;
+  min-width: 0;
 }
 
 .live-screen-shell {
@@ -2109,19 +2124,38 @@ html[dir="ltr"] .nav-drawer {
   background: #000;
   border-radius: var(--radius-lg);
   overflow: hidden;
-  border: 1px solid rgba(16, 185, 129, 0.45);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85);
+  border: 1px solid var(--border-strong);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.88);
 }
 
-.live-screen-shell video,
-.live-screen-shell iframe,
-.live-canvas-fallback {
+.live-video-element,
+.live-iframe-element {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   border: 0;
   background: #000;
+  object-fit: contain;
+}
+
+.live-status-pill-top {
+  position: absolute;
+  top: 14px;
+  inset-inline-start: 14px;
+  z-index: 15;
+  padding: 5px 12px;
+  border-radius: var(--radius-pill);
+  background: rgba(7, 8, 13, 0.82);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(16, 185, 129, 0.45);
+  color: #6ee7b7;
+  font-size: 0.75rem;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  pointer-events: none;
 }
 
 .live-channel-bar {
@@ -2145,9 +2179,9 @@ html[dir="ltr"] .nav-drawer {
 .live-badge-red {
   padding: 4px 10px;
   border-radius: var(--radius-pill);
-  background: rgba(239, 68, 68, 0.2);
-  border: 1px solid #ef4444;
-  color: #fca5a5;
+  background: rgba(16, 185, 129, 0.16);
+  border: 1px solid rgba(16, 185, 129, 0.45);
+  color: #6ee7b7;
   font-size: 0.72rem;
   font-weight: 800;
   display: inline-flex;
@@ -2155,33 +2189,86 @@ html[dir="ltr"] .nav-drawer {
   gap: 6px;
 }
 
-.live-source-btns {
+.live-channel-active-name {
+  font-weight: 800;
+  font-size: 1.05rem;
+  color: var(--text-primary);
+}
+
+.live-channel-active-sub {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+}
+
+.live-quick-tools {
   display: flex;
   align-items: center;
   gap: 8px;
   flex-wrap: wrap;
 }
 
-.live-srv-btn {
-  padding: 7px 13px;
+.live-tool-btn {
+  height: 36px;
+  padding: 0 13px;
   border-radius: var(--radius-sm);
   background: var(--bg-surface);
   border: 1px solid var(--border);
   font-size: 0.78rem;
   font-weight: 700;
   color: var(--text-secondary);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   transition: var(--transition);
 }
 
-.live-srv-btn.active,
-.live-srv-btn:hover {
-  background: rgba(16, 185, 129, 0.2);
-  border-color: #10b981;
-  color: #fff;
+.live-tool-btn:hover {
+  border-color: var(--border-strong);
+  color: var(--text-primary);
+  background: var(--accent-soft);
 }
 
-/* Today's Football Matches Scoreboard Sidebar */
-.matches-sidebar-box {
+/* 10 Servers Grid for Each Channel */
+.live-ten-servers-panel {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.live-ten-servers-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.live-ten-servers-title {
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.live-ten-servers-sub {
+  font-size: 0.76rem;
+  color: var(--text-secondary);
+}
+
+.live-ten-servers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(135px, 1fr));
+  gap: 8px;
+}
+
+/* Right Sidebar Quick Channel Switcher */
+.channels-sidebar-box {
   background: var(--bg-secondary);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
@@ -2189,82 +2276,89 @@ html[dir="ltr"] .nav-drawer {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  max-height: 620px;
+  max-height: 680px;
   overflow-y: auto;
 }
 
-.matches-sidebar-title {
-  font-size: 1rem;
+.channels-sidebar-title {
+  font-size: 0.98rem;
   font-weight: 800;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
 }
 
-.match-card-list {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.match-live-card {
-  background: var(--bg-surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  padding: 12px 14px;
+.side-channels-list {
   display: flex;
   flex-direction: column;
   gap: 8px;
+}
+
+.side-channel-item {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  gap: 11px;
   cursor: pointer;
   transition: var(--transition);
 }
 
-.match-live-card:hover,
-.match-live-card.active {
-  border-color: #10b981;
+.side-channel-item:hover {
+  border-color: var(--border-strong);
   background: var(--bg-elevated);
 }
 
-.match-league-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 0.72rem;
-  color: var(--accent-light);
-  font-weight: 700;
+.side-channel-item.active {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.22), rgba(6, 182, 212, 0.16));
+  border-color: var(--accent-light);
+  box-shadow: 0 4px 16px var(--accent-glow);
 }
 
-.match-teams-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
+.side-ch-badge {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: var(--bg-secondary);
+  border: 1.5px solid var(--border);
+  display: grid;
+  place-items: center;
+  font-family: var(--font-en);
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: #fff;
+  flex-shrink: 0;
+  text-align: center;
+  line-height: 1.1;
+}
+
+.side-ch-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.side-ch-name {
   font-size: 0.88rem;
   font-weight: 800;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.match-score-pill {
-  padding: 2px 10px;
-  border-radius: var(--radius-sm);
-  background: rgba(16, 185, 129, 0.16);
-  border: 1px solid rgba(16, 185, 129, 0.4);
-  color: #34d399;
-  font-family: var(--font-en);
-  font-size: 0.82rem;
-  font-weight: 800;
-}
-
-.match-carrier-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 0.74rem;
+.side-ch-desc {
+  font-size: 0.72rem;
   color: var(--text-secondary);
-  padding-top: 4px;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-/* Channels Grid (Sports, Iraqi Channels, MBC, Cartoon Network) */
+/* Full Bottom Channels Grid */
 .channels-section-block {
   display: flex;
   flex-direction: column;
@@ -2278,7 +2372,7 @@ html[dir="ltr"] .nav-drawer {
 
 .tv-channels-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(235px, 1fr));
   gap: 14px;
 }
 
@@ -2296,25 +2390,27 @@ html[dir="ltr"] .nav-drawer {
 
 .tv-channel-card:hover,
 .tv-channel-card.active {
-  border-color: #10b981;
+  border-color: var(--accent-light);
   background: var(--bg-elevated);
   transform: translateY(-3px);
   box-shadow: var(--shadow-card);
 }
 
 .tv-ch-logo {
-  width: 48px;
-  height: 48px;
+  width: 50px;
+  height: 50px;
   border-radius: 12px;
   background: var(--bg-surface);
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--border);
   display: grid;
   place-items: center;
   font-family: var(--font-en);
-  font-size: 0.78rem;
+  font-size: 0.74rem;
   font-weight: 800;
   color: #fff;
   flex-shrink: 0;
+  text-align: center;
+  line-height: 1.1;
 }
 
 .tv-ch-meta {
@@ -2337,6 +2433,7 @@ html[dir="ltr"] .nav-drawer {
   display: flex;
   align-items: center;
   gap: 6px;
+  margin-top: 2px;
 }
 
 /* ==========================================================================
@@ -2532,7 +2629,6 @@ html[dir="ltr"] .nav-drawer {
   font-weight: 700;
 }
 
-/* Load More & Empty State */
 .empty-catalog-box {
   text-align: center;
   padding: 56px 20px;
@@ -2635,9 +2731,4 @@ html[dir="ltr"] .nav-drawer {
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: 14px;
   }
-}
-
-.catalog-section {
-  display: flex;
-  flex-direction: column;
 }
