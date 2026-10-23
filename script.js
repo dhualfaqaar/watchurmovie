@@ -1,15 +1,14 @@
 /* ==========================================================================
-   WatchUrMovie — Calm, Eye-Soothing & Ultra-Organized Application Logic
-   - Powered by Live TMDB API (Key: 948d5b52b35e1e08e125bd0acbe23ace)
-   - Movie & Series Titles NEVER translated (Original English Titles Always)
-   - Real TMDB Posters, Backdrops, Arabic & English Overviews, Cast,
-     Live Global TMDB Search (/search/multi), Official Trailers & Load More!
+   WatchUrMovie — Streamex-Inspired Luxury Cinema Application (script.js)
+   - Clean Floating Header + 3-Lines Slide-Out Navigation Drawer (☰)
+   - Full User Authentication (Sign In, Create Account, Guest VIP, Logout)
+   - Signature Hover-Blur Movie Cards with Genre Badges, Synopsis & Watch CTA
+   - Live TMDB API (Key: 948d5b52b35e1e08e125bd0acbe23ace) + Original Titles
    ========================================================================== */
 
 (() => {
   'use strict';
 
-  // Official TMDB API v3 Key provided by user
   const BUILTIN_TMDB_KEY = '948d5b52b35e1e08e125bd0acbe23ace';
   const TMDB_BASE_URL = 'https://api.themoviedb.org/3';
   const TMDB_IMG_W500 = 'https://image.tmdb.org/t/p/w500';
@@ -17,154 +16,168 @@
 
   const I18N = {
     ar: {
+      searchPlaceholder: 'ابحث عن أي فيلم أو مسلسل...',
+      signInBtn: 'تسجيل الدخول',
+      guestStatus: 'زائر — سجل دخولك لحفظ قائمتك',
+      memberStatus: 'عضوية مفعلة ✓',
+      logoutBtn: 'خروج',
+      drawerSections: 'الأقسام الرئيسية',
+      drawerGenres: 'التصنيفات',
+      drawerTools: 'الإعدادات والمزايا',
+      drawerThemes: 'ثيمات الإضاءة',
       navHome: 'الرئيسية',
       navMovies: 'الأفلام',
       navSeries: 'المسلسلات',
       navTop10: 'الأعلى تقييماً',
-      navWatchlist: 'قائمتي',
-      searchPlaceholder: 'ابحث في قاعدة بيانات TMDB عن أي فيلم أو مسلسل...',
-      eyeCareBtn: 'راحة العين',
-      surpriseBtn: 'فاجئني',
-      codesBtn: 'الأكواد',
-      tmdbBtn: 'TMDB متصل ✓',
-      watchNow: 'بدء المشاهدة',
-      watchTrailer: 'الإعلان الرسمي (Trailer)',
-      moreDetails: 'معلومات العمل',
+      navWatchlist: 'قائمتي المفضلة',
+      surpriseBtn: 'اقتراح فيلم عشوائي',
+      eyeCareBtn: 'فلتر راحة العين الدافئ',
+      codesBtn: 'أكواد التفعيل (./codes)',
+      watchNow: 'شاهد الآن',
+      watchTrailer: 'الإعلان الرسمي',
+      moreDetails: 'التفاصيل',
       addToWatchlist: '+ حفظ في قائمتي',
-      inWatchlist: '✓ محفوظ في قائمتي',
-      spotlightQueueTitle: 'أبرز أفلام ومسلسلات الأسبوع',
-      spotlightQueueSub: 'بيانات حية من TMDB',
+      inWatchlist: '✓ في قائمتي',
       continueWatching: 'متابعة المشاهدة',
       clearHistory: 'مسح السجل',
-      exploreCatalog: 'مكتبة الأفلام والمسلسلات (TMDB)',
-      loadMoreBtn: 'عرض المزيد من الأفلام والمسلسلات +',
-      loadingMore: 'جاري جلب المزيد من TMDB...',
+      exploreCatalog: 'اكتشف الأفلام والمسلسلات',
+      loadMoreBtn: 'عرض المزيد من الأعمال +',
+      loadingMore: 'جاري التحميل...',
       allRatings: 'كل التقييمات',
       allYears: 'كل السنوات',
-      classicYears: 'قبل 2020',
-      sortTrending: 'الترتيب: الأكثر رواجاً',
-      sortRating: 'الترتيب: الأعلى تقييماً',
-      sortNewest: 'الترتيب: الأحدث إصداراً',
-      sortTitle: 'الترتيب: A–Z',
-      noResultsTitle: 'لا توجد أعمال مطابقة لهذا البحث',
-      noResultsDesc: 'جرب البحث بالاسم الإنجليزي للفيلم أو المسلسل للبحث المباشر في TMDB.',
+      classicYears: 'كلاسيكيات',
+      sortTrending: 'الأكثر رواجاً',
+      sortRating: 'الأعلى تقييماً',
+      sortNewest: 'الأحدث إصداراً',
+      sortTitle: 'الترتيب A–Z',
+      noResultsTitle: 'لم يتم العثور على نتائج مطابقة',
+      noResultsDesc: 'جرب البحث بالاسم الإنجليزي للفيلم أو تغيير التصنيف.',
       resetFilters: 'إظهار الكل',
-      trendingTop10: 'قائمة الشرف — الأعلى تقييماً على TMDB',
-      codesBannerTitle: 'متصل مباشرة مع TMDB API + أكواد المستودع (./codes)',
-      codesBannerDesc: 'يتم جلب البوسترات الأصلية، التقييمات، الممثلين، والقصص المترجمة مباشرة عبر مفتاح TMDB API الخاص بك.',
-      redeemCodeNow: 'الأكواد وإعدادات TMDB',
-      selectServer: 'المصدر:',
+      trendingTop10: 'أفضل 10 أعمال تقييماً على TMDB',
+      selectServer: 'سيرفر العرض:',
       subtitlesLabel: 'الترجمة:',
-      qualityLabel: 'الدقة:',
-      episodesListTitle: 'حلقات المسلسل',
-      castAndCrew: 'طاقم التمثيل والإخراج (TMDB Credits)',
-      userReviews: 'انطباعات المشاهدين',
-      submitReview: 'نشر',
-      codesModalHeading: 'إعدادات TMDB API وأكواد التفعيل',
-      codesModalSub: 'مفتاح TMDB API الخاص بك مفعل ومتصل حالياً. يمكنك أيضاً تفعيل أكواد المستودع بالأسفل:',
+      castAndCrew: 'طاقم التمثيل والإخراج',
+      userReviews: 'تعليقات المشاهدين',
+      submitReview: 'إرسال',
+      authModalTitle: 'حسابك في WatchUrMovie',
+      tabLogin: 'تسجيل الدخول',
+      tabRegister: 'إنشاء حساب',
+      nameLabel: 'الاسم الكامل أو المستعار',
+      emailLabel: 'البريد الإلكتروني',
+      passLabel: 'كلمة المرور',
+      submitLoginBtn: 'دخول إلى الحساب',
+      submitRegisterBtn: 'إنشاء حساب جديد',
+      quickGuestBtn: 'دخول سريع كزائر VIP ⚡',
+      codesModalHeading: 'أكواد التفعيل وإعدادات TMDB',
+      codesModalSub: 'اضغط على أي كود بالأسفل لتفعيله فوراً:',
       activateCodeBtn: 'تفعيل',
-      saveTmdbBtn: 'تحديث المفتاح',
       typeMovie: 'فيلم',
       typeSeries: 'مسلسل',
-      episodeWord: 'الحلقة',
-      directorLabel: 'المخرج / العمل',
-      yearLabel: 'سنة الإصدار',
+      directorLabel: 'المخرج / الإنتاج',
+      yearLabel: 'الإصدار',
       durationLabel: 'المدة / المواسم',
-      qualityMetaLabel: 'التقييم العالمي',
+      qualityMetaLabel: 'التقييم',
       useCodeNow: 'تفعيل ←',
-      toastAddedWatchlist: 'تم الحفظ في قائمتك',
+      toastAddedWatchlist: 'تمت الإضافة إلى قائمتك المفضلة',
       toastRemovedWatchlist: 'تمت الإزالة من قائمتك',
-      toastServerSwitched: 'تم تبديل مصدر العرض بنجاح',
-      toastRandomPick: 'اخترنا لك هذا العمل من TMDB:',
-      toastReviewAdded: 'تم نشر انطباعك بنجاح',
+      toastServerSwitched: 'تم تبديل السيرفر بنجاح',
+      toastRandomPick: 'اخترنا لك هذا العمل:',
+      toastReviewAdded: 'تم نشر تعليقك بنجاح',
       toastHistoryCleared: 'تم مسح سجل المشاهدة',
-      toastEyeOn: 'تم تفعيل فلتر راحة العين الدافئ',
+      toastEyeOn: 'تم تفعيل فلتر راحة العين',
       toastEyeOff: 'تم إيقاف فلتر راحة العين',
-      toastCodeSuccess: 'تم تفعيل الكود بنجاح:',
-      toastCodeInvalid: 'الكود غير مطابق، اختر أحد الأكواد بالأسفل',
-      toastTmdbConnected: 'تم الجلب الحي من TMDB API بنجاح!',
-      toastTmdbError: 'تعذر الاتصال بـ TMDB API، تأكد من الاتصال بالإنترنت',
+      toastWelcomeUser: 'أهلاً بك، ',
+      toastLoggedOut: 'تم تسجيل الخروج بنجاح',
+      toastCodeSuccess: 'تم تفعيل الكود:',
+      toastCodeInvalid: 'الكود غير صحيح، اختر أحد الأكواد بالأسفل',
       genreAll: 'الكل',
-      genreScifi: 'خيال علمي وفانتازيا',
+      genreAction: 'أكشن ومغامرة',
+      genreScifi: 'خيال علمي',
       genreDrama: 'دراما',
       genreThriller: 'غموض وإثارة',
-      genreAction: 'أكشن ومغامرة',
       genreAnimation: 'أنمي ورسوم',
       genreComedy: 'كوميديا'
     },
     en: {
+      searchPlaceholder: 'Search any movie or series...',
+      signInBtn: 'Sign In',
+      guestStatus: 'Guest — Sign in to sync your list',
+      memberStatus: 'Active Member ✓',
+      logoutBtn: 'Log out',
+      drawerSections: 'Main Navigation',
+      drawerGenres: 'Categories & Genres',
+      drawerTools: 'Comfort & Perks',
+      drawerThemes: 'Ambient Themes',
       navHome: 'Home',
       navMovies: 'Movies',
-      navSeries: 'Series',
+      navSeries: 'TV Shows',
       navTop10: 'Top Rated',
-      navWatchlist: 'My List',
-      searchPlaceholder: 'Search any movie or series live on TMDB...',
-      eyeCareBtn: 'Eye Care',
-      surpriseBtn: 'Surprise Me',
-      codesBtn: 'Codes',
-      tmdbBtn: 'TMDB Live ✓',
+      navWatchlist: 'My Watchlist',
+      surpriseBtn: 'Surprise Me Pick',
+      eyeCareBtn: 'Eye Comfort Shield',
+      codesBtn: 'Access Codes (./codes)',
       watchNow: 'Watch Now',
       watchTrailer: 'Official Trailer',
-      moreDetails: 'Movie Info',
-      addToWatchlist: '+ Save to List',
-      inWatchlist: '✓ Saved in List',
-      spotlightQueueTitle: 'Trending This Week',
-      spotlightQueueSub: 'Live from TMDB',
+      moreDetails: 'Details',
+      addToWatchlist: '+ Add to List',
+      inWatchlist: '✓ In My List',
       continueWatching: 'Continue Watching',
-      clearHistory: 'Clear History',
-      exploreCatalog: 'TMDB Cinema Library',
-      loadMoreBtn: 'Load More from TMDB +',
-      loadingMore: 'Loading more from TMDB...',
+      clearHistory: 'Clear',
+      exploreCatalog: 'Explore Movies & TV Shows',
+      loadMoreBtn: 'Load More Titles +',
+      loadingMore: 'Loading...',
       allRatings: 'All Ratings',
       allYears: 'All Years',
-      classicYears: 'Before 2020',
-      sortTrending: 'Sort: Trending',
-      sortRating: 'Sort: Highest Rated',
-      sortNewest: 'Sort: Newest',
-      sortTitle: 'Sort: A–Z',
+      classicYears: 'Classics',
+      sortTrending: 'Trending',
+      sortRating: 'Highest Rated',
+      sortNewest: 'Newest',
+      sortTitle: 'A–Z',
       noResultsTitle: 'No matching titles found',
-      noResultsDesc: 'Try resetting filters or searching another title on TMDB.',
+      noResultsDesc: 'Try searching another title or resetting filters.',
       resetFilters: 'Reset All',
-      trendingTop10: 'Honor Roll — Top Rated on TMDB',
-      codesBannerTitle: 'Live TMDB API Connected + Repo Codes (./codes)',
-      codesBannerDesc: 'Fetching official posters, backdrops, cast credits, trailers, and synopses directly via your TMDB API key.',
-      redeemCodeNow: 'Codes & TMDB Settings',
-      selectServer: 'Source:',
+      trendingTop10: 'Top 10 Highest Rated on TMDB',
+      selectServer: 'Server:',
       subtitlesLabel: 'Subtitles:',
-      qualityLabel: 'Resolution:',
-      episodesListTitle: 'Episodes',
-      castAndCrew: 'Cast & Crew (TMDB Credits)',
-      userReviews: 'Audience Impressions',
+      castAndCrew: 'Cast & Crew',
+      userReviews: 'Audience Comments',
       submitReview: 'Post',
-      codesModalHeading: 'TMDB API & ./codes Perks',
-      codesModalSub: 'Your TMDB API key is active and connected. You can also activate repository codes below:',
+      authModalTitle: 'WatchUrMovie Account',
+      tabLogin: 'Sign In',
+      tabRegister: 'Create Account',
+      nameLabel: 'Display Name',
+      emailLabel: 'Email Address',
+      passLabel: 'Password',
+      submitLoginBtn: 'Sign In',
+      submitRegisterBtn: 'Create Account',
+      quickGuestBtn: '1-Click Guest VIP Access ⚡',
+      codesModalHeading: 'VIP Codes & TMDB API',
+      codesModalSub: 'Click any repository code below to activate immediately:',
       activateCodeBtn: 'Activate',
-      saveTmdbBtn: 'Update Key',
       typeMovie: 'Movie',
-      typeSeries: 'Series',
-      episodeWord: 'Episode',
+      typeSeries: 'TV Show',
       directorLabel: 'Director / Creator',
       yearLabel: 'Released',
       durationLabel: 'Runtime',
-      qualityMetaLabel: 'TMDB Score',
+      qualityMetaLabel: 'Score',
       useCodeNow: 'Activate →',
-      toastAddedWatchlist: 'Saved to your list',
-      toastRemovedWatchlist: 'Removed from your list',
-      toastServerSwitched: 'Streaming source switched',
-      toastRandomPick: 'Selected for you from TMDB:',
-      toastReviewAdded: 'Your impression has been posted',
+      toastAddedWatchlist: 'Added to your watchlist',
+      toastRemovedWatchlist: 'Removed from your watchlist',
+      toastServerSwitched: 'Streaming server switched',
+      toastRandomPick: 'Picked for you:',
+      toastReviewAdded: 'Your comment has been posted',
       toastHistoryCleared: 'Watch history cleared',
-      toastEyeOn: 'Warm Eye-Comfort filter enabled',
-      toastEyeOff: 'Eye-Comfort filter disabled',
+      toastEyeOn: 'Eye Comfort filter enabled',
+      toastEyeOff: 'Eye Comfort filter disabled',
+      toastWelcomeUser: 'Welcome back, ',
+      toastLoggedOut: 'Logged out successfully',
       toastCodeSuccess: 'Code activated:',
       toastCodeInvalid: 'Invalid code, click one below',
-      toastTmdbConnected: 'Live TMDB data synchronized!',
-      toastTmdbError: 'Could not reach TMDB API',
       genreAll: 'All',
-      genreScifi: 'Sci-Fi & Fantasy',
+      genreAction: 'Action',
+      genreScifi: 'Sci-Fi',
       genreDrama: 'Drama',
-      genreThriller: 'Mystery & Thriller',
-      genreAction: 'Action & Adventure',
+      genreThriller: 'Thriller',
       genreAnimation: 'Anime & Animation',
       genreComedy: 'Comedy'
     }
@@ -197,38 +210,37 @@
   };
 
   function makePosterUri(item) {
-    const [c1, c2, accent] = item.palette || ['#13262f', '#0a141c', '#2dd4bf'];
+    const [c1, c2, accent] = item.palette || ['#121526', '#090b14', '#8b5cf6'];
     const safeTitle = String(item.title || 'Movie').replace(/[&<>'"]/g, '');
     const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 600" width="400" height="600">
       <defs>
         <linearGradient id="bg" x1="0" y1="0" x2="0.8" y2="1">
           <stop offset="0%" stop-color="${c1}"/>
           <stop offset="55%" stop-color="${c2}"/>
-          <stop offset="100%" stop-color="#070a10"/>
+          <stop offset="100%" stop-color="#06070b"/>
         </linearGradient>
       </defs>
       <rect width="400" height="600" fill="url(#bg)"/>
-      <circle cx="200" cy="195" r="86" fill="none" stroke="${accent}" stroke-width="1.6" stroke-opacity="0.45"/>
-      <rect x="26" y="26" width="348" height="548" rx="14" fill="none" stroke="#ffffff" stroke-opacity="0.09" stroke-width="1"/>
-      <line x1="56" y1="440" x2="344" y2="440" stroke="${accent}" stroke-opacity="0.45" stroke-width="1.2"/>
+      <circle cx="200" cy="195" r="88" fill="none" stroke="${accent}" stroke-width="1.6" stroke-opacity="0.45"/>
+      <rect x="26" y="26" width="348" height="548" rx="16" fill="none" stroke="#ffffff" stroke-opacity="0.08" stroke-width="1"/>
       <text x="200" y="490" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-weight="800" font-size="20" fill="#f8fafc">${safeTitle}</text>
-      <text x="200" y="532" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-weight="700" font-size="11" fill="${accent}" letter-spacing="3">${item.year} • ${item.quality}</text>
+      <text x="200" y="530" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-weight="700" font-size="11" fill="${accent}" letter-spacing="3">${item.year} • ${item.quality}</text>
     </svg>`;
     return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
   }
 
   function makeBackdropUri(item) {
-    const [c1, c2, accent] = item.palette || ['#13262f', '#0a141c', '#2dd4bf'];
+    const [c1, c2, accent] = item.palette || ['#121526', '#090b14', '#8b5cf6'];
     const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="1280" height="720">
       <defs>
         <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
           <stop offset="0%" stop-color="${c1}"/>
           <stop offset="55%" stop-color="${c2}"/>
-          <stop offset="100%" stop-color="#070a10"/>
+          <stop offset="100%" stop-color="#06070b"/>
         </linearGradient>
       </defs>
       <rect width="1280" height="720" fill="url(#bg)"/>
-      <circle cx="860" cy="280" r="220" fill="none" stroke="${accent}" stroke-opacity="0.15" stroke-width="1.5"/>
+      <circle cx="860" cy="280" r="220" fill="none" stroke="${accent}" stroke-opacity="0.18" stroke-width="1.5"/>
     </svg>`;
     return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
   }
@@ -240,7 +252,6 @@
     'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4'
   ];
 
-  // Fallback initial items before TMDB response arrives (with real TMDB poster paths!)
   const INITIAL_CATALOG = [
     {
       id: 'tmdb_movie_693134',
@@ -258,10 +269,10 @@
       director: 'Denis Villeneuve',
       cast: ['Timothée Chalamet', 'Zendaya', 'Rebecca Ferguson', 'Javier Bardem'],
       synopsisAr: 'يتحد بول أتريدس مع تشاني والفريمن في رحلة انتقام ضد المتآمرين الذين دمروا عائلته، وعليه الاختيار بين حب حياته ومصير الكون.',
-      synopsisEn: 'Follow the mythic journey of Paul Atreides as he unites with Chani and the Fremen while on a warpath of revenge against the conspirators who destroyed his family.',
+      synopsisEn: 'Follow the mythic journey of Paul Atreides as he unites with Chani and the Fremen while on a warpath of revenge.',
       posterPath: '/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg',
       backdropPath: '/xOMo8BRK7PfcJv9JCnx7s5hj0PX.jpg',
-      palette: ['#13262f', '#0a141c', '#2dd4bf'],
+      palette: ['#18152e', '#090814', '#8b5cf6'],
       streamUrl: VIDEO_STREAMS[0]
     },
     {
@@ -278,7 +289,7 @@
       quality: '4K IMAX',
       genres: ['scifi', 'drama'],
       director: 'Christopher Nolan',
-      cast: ['Matthew McConaughey', 'Anne Hathaway', 'Jessica Chastain', 'Michael Caine'],
+      cast: ['Matthew McConaughey', 'Anne Hathaway', 'Jessica Chastain'],
       synopsisAr: 'فريق من المستكشفين يسافر عبر ثقب دودي في الفضاء في محاولة لضمان بقاء البشرية وإيجاد كوكب جديد صالح للحياة.',
       synopsisEn: 'The adventures of a group of explorers who make use of a newly discovered wormhole to surpass the limitations on human space travel.',
       posterPath: '/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg',
@@ -319,13 +330,12 @@
       rating: 8.9,
       durationAr: '5 مواسم (62 حلقة)',
       durationEn: '5 Seasons (62 Eps)',
-      episodesCount: 10,
       quality: '4K Remaster',
       genres: ['drama', 'thriller'],
       director: 'Vince Gilligan',
       cast: ['Bryan Cranston', 'Aaron Paul', 'Anna Gunn', 'Giancarlo Esposito'],
       synopsisAr: 'معلم كيمياء في المرحلة الثانوية يُشخص بمرض خطير فيلجأ إلى تصنيع المواد الكيميائية مع طالب سابق لتأمين مستقبل عائلته.',
-      synopsisEn: 'A chemistry teacher diagnosed with inoperable lung cancer turns to manufacturing and selling methamphetamine with a former student.',
+      synopsisEn: 'A chemistry teacher diagnosed with inoperable lung cancer turns to manufacturing and selling methamphetamine.',
       posterPath: '/ztkUQFLlC19CCMYHW9o1zWhJRNq.jpg',
       backdropPath: '/gc8PfyTqzqltKPW3X0cIVUGmagz.jpg',
       palette: ['#162419', '#0b120d', '#4ade80'],
@@ -339,12 +349,6 @@
     backdropUrl: item.backdropPath ? `${TMDB_IMG_ORIG}${item.backdropPath}` : makeBackdropUri(item)
   }));
 
-  const SUBTITLES_SCRIPT = [
-    { start: 0, end: 6, ar: 'مرحباً بك في تجربة المشاهدة الهادئة من WatchUrMovie', en: 'Welcome to the calm viewing experience on WatchUrMovie' },
-    { start: 6, end: 14, ar: 'متصل مباشرة بقاعدة بيانات TMDB العالمية للأفلام والمسلسلات', en: 'Connected live to The Movie Database (TMDB)' },
-    { start: 14, end: 24, ar: 'بث فائق الدقة 4K مع إمكانية التبديل بين المصادر والإعلان الرسمي', en: '4K playback with instant source and official trailer switching' }
-  ];
-
   const DEFAULT_REPO_CODES = [
     { code: 'WATCH2026', type: 'VIP_4K_IMAX', descAr: 'تفعيل جودة 4K IMAX مع صوت Dolby Atmos المحيطي', descEn: 'Unlock 4K IMAX Quality & Dolby Atmos Audio' },
     { code: 'IRAQVIP', type: 'VIP_UNLIMITED', descAr: 'عضوية خاصة مجانية + فتح العروض الحصرية المبكرة', descEn: 'Free Special Membership + Early Screenings' },
@@ -355,10 +359,11 @@
 
   const state = {
     lang: localStorage.getItem('wum_lang') || 'ar',
-    palette: localStorage.getItem('wum_palette') || 'aurora',
+    palette: localStorage.getItem('wum_palette') || 'streamex',
     eyeComfort: localStorage.getItem('wum_eye_comfort') === 'true',
-    viewMode: localStorage.getItem('wum_view_mode') || 'grid',
     vipUnlocked: localStorage.getItem('wum_vip') === 'true',
+    user: JSON.parse(localStorage.getItem('wum_user') || 'null'),
+    authMode: 'login', // 'login' | 'register'
     tmdbKey: localStorage.getItem('wum_tmdb_key') || BUILTIN_TMDB_KEY,
     tmdbConnected: false,
     tmdbPage: 1,
@@ -375,7 +380,6 @@
     reviews: JSON.parse(localStorage.getItem('wum_reviews') || '{}'),
     repoCodes: [...DEFAULT_REPO_CODES],
     currentPlayingItem: null,
-    activeServer: '1',
     canvasAnimId: null,
     usingFallbackCanvas: false,
     syntheticTime: 0,
@@ -387,7 +391,6 @@
     return (I18N[state.lang] && I18N[state.lang][key]) || key;
   }
 
-  // NEVER translate movie or series titles! Always keep original English title.
   function getTitle(item) {
     return item.title;
   }
@@ -400,13 +403,15 @@
     return state.lang === 'ar' ? item.durationAr : item.durationEn;
   }
 
+  function getGenreArray(item) {
+    return (item.genres || []).map((gId) => {
+      const gObj = GENRES.find((g) => g.id === gId);
+      return gObj ? t(gObj.key) : gId;
+    });
+  }
+
   function getGenreNames(item) {
-    return (item.genres || [])
-      .map((gId) => {
-        const gObj = GENRES.find((g) => g.id === gId);
-        return gObj ? t(gObj.key) : gId;
-      })
-      .join(' · ');
+    return getGenreArray(item).join(' · ');
   }
 
   function showToast(msg) {
@@ -431,6 +436,74 @@
   }
 
   // ---------------------------------------------------------------------------
+  // AUTHENTICATION & USER PROFILE UI
+  // ---------------------------------------------------------------------------
+  function renderAuthUI() {
+    const headerAuthBtn = document.getElementById('openAuthModalBtn');
+    const drawerUserName = document.getElementById('drawerUserName');
+    const drawerUserStatus = document.getElementById('drawerUserStatus');
+    const drawerAvatar = document.getElementById('drawerAvatar');
+    const drawerAuthActionBtn = document.getElementById('drawerAuthActionBtn');
+
+    if (state.user && state.user.name) {
+      const initial = state.user.name.trim().charAt(0).toUpperCase();
+      if (headerAuthBtn) {
+        headerAuthBtn.classList.add('logged-in');
+        headerAuthBtn.innerHTML = `<span class="user-avatar-mini">${initial}</span><span>${state.user.name}</span>`;
+      }
+      if (drawerUserName) drawerUserName.textContent = state.user.name;
+      if (drawerUserStatus) drawerUserStatus.textContent = t('memberStatus');
+      if (drawerAvatar) drawerAvatar.textContent = initial;
+      if (drawerAuthActionBtn) drawerAuthActionBtn.textContent = t('logoutBtn');
+    } else {
+      if (headerAuthBtn) {
+        headerAuthBtn.classList.remove('logged-in');
+        headerAuthBtn.innerHTML = `
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+          <span>${t('signInBtn')}</span>
+        `;
+      }
+      if (drawerUserName) drawerUserName.textContent = 'WatchUrMovie';
+      if (drawerUserStatus) drawerUserStatus.textContent = t('guestStatus');
+      if (drawerAvatar) drawerAvatar.textContent = 'W';
+      if (drawerAuthActionBtn) drawerAuthActionBtn.textContent = t('signInBtn');
+    }
+  }
+
+  function loginUser(name, email) {
+    state.user = {
+      name: name.trim(),
+      email: (email || '').trim() || 'member@watchurmovie.app'
+    };
+    localStorage.setItem('wum_user', JSON.stringify(state.user));
+    renderAuthUI();
+    document.getElementById('authModal')?.classList.add('hidden');
+    showToast(`${t('toastWelcomeUser')}${state.user.name}`);
+  }
+
+  function logoutUser() {
+    state.user = null;
+    localStorage.removeItem('wum_user');
+    renderAuthUI();
+    showToast(t('toastLoggedOut'));
+  }
+
+  // ---------------------------------------------------------------------------
+  // SLIDE-OUT DRAWER CONTROL
+  // ---------------------------------------------------------------------------
+  function toggleDrawer(forceOpen) {
+    const drawer = document.getElementById('navDrawer');
+    const backdrop = document.getElementById('drawerBackdrop');
+    if (!drawer || !backdrop) return;
+    const isOpen = typeof forceOpen === 'boolean' ? forceOpen : !drawer.classList.contains('open');
+    drawer.classList.toggle('open', isOpen);
+    backdrop.classList.toggle('open', isOpen);
+  }
+
+  // ---------------------------------------------------------------------------
   // LIVE TMDB API ENGINE
   // ---------------------------------------------------------------------------
   async function tmdbFetch(endpoint, params = {}) {
@@ -452,7 +525,6 @@
 
   function normalizeTmdbItem(raw, mediaType, rankIdx = 99) {
     const type = mediaType || (raw.media_type === 'tv' || raw.first_air_date ? 'series' : 'movie');
-    // Strictly keep English / Latin title (never Arabic translated title!)
     const englishTitle =
       raw.title_en ||
       (raw.original_language === 'en' ? (raw.original_title || raw.original_name) : null) ||
@@ -484,14 +556,14 @@
       rating: Math.max(5.0, Math.min(9.9, rating)),
       durationAr: type === 'series' ? 'مسلسل أصلي' : 'فيلم سينمائي',
       durationEn: type === 'series' ? 'TV Series' : 'Feature Film',
-      quality: rating >= 7.8 ? '4K IMAX' : '1080p FHD',
+      quality: rating >= 7.8 ? '4K ULTRA' : '1080p FHD',
       genres: mappedGenres,
       director: 'TMDB Official',
       cast: [],
       trailerKey: null,
-      synopsisAr: raw.overview_ar || raw.overview || 'قصة سينمائية من قاعدة بيانات TMDB العالمية.',
+      synopsisAr: raw.overview_ar || raw.overview || 'قصة سينمائية مشوقة من قاعدة بيانات TMDB العالمية.',
       synopsisEn: raw.overview_en || raw.overview || 'Official synopsis from The Movie Database (TMDB).',
-      palette: ['#13262f', '#0a141c', '#2dd4bf'],
+      palette: ['#18152e', '#090814', '#8b5cf6'],
       streamUrl: VIDEO_STREAMS[rankIdx % VIDEO_STREAMS.length]
     };
 
@@ -500,7 +572,7 @@
     return itemObj;
   }
 
-  async function syncWithTmdbApi(showSuccessToast = false) {
+  async function syncWithTmdbApi() {
     try {
       const [trendingMoviesEn, trendingMoviesAr, trendingTvEn, trendingTvAr, topRatedMoviesEn, topRatedMoviesAr] =
         await Promise.all([
@@ -542,8 +614,6 @@
 
       if (mergedList.length > 0) {
         const normalized = mergedList.map((raw, idx) => normalizeTmdbItem(raw, null, idx));
-
-        // Assign topRank 1..10 to highest rated items
         const byRating = [...normalized].sort((a, b) => b.rating - a.rating);
         byRating.slice(0, 10).forEach((item, i) => {
           item.topRank = i + 1;
@@ -553,26 +623,18 @@
         state.tmdbConnected = true;
         state.heroIndex = 0;
 
-        const tmdbPill = document.getElementById('tmdbStatusPill');
-        if (tmdbPill) {
-          tmdbPill.textContent = 'TMDB LIVE ✓';
-          tmdbPill.classList.remove('hidden');
-        }
-
         renderHero();
         renderTop10();
         renderContinueWatching();
         renderCatalog();
-        if (showSuccessToast) showToast(t('toastTmdbConnected'));
         return true;
       }
     } catch (_) {
-      if (showSuccessToast) showToast(t('toastTmdbError'));
+      // Fallback initial items already displayed
     }
     return false;
   }
 
-  // Load More Pages from TMDB
   async function loadMoreFromTmdb() {
     const btn = document.getElementById('loadMoreTmdbBtn');
     if (btn) btn.textContent = t('loadingMore');
@@ -638,13 +700,12 @@
         renderCatalog();
       }
     } catch (_) {
-      // ignore error
+      // ignore
     } finally {
       if (btn) btn.textContent = t('loadMoreBtn');
     }
   }
 
-  // Live Global TMDB Search (/search/multi) when user types in the search box
   async function performLiveTmdbSearch(query) {
     const q = (query || '').trim();
     if (q.length < 2) return;
@@ -691,11 +752,10 @@
         updateSearchDropdownUI();
       }
     } catch (_) {
-      // fallback to local catalog search
+      // fallback
     }
   }
 
-  // Enrich Cast, Runtime & Official YouTube Trailer from TMDB
   async function enrichTmdbItemDetails(item) {
     if (!item.tmdbId) return;
     try {
@@ -727,12 +787,10 @@
         const yt =
           data.videos.results.find((v) => v.site === 'YouTube' && v.type === 'Trailer') ||
           data.videos.results.find((v) => v.site === 'YouTube');
-        if (yt && yt.key) {
-          item.trailerKey = yt.key;
-        }
+        if (yt && yt.key) item.trailerKey = yt.key;
       }
     } catch (_) {
-      // ignore error
+      // ignore
     }
   }
 
@@ -745,8 +803,6 @@
     });
 
     document.getElementById('eyeComfortOverlay')?.classList.toggle('active', state.eyeComfort);
-    document.getElementById('eyeComfortBtn')?.classList.toggle('active', state.eyeComfort);
-    document.getElementById('vipBadgeHeader')?.classList.toggle('hidden', !state.vipUnlocked);
   }
 
   function applyLanguage() {
@@ -766,6 +822,7 @@
     if (searchInput) searchInput.placeholder = t('searchPlaceholder');
 
     applyPaletteAndComfort();
+    renderAuthUI();
     renderHero();
     renderGenreBar();
     renderTop10();
@@ -790,9 +847,9 @@
     const badgesEl = document.getElementById('heroBadges');
     if (badgesEl) {
       badgesEl.innerHTML = `
-        <span class="chip">${item.type === 'series' ? t('typeSeries') : t('typeMovie')}</span>
-        <span class="chip rating">★ ${item.rating.toFixed(1)} TMDB</span>
-        <span class="chip glass">${item.quality}</span>
+        <span class="pill-tag">${item.type === 'series' ? t('typeSeries') : t('typeMovie')}</span>
+        <span class="pill-tag star">★ ${item.rating.toFixed(1)} TMDB</span>
+        <span class="pill-tag glass">${item.quality}</span>
       `;
     }
 
@@ -818,18 +875,14 @@
       queueEl.innerHTML = featuredItems
         .map(
           (fItem, idx) => `
-          <button class="spotlight-item ${idx === state.heroIndex ? 'active' : ''}" data-hero-idx="${idx}">
+          <button class="hero-thumb-card ${idx === state.heroIndex ? 'active' : ''}" data-hero-idx="${idx}" title="${getTitle(fItem)}">
             <img src="${fItem.posterUrl}" alt="${getTitle(fItem)}" />
-            <div class="spotlight-item-info">
-              <div class="spotlight-item-name" dir="ltr">${getTitle(fItem)}</div>
-              <div class="spotlight-item-meta">${fItem.year} · ★ ${fItem.rating.toFixed(1)} · ${fItem.quality}</div>
-            </div>
           </button>
         `
         )
         .join('');
 
-      queueEl.querySelectorAll('.spotlight-item').forEach((btn) => {
+      queueEl.querySelectorAll('.hero-thumb-card').forEach((btn) => {
         btn.addEventListener('click', () => {
           state.heroIndex = Number(btn.getAttribute('data-hero-idx'));
           renderHero();
@@ -932,19 +985,37 @@
 
   function renderGenreBar() {
     const bar = document.getElementById('genreFilterBar');
-    if (!bar) return;
+    const drawerGenres = document.getElementById('drawerGenresGrid');
 
-    bar.innerHTML = GENRES.map(
-      (g) => `<button class="genre-chip-btn ${state.activeGenre === g.id ? 'active' : ''}" data-genre="${g.id}">${t(g.key)}</button>`
-    ).join('');
+    if (bar) {
+      bar.innerHTML = GENRES.map(
+        (g) => `<button class="genre-pill ${state.activeGenre === g.id ? 'active' : ''}" data-genre="${g.id}">${t(g.key)}</button>`
+      ).join('');
 
-    bar.querySelectorAll('.genre-chip-btn').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        state.activeGenre = btn.getAttribute('data-genre');
-        renderGenreBar();
-        renderCatalog();
+      bar.querySelectorAll('.genre-pill').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          state.activeGenre = btn.getAttribute('data-genre');
+          renderGenreBar();
+          renderCatalog();
+        });
       });
-    });
+    }
+
+    if (drawerGenres) {
+      drawerGenres.innerHTML = GENRES.map(
+        (g) => `<button class="drawer-genre-btn ${state.activeGenre === g.id ? 'active' : ''}" data-drawer-genre="${g.id}">${t(g.key)}</button>`
+      ).join('');
+
+      drawerGenres.querySelectorAll('[data-drawer-genre]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          state.activeGenre = btn.getAttribute('data-drawer-genre');
+          toggleDrawer(false);
+          renderGenreBar();
+          renderCatalog();
+          document.getElementById('catalogSection')?.scrollIntoView({ behavior: 'smooth' });
+        });
+      });
+    }
   }
 
   function getFilteredCatalog() {
@@ -973,15 +1044,14 @@
     });
   }
 
+  // ---------------------------------------------------------------------------
+  // RENDER HOVER-BLUR MOVIE CARDS
+  // ---------------------------------------------------------------------------
   function renderCatalog() {
     const grid = document.getElementById('moviesGrid');
     const emptyBox = document.getElementById('emptyStateBox');
     const countBadge = document.getElementById('resultsCountBadge');
     if (!grid || !emptyBox) return;
-
-    grid.classList.toggle('list-view', state.viewMode === 'list');
-    document.getElementById('viewGridBtn')?.classList.toggle('active', state.viewMode === 'grid');
-    document.getElementById('viewListBtn')?.classList.toggle('active', state.viewMode === 'list');
 
     const filtered = getFilteredCatalog();
     if (countBadge) countBadge.textContent = String(filtered.length);
@@ -996,31 +1066,61 @@
     grid.innerHTML = filtered
       .map((item) => {
         const inList = state.watchlist.includes(item.id);
+        const genreTagsHtml = getGenreArray(item)
+          .slice(0, 3)
+          .map((gName) => `<span class="hover-genre-tag">${gName}</span>`)
+          .join('');
+
         return `
-          <article class="work-card" data-card-id="${item.id}">
-            <div class="work-poster-box">
-              <img src="${item.posterUrl}" alt="${getTitle(item)}" loading="lazy" />
-              <div class="work-badges-top">
-                <span class="work-q-tag">${item.quality}</span>
-                <span class="work-r-tag">★ ${item.rating.toFixed(1)}</span>
+          <article class="blur-movie-card" data-card-id="${item.id}">
+            <div class="poster-frame">
+              <img class="poster-img" src="${item.posterUrl}" alt="${getTitle(item)}" loading="lazy" />
+
+              <!-- Subtle Corner Badges (Default View) -->
+              <div class="corner-badges">
+                <span class="corner-quality">${item.quality}</span>
+                <span class="corner-rating">★ ${item.rating.toFixed(1)}</span>
               </div>
-              <button class="work-save-btn ${inList ? 'active' : ''}" data-wl-id="${item.id}" title="${t('addToWatchlist')}">
-                ${inList ? '✓' : '+'}
-              </button>
-              <div class="work-hover-layer">
-                <button class="work-play-btn" data-watch-id="${item.id}" aria-label="Play">
-                  <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><polygon points="6 4 20 12 6 20 6 4"></polygon></svg>
-                </button>
-                <button class="work-details-pill" data-info-id="${item.id}">${t('moreDetails')}</button>
+
+              <!-- HOVER BLUR OVERLAY WITH FULL INFO, GENRES & WATCH BUTTON -->
+              <div class="hover-info-layer">
+                <div class="hover-top-row">
+                  <span class="hover-score-pill">★ ${item.rating.toFixed(1)} TMDB</span>
+                  <button class="hover-save-icon-btn ${inList ? 'active' : ''}" data-wl-id="${item.id}" title="${t('addToWatchlist')}">
+                    ${inList ? '✓' : '+'}
+                  </button>
+                </div>
+
+                <div class="hover-center-meta">
+                  <div class="hover-year-type">${item.year} · ${item.type === 'series' ? t('typeSeries') : t('typeMovie')} · ${item.quality}</div>
+                  <div class="hover-genres-wrap">${genreTagsHtml}</div>
+                  <p class="hover-synopsis-text">${getSynopsis(item)}</p>
+                </div>
+
+                <div class="hover-actions-bottom">
+                  <button class="hover-watch-btn" data-watch-id="${item.id}">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                      <polygon points="6 4 20 12 6 20 6 4"></polygon>
+                    </svg>
+                    <span>${t('watchNow')}</span>
+                  </button>
+                  <button class="hover-details-btn" data-info-id="${item.id}" title="${t('moreDetails')}">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <line x1="12" y1="16" x2="12" y2="12"></line>
+                      <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                    </svg>
+                  </button>
+                </div>
               </div>
             </div>
-            <div class="work-card-body">
-              <h3 class="work-title" dir="ltr" title="${getTitle(item)}">${getTitle(item)}</h3>
-              <div class="work-meta-line">
+
+            <div class="card-caption">
+              <h3 class="card-eng-title" dir="ltr" title="${getTitle(item)}">${getTitle(item)}</h3>
+              <div class="card-sub-line">
                 <span>${item.year} · ${item.type === 'series' ? t('typeSeries') : t('typeMovie')}</span>
                 <span>★ ${item.rating.toFixed(1)}</span>
               </div>
-              <div class="work-genre-line">${getGenreNames(item)}</div>
             </div>
           </article>
         `;
@@ -1030,7 +1130,7 @@
     grid.querySelectorAll('[data-watch-id]').forEach((btn) => {
       btn.addEventListener('click', (e) => {
         e.stopPropagation();
-        openPlayerModal(btn.getAttribute('data-watch-id'));
+        openPlayerModal(btn.getAttribute('data-watch-id'), false);
       });
     });
 
@@ -1048,7 +1148,7 @@
       });
     });
 
-    grid.querySelectorAll('.work-card').forEach((card) => {
+    grid.querySelectorAll('.blur-movie-card').forEach((card) => {
       card.addEventListener('click', () => openDetailsModal(card.getAttribute('data-card-id')));
     });
   }
@@ -1066,11 +1166,11 @@
       searchDropdown.innerHTML = matches
         .map(
           (m) => `
-          <div class="suggestion-row" data-search-pick="${m.id}">
+          <div class="search-result-item" data-search-pick="${m.id}">
             <img src="${m.posterUrl}" alt="${getTitle(m)}" />
             <div>
-              <div class="suggestion-title" dir="ltr">${getTitle(m)}</div>
-              <div class="suggestion-meta">★ ${m.rating.toFixed(1)} · ${m.year} · ${m.type === 'series' ? t('typeSeries') : t('typeMovie')}</div>
+              <div class="search-result-title" dir="ltr">${getTitle(m)}</div>
+              <div class="search-result-sub">★ ${m.rating.toFixed(1)} · ${m.year} · ${m.type === 'series' ? t('typeSeries') : t('typeMovie')}</div>
             </div>
           </div>
         `
@@ -1113,7 +1213,7 @@
         updatePlayerTimeUI(state.syntheticTime, 140);
       }
 
-      const [c1, c2, accent] = item.palette || ['#0f172a', '#090d16', '#2dd4bf'];
+      const [c1, c2, accent] = item.palette || ['#121526', '#090b14', '#8b5cf6'];
       const grad = ctx.createLinearGradient(0, 0, canvasEl.width, canvasEl.height);
       grad.addColorStop(0, c1);
       grad.addColorStop(0.65, c2);
@@ -1142,14 +1242,6 @@
       ctx.font = '600 14px monospace';
       ctx.fillText(`${item.quality} STREAM · ${item.year}`, 480, 260);
 
-      for (let b = 0; b < 20; b++) {
-        const barH = state.syntheticPlaying ? 5 + Math.abs(Math.sin(now * 0.005 + b * 0.45)) * 22 : 4;
-        ctx.fillStyle = accent;
-        ctx.globalAlpha = 0.55;
-        ctx.fillRect(360 + b * 12, 315 - barH, 6, barH);
-      }
-      ctx.globalAlpha = 1;
-
       state.canvasAnimId = requestAnimationFrame(drawFrame);
     }
 
@@ -1170,7 +1262,6 @@
     const curLabel = document.getElementById('currentTimeLabel');
     const durLabel = document.getElementById('durationTimeLabel');
     const filled = document.getElementById('progressFilled');
-    const subOverlay = document.getElementById('subtitleOverlay');
 
     if (curLabel) curLabel.textContent = formatTime(current);
     if (durLabel) durLabel.textContent = formatTime(duration || 140);
@@ -1182,20 +1273,9 @@
       state.watchHistory[state.currentPlayingItem.id] = Math.max(10, Math.min(95, Math.round(pct || 28)));
       localStorage.setItem('wum_history', JSON.stringify(state.watchHistory));
     }
-
-    const subMode = document.getElementById('subtitleSelect')?.value || 'ar';
-    if (subOverlay) {
-      if (subMode === 'off') {
-        subOverlay.innerHTML = '';
-      } else {
-        const cueTime = current % 24;
-        const cue = SUBTITLES_SCRIPT.find((c) => cueTime >= c.start && cueTime < c.end);
-        subOverlay.innerHTML = cue ? `<span>${subMode === 'ar' ? cue.ar : cue.en}</span>` : '';
-      }
-    }
   }
 
-  async function openPlayerModal(itemId, preferTrailer = false) {
+  async function openPlayerModal(itemId, mode = 'stream') {
     const item = CATALOG.find((c) => c.id === itemId) || CATALOG[0];
     if (!item) return;
 
@@ -1206,9 +1286,9 @@
     document.getElementById('playerSubMeta').textContent = `${item.year} · ★ ${item.rating.toFixed(1)} TMDB`;
 
     await enrichTmdbItemDetails(item);
-
     stopCinemaSynthesizer();
-    if (preferTrailer && item.trailerKey && ytIframeEl) {
+
+    if (mode === 'trailer' && item.trailerKey && ytIframeEl) {
       if (videoEl) {
         videoEl.pause();
         videoEl.classList.add('hidden');
@@ -1216,6 +1296,16 @@
       if (canvasEl) canvasEl.classList.add('hidden');
       ytIframeEl.classList.remove('hidden');
       ytIframeEl.src = `https://www.youtube.com/embed/${item.trailerKey}?autoplay=1&rel=0`;
+      document.getElementById('videoCustomCtrlBar')?.classList.add('hidden');
+    } else if (mode === 'vidsrc' && item.tmdbId && ytIframeEl) {
+      if (videoEl) {
+        videoEl.pause();
+        videoEl.classList.add('hidden');
+      }
+      if (canvasEl) canvasEl.classList.add('hidden');
+      ytIframeEl.classList.remove('hidden');
+      const embedType = item.type === 'series' ? 'tv' : 'movie';
+      ytIframeEl.src = `https://vidsrc.xyz/embed/${embedType}/${item.tmdbId}`;
       document.getElementById('videoCustomCtrlBar')?.classList.add('hidden');
     } else {
       if (ytIframeEl) {
@@ -1269,9 +1359,9 @@
     if (poster) poster.src = item.posterUrl;
 
     document.getElementById('detailsBadges').innerHTML = `
-      <span class="chip">${item.type === 'series' ? t('typeSeries') : t('typeMovie')}</span>
-      <span class="chip rating">★ ${item.rating.toFixed(1)} TMDB</span>
-      <span class="chip glass">${item.quality}</span>
+      <span class="pill-tag">${item.type === 'series' ? t('typeSeries') : t('typeMovie')}</span>
+      <span class="pill-tag star">★ ${item.rating.toFixed(1)} TMDB</span>
+      <span class="pill-tag glass">${item.quality}</span>
     `;
 
     const titleEl = document.getElementById('detailsTitle');
@@ -1281,14 +1371,13 @@
     }
     document.getElementById('detailsSynopsis').textContent = getSynopsis(item);
 
-    // Fetch live cast & director from TMDB
     await enrichTmdbItemDetails(item);
 
     document.getElementById('detailsMetaGrid').innerHTML = `
-      <div><small style="color:var(--text-subtle);display:block">${t('directorLabel')}</small><strong dir="ltr">${item.director || 'TMDB'}</strong></div>
-      <div><small style="color:var(--text-subtle);display:block">${t('yearLabel')}</small><strong>${item.year}</strong></div>
-      <div><small style="color:var(--text-subtle);display:block">${t('durationLabel')}</small><strong>${getDuration(item)}</strong></div>
-      <div><small style="color:var(--text-subtle);display:block">${t('qualityMetaLabel')}</small><strong>★ ${item.rating.toFixed(1)} / 10</strong></div>
+      <div><small style="color:var(--text-muted);display:block">${t('directorLabel')}</small><strong dir="ltr">${item.director || 'TMDB'}</strong></div>
+      <div><small style="color:var(--text-muted);display:block">${t('yearLabel')}</small><strong>${item.year}</strong></div>
+      <div><small style="color:var(--text-muted);display:block">${t('durationLabel')}</small><strong>${getDuration(item)}</strong></div>
+      <div><small style="color:var(--text-muted);display:block">${t('qualityMetaLabel')}</small><strong>★ ${item.rating.toFixed(1)} / 10</strong></div>
     `;
 
     const wlBtnText = document.getElementById('detailsWatchlistText');
@@ -1313,7 +1402,7 @@
     const list = state.reviews[itemId] || [
       {
         author: state.lang === 'ar' ? 'متابع سينمائي' : 'Cinema Viewer',
-        text: state.lang === 'ar' ? 'عمل رائع وتصميم الواجهة مريح جداً للعين.' : 'Wonderful title and the interface is very easy on the eyes.'
+        text: state.lang === 'ar' ? 'عمل ممتاز وتجربة المشاهدة سلسة جداً.' : 'Fantastic title and super smooth streaming experience.'
       }
     ];
     container.innerHTML = list
@@ -1331,7 +1420,7 @@
         <div class="code-row-item" data-use-code="${c.code}">
           <span class="code-key-pill">${c.code}</span>
           <span style="flex:1;font-size:0.8rem">${state.lang === 'ar' ? c.descAr : c.descEn}</span>
-          <span style="color:var(--primary-light);font-size:0.76rem;font-weight:700">${t('useCodeNow')}</span>
+          <span style="color:var(--accent-light);font-size:0.76rem;font-weight:700">${t('useCodeNow')}</span>
         </div>
       `
       )
@@ -1362,6 +1451,70 @@
   }
 
   function initEvents() {
+    // 3-Lines Drawer Menu Trigger
+    document.getElementById('openDrawerBtn')?.addEventListener('click', () => toggleDrawer(true));
+    document.getElementById('closeDrawerBtn')?.addEventListener('click', () => toggleDrawer(false));
+    document.getElementById('drawerBackdrop')?.addEventListener('click', () => toggleDrawer(false));
+
+    // Auth Modal & User Login / Register
+    document.getElementById('openAuthModalBtn')?.addEventListener('click', () => {
+      if (state.user) {
+        toggleDrawer(true);
+      } else {
+        document.getElementById('authModal')?.classList.remove('hidden');
+      }
+    });
+
+    document.getElementById('drawerAuthActionBtn')?.addEventListener('click', () => {
+      if (state.user) {
+        logoutUser();
+      } else {
+        toggleDrawer(false);
+        document.getElementById('authModal')?.classList.remove('hidden');
+      }
+    });
+
+    document.getElementById('closeAuthModalBtn')?.addEventListener('click', () => {
+      document.getElementById('authModal')?.classList.add('hidden');
+    });
+
+    document.querySelectorAll('[data-auth-tab]').forEach((tabBtn) => {
+      tabBtn.addEventListener('click', () => {
+        state.authMode = tabBtn.getAttribute('data-auth-tab');
+        document.querySelectorAll('[data-auth-tab]').forEach((b) => b.classList.remove('active'));
+        tabBtn.classList.add('active');
+        const nameFieldWrap = document.getElementById('authNameFieldWrap');
+        const submitBtn = document.getElementById('authSubmitBtn');
+        if (nameFieldWrap) nameFieldWrap.classList.toggle('hidden', state.authMode === 'login');
+        if (submitBtn) submitBtn.textContent = state.authMode === 'login' ? t('submitLoginBtn') : t('submitRegisterBtn');
+      });
+    });
+
+    document.getElementById('authForm')?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = document.getElementById('authEmailInput')?.value || '';
+      const rawName = document.getElementById('authNameInput')?.value || '';
+      const displayName = rawName.trim() || email.split('@')[0] || 'VIP Member';
+      loginUser(displayName, email);
+    });
+
+    document.getElementById('quickGuestLoginBtn')?.addEventListener('click', () => {
+      loginUser('VIP Guest', 'vip@watchurmovie.app');
+    });
+
+    // Drawer Navigation Links
+    document.querySelectorAll('[data-nav]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        state.activeNav = btn.getAttribute('data-nav');
+        document.querySelectorAll('[data-nav]').forEach((b) => b.classList.remove('active'));
+        btn.classList.add('active');
+        toggleDrawer(false);
+        document.getElementById('catalogSection')?.scrollIntoView({ behavior: 'smooth' });
+        renderCatalog();
+      });
+    });
+
+    // Palette Swatches inside Drawer
     document.querySelectorAll('[data-palette-pick]').forEach((btn) => {
       btn.addEventListener('click', () => {
         state.palette = btn.getAttribute('data-palette-pick');
@@ -1369,6 +1522,7 @@
       });
     });
 
+    // Eye Comfort inside Drawer
     document.getElementById('eyeComfortBtn')?.addEventListener('click', () => {
       state.eyeComfort = !state.eyeComfort;
       localStorage.setItem('wum_eye_comfort', String(state.eyeComfort));
@@ -1376,34 +1530,14 @@
       showToast(state.eyeComfort ? t('toastEyeOn') : t('toastEyeOff'));
     });
 
-    document.getElementById('viewGridBtn')?.addEventListener('click', () => {
-      state.viewMode = 'grid';
-      localStorage.setItem('wum_view_mode', 'grid');
-      renderCatalog();
-    });
-
-    document.getElementById('viewListBtn')?.addEventListener('click', () => {
-      state.viewMode = 'list';
-      localStorage.setItem('wum_view_mode', 'list');
-      renderCatalog();
-    });
-
+    // Language Switcher
     document.getElementById('langToggleBtn')?.addEventListener('click', () => {
       state.lang = state.lang === 'ar' ? 'en' : 'ar';
       localStorage.setItem('wum_lang', state.lang);
       applyLanguage();
     });
 
-    document.querySelectorAll('[data-nav]').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        state.activeNav = btn.getAttribute('data-nav');
-        document.querySelectorAll('[data-nav]').forEach((b) => b.classList.remove('active'));
-        btn.classList.add('active');
-        document.getElementById('catalogSection')?.scrollIntoView({ behavior: 'smooth' });
-        renderCatalog();
-      });
-    });
-
+    // Search Input & Live TMDB Search
     const searchInput = document.getElementById('searchInput');
     const clearSearchBtn = document.getElementById('clearSearchBtn');
     const searchDropdown = document.getElementById('searchDropdown');
@@ -1433,15 +1567,17 @@
     document.getElementById('loadMoreTmdbBtn')?.addEventListener('click', loadMoreFromTmdb);
 
     document.getElementById('surpriseMeBtn')?.addEventListener('click', () => {
+      toggleDrawer(false);
       const randomItem = CATALOG[Math.floor(Math.random() * CATALOG.length)];
       showToast(`${t('toastRandomPick')} ${getTitle(randomItem)}`);
       openDetailsModal(randomItem.id);
     });
 
+    // Hero CTA Buttons
     document.getElementById('heroWatchBtn')?.addEventListener('click', () => {
       const featuredItems = getFeaturedItems();
       const item = featuredItems[state.heroIndex] || CATALOG[0];
-      openPlayerModal(item.id, false);
+      openPlayerModal(item.id, 'stream');
     });
     document.getElementById('heroDetailsBtn')?.addEventListener('click', () => {
       const featuredItems = getFeaturedItems();
@@ -1491,10 +1627,8 @@
         document.querySelectorAll('.srv-btn').forEach((b) => b.classList.remove('active'));
         btn.classList.add('active');
         const srv = btn.getAttribute('data-server');
-        if (srv === 'trailer' && state.currentPlayingItem) {
-          openPlayerModal(state.currentPlayingItem.id, true);
-        } else if (state.currentPlayingItem) {
-          openPlayerModal(state.currentPlayingItem.id, false);
+        if (state.currentPlayingItem) {
+          openPlayerModal(state.currentPlayingItem.id, srv);
         }
         showToast(t('toastServerSwitched'));
       });
@@ -1525,12 +1659,12 @@
 
     document.getElementById('detailsWatchBtn')?.addEventListener('click', () => {
       document.getElementById('detailsModal')?.classList.add('hidden');
-      if (state.currentPlayingItem) openPlayerModal(state.currentPlayingItem.id, false);
+      if (state.currentPlayingItem) openPlayerModal(state.currentPlayingItem.id, 'stream');
     });
 
     document.getElementById('detailsTrailerBtn')?.addEventListener('click', () => {
       document.getElementById('detailsModal')?.classList.add('hidden');
-      if (state.currentPlayingItem) openPlayerModal(state.currentPlayingItem.id, true);
+      if (state.currentPlayingItem) openPlayerModal(state.currentPlayingItem.id, 'trailer');
     });
 
     document.getElementById('detailsWatchlistBtn')?.addEventListener('click', () => {
@@ -1547,42 +1681,28 @@
       if (!state.currentPlayingItem) return;
       const nameInput = document.getElementById('reviewerNameInput');
       const commentInput = document.getElementById('reviewCommentInput');
-      const author = nameInput.value.trim();
-      const text = commentInput.value.trim();
+      const author = (nameInput?.value || state.user?.name || '').trim();
+      const text = (commentInput?.value || '').trim();
       if (!author || !text) return;
       const id = state.currentPlayingItem.id;
       if (!state.reviews[id]) state.reviews[id] = [];
       state.reviews[id].unshift({ author, text });
       localStorage.setItem('wum_reviews', JSON.stringify(state.reviews));
-      nameInput.value = '';
-      commentInput.value = '';
+      if (nameInput) nameInput.value = '';
+      if (commentInput) commentInput.value = '';
       renderItemReviews(id);
       showToast(t('toastReviewAdded'));
     });
 
     const openCodes = (e) => {
       if (e) e.preventDefault();
-      const tmdbInput = document.getElementById('tmdbKeyInput');
-      if (tmdbInput) tmdbInput.value = state.tmdbKey || BUILTIN_TMDB_KEY;
+      toggleDrawer(false);
       document.getElementById('codesModal')?.classList.remove('hidden');
     };
     document.getElementById('openCodesModalBtn')?.addEventListener('click', openCodes);
-    document.getElementById('bannerOpenCodesBtn')?.addEventListener('click', openCodes);
 
     document.getElementById('closeCodesModalBtn')?.addEventListener('click', () => {
       document.getElementById('codesModal')?.classList.add('hidden');
-    });
-
-    document.getElementById('tmdbKeyForm')?.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const keyVal = (document.getElementById('tmdbKeyInput')?.value || '').trim();
-      if (!keyVal) return;
-      state.tmdbKey = keyVal;
-      localStorage.setItem('wum_tmdb_key', keyVal);
-      const ok = await syncWithTmdbApi(true);
-      if (ok) {
-        document.getElementById('codesModal')?.classList.add('hidden');
-      }
     });
 
     document.getElementById('redeemCodeForm')?.addEventListener('submit', (e) => {
@@ -1604,6 +1724,5 @@
   applyLanguage();
   initEvents();
   restartHeroAutoCycle();
-  // Automatically connect and fetch live movies & TV shows using the user's TMDB key!
-  syncWithTmdbApi(false);
+  syncWithTmdbApi();
 })();
