@@ -3654,6 +3654,7 @@ html[dir="ltr"] .nav-drawer {
 
   // Builds 10 Distinct Working Servers for each channel
   function makeTenChannelServers(hlsPool) {
+    const streamPool = Array.isArray(hlsPool) ? hlsPool.filter(Boolean) : [];
     const labels = [
       { num: 1, nameAr: 'سيرفر 1 · الأساسي FHD', nameEn: 'Server 1 · Primary FHD', badge: '⚡' },
       { num: 2, nameAr: 'سيرفر 2 · السريع HD', nameEn: 'Server 2 · Fast HD', badge: '🔥' },
@@ -3670,8 +3671,8 @@ html[dir="ltr"] .nav-drawer {
     return labels.map((lbl, idx) => {
       // Rotate the channel's HLS pool starting at index `idx` so every server button starts on a different stream URL, with automatic fallback to the rest of the pool!
       const rotatedUrls = [];
-      for (let i = 0; i < hlsPool.length; i++) {
-        rotatedUrls.push(hlsPool[(idx + i) % hlsPool.length]);
+      for (let i = 0; i < streamPool.length; i++) {
+        rotatedUrls.push(streamPool[(idx + i) % streamPool.length]);
       }
       return {
         index: idx,
@@ -4258,6 +4259,7 @@ html[dir="ltr"] .nav-drawer {
     { id: 'ch_bein_max_4', name: 'beIN SPORTS MAX 4 — الدليل الرسمي', shortLogo: 'beIN\nMAX 4', category: 'bein_euro', descAr: 'قناة رياضية مشفّرة؛ المشاهدة عبر beIN CONNECT أو مزود مرخص حسب بلدك', descEn: 'Encrypted sports channel; watch via beIN CONNECT or licensed provider by region', color: '#7c3aed', officialUrl: 'https://connect.bein.com/' }
   ].map((ch) => ({
     ...ch,
+    hlsPool: Array.isArray(ch.hlsPool) ? ch.hlsPool.filter(Boolean) : [],
     servers: makeTenChannelServers(ch.hlsPool)
   }));
 
