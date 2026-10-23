@@ -3,18 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>WatchUrMovie — Streamex Luxury Cinema</title>
+  <title>WatchUrMovie — Streamex Luxury Cinema (40 Players)</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
   <style>
 /* ==========================================================================
-   WatchUrMovie — Streamex-Inspired Luxury Cinema UI (style.css)
-   - Ultra-clean floating header (3-lines Drawer Menu + Search + Auth)
-   - Slide-out glassmorphic navigation drawer
-   - Signature Hover-Blur movie cards with rich metadata & Watch CTA
-   - Smooth ambient lighting & 4 curated color themes
+   WatchUrMovie — Streamex.sh Inspired Luxury Cinema UI (style.css)
+   - Floating Minimal Header (3-Lines Drawer Trigger ☰, Logo, Search, Login)
+   - Slide-Out Glassmorphic Sidebar Drawer
+   - Signature Hover-Blur Movie Cards with Genre Tags, Synopsis & Watch CTA
+   - 40 Multi-Server Streaming Players Bar + Season/Episode Selector
    ========================================================================== */
 
 :root,
@@ -22,9 +22,9 @@ html[data-palette="streamex"] {
   --bg-body: #06070b;
   --bg-surface: #0d0f17;
   --bg-card: #121521;
-  --bg-elevated: #1a1e2e;
-  --bg-glass: rgba(13, 15, 23, 0.78);
-  --bg-drawer: rgba(11, 13, 21, 0.94);
+  --bg-elevated: #191d2d;
+  --bg-glass: rgba(12, 14, 22, 0.84);
+  --bg-drawer: rgba(10, 12, 20, 0.96);
 
   --accent: #8b5cf6;
   --accent-light: #a78bfa;
@@ -38,9 +38,9 @@ html[data-palette="streamex"] {
   --text-secondary: #cbd5e1;
   --text-muted: #7c8ba1;
 
-  --border: rgba(255, 255, 255, 0.075);
-  --border-hover: rgba(167, 139, 250, 0.45);
-  --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.7);
+  --border: rgba(255, 255, 255, 0.08);
+  --border-hover: rgba(167, 139, 250, 0.48);
+  --shadow-lg: 0 22px 55px rgba(0, 0, 0, 0.75);
 }
 
 html[data-palette="aurora"] {
@@ -48,8 +48,8 @@ html[data-palette="aurora"] {
   --bg-surface: #0c131d;
   --bg-card: #111b29;
   --bg-elevated: #182638;
-  --bg-glass: rgba(12, 19, 29, 0.8);
-  --bg-drawer: rgba(10, 16, 25, 0.95);
+  --bg-glass: rgba(12, 19, 29, 0.84);
+  --bg-drawer: rgba(10, 16, 25, 0.96);
 
   --accent: #10b981;
   --accent-light: #34d399;
@@ -65,8 +65,8 @@ html[data-palette="amber"] {
   --bg-surface: #15120e;
   --bg-card: #1d1914;
   --bg-elevated: #28221b;
-  --bg-glass: rgba(21, 18, 14, 0.82);
-  --bg-drawer: rgba(18, 15, 12, 0.95);
+  --bg-glass: rgba(21, 18, 14, 0.84);
+  --bg-drawer: rgba(18, 15, 12, 0.96);
 
   --accent: #f59e0b;
   --accent-light: #fbbf24;
@@ -82,8 +82,8 @@ html[data-palette="crimson"] {
   --bg-surface: #120d11;
   --bg-card: #1a1218;
   --bg-elevated: #261a22;
-  --bg-glass: rgba(18, 13, 17, 0.82);
-  --bg-drawer: rgba(15, 10, 14, 0.95);
+  --bg-glass: rgba(18, 13, 17, 0.84);
+  --bg-drawer: rgba(15, 10, 14, 0.96);
 
   --accent: #e11d48;
   --accent-light: #fb7185;
@@ -109,7 +109,7 @@ html {
 }
 
 body {
-  font-family: 'IBM Plex Sans Arabic', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  font-family: 'Cairo', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   background: var(--bg-body);
   color: var(--text-primary);
   line-height: 1.6;
@@ -119,7 +119,7 @@ body {
 }
 
 html[dir="ltr"] body {
-  font-family: 'Plus Jakarta Sans', 'IBM Plex Sans Arabic', system-ui, sans-serif;
+  font-family: 'Plus Jakarta Sans', 'Cairo', system-ui, sans-serif;
 }
 
 a {
@@ -153,42 +153,38 @@ svg {
   display: none !important;
 }
 
-.container {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 24px;
-}
-
-/* Warm Eye Shield */
-.eye-shield {
+/* Eye Comfort Warm Filter */
+.eye-comfort-overlay {
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: 950;
-  background: rgba(245, 158, 11, 0.065);
+  background: rgba(245, 158, 11, 0.07);
   opacity: 0;
   transition: opacity 0.35s ease;
 }
 
-.eye-shield.active {
+.eye-comfort-overlay.active {
   opacity: 1;
 }
 
 /* ==========================================================================
-   FLOATING MINIMALIST HEADER (Streamex.sh Style)
+   FLOATING STREAMEX HEADER (Only 3-Lines Drawer Trigger, Logo, Search, Login)
    ========================================================================== */
 .site-header {
   position: sticky;
   top: 0;
-  z-index: 120;
+  z-index: 140;
   background: var(--bg-glass);
   backdrop-filter: blur(22px);
   -webkit-backdrop-filter: blur(22px);
   border-bottom: 1px solid var(--border);
-  transition: background 0.3s ease;
 }
 
-.header-bar {
+.header-inner {
+  max-width: 1420px;
+  margin: 0 auto;
+  padding: 0 24px;
   height: 70px;
   display: flex;
   align-items: center;
@@ -196,25 +192,23 @@ svg {
   gap: 16px;
 }
 
-.header-left {
+.header-start {
   display: flex;
   align-items: center;
   gap: 14px;
 }
 
-/* 3-Lines Hamburger Drawer Trigger */
+/* 3-Lines Hamburger Button (☰) */
 .menu-trigger-btn {
   width: 42px;
   height: 42px;
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.055);
   border: 1px solid var(--border);
   color: var(--text-primary);
-  display: flex;
-  flex-direction: column;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 5px;
   transition: all 0.22s ease;
 }
 
@@ -224,26 +218,34 @@ svg {
   transform: scale(1.04);
 }
 
-.menu-line {
+.hamburger-lines {
   width: 18px;
-  height: 2px;
-  background: currentColor;
-  border-radius: 99px;
-  transition: all 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
-.menu-trigger-btn:hover .menu-line:nth-child(2) {
-  width: 13px;
+.hamburger-lines span {
+  display: block;
+  height: 2px;
+  width: 100%;
+  background: currentColor;
+  border-radius: 99px;
+  transition: all 0.22s ease;
+}
+
+.menu-trigger-btn:hover .hamburger-lines span:nth-child(2) {
+  width: 70%;
   background: var(--accent-light);
 }
 
-.brand-logo {
+.brand {
   display: inline-flex;
   align-items: center;
   gap: 10px;
 }
 
-.brand-emblem {
+.brand-logo {
   width: 36px;
   height: 36px;
   border-radius: 10px;
@@ -255,83 +257,87 @@ svg {
   box-shadow: 0 6px 20px var(--accent-glow);
 }
 
-.brand-wordmark {
-  font-size: 1.18rem;
-  font-weight: 800;
-  letter-spacing: -0.025em;
+.brand-text {
   display: flex;
-  align-items: center;
-  gap: 6px;
+  flex-direction: column;
+  line-height: 1.1;
 }
 
-.brand-highlight {
-  background: linear-gradient(135deg, var(--accent-light), var(--accent-2));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+.brand-title {
+  font-size: 1.12rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
 }
 
-/* Center Floating Search Pill */
-.header-center {
+.brand-sub {
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: var(--accent-light);
+  letter-spacing: 0.12em;
+}
+
+/* Center Glass Search Pill */
+.header-search-wrap {
   flex: 1;
   max-width: 480px;
   position: relative;
 }
 
-.search-pill {
+.search-box {
   position: relative;
   display: flex;
   align-items: center;
   width: 100%;
 }
 
-.search-pill-icon {
+.search-svg {
   position: absolute;
   inset-inline-start: 14px;
   color: var(--text-muted);
   pointer-events: none;
 }
 
-.search-pill-input {
+#searchInput {
   width: 100%;
   height: 42px;
   padding-inline-start: 42px;
   padding-inline-end: 36px;
   border-radius: 99px;
-  background: rgba(255, 255, 255, 0.045);
+  background: rgba(255, 255, 255, 0.05);
   border: 1px solid var(--border);
   font-size: 0.86rem;
   color: var(--text-primary);
   outline: none;
-  transition: all 0.25s ease;
+  transition: all 0.22s ease;
 }
 
-.search-pill-input::placeholder {
+#searchInput::placeholder {
   color: var(--text-muted);
 }
 
-.search-pill-input:focus {
+#searchInput:focus {
   background: var(--bg-surface);
   border-color: var(--accent-light);
   box-shadow: 0 0 0 4px var(--accent-soft);
 }
 
-.search-clear-btn {
+.search-clear {
   position: absolute;
-  inset-inline-end: 12px;
-  width: 22px;
-  height: 22px;
+  inset-inline-end: 10px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   background: var(--bg-elevated);
   color: var(--text-primary);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
 }
 
-.search-dropdown-panel {
+.search-results-dropdown {
   position: absolute;
-  top: calc(100% + 10px);
+  top: calc(100% + 8px);
   inset-inline: 0;
   background: var(--bg-drawer);
   backdrop-filter: blur(24px);
@@ -339,9 +345,9 @@ svg {
   border-radius: 16px;
   box-shadow: var(--shadow-lg);
   padding: 8px;
-  max-height: 370px;
+  max-height: 360px;
   overflow-y: auto;
-  z-index: 200;
+  z-index: 210;
 }
 
 .search-result-item {
@@ -363,6 +369,7 @@ svg {
   height: 56px;
   object-fit: cover;
   border-radius: 7px;
+  flex-shrink: 0;
 }
 
 .search-result-title {
@@ -372,22 +379,22 @@ svg {
 }
 
 .search-result-sub {
-  font-size: 0.75rem;
+  font-size: 0.74rem;
   color: var(--text-muted);
 }
 
-/* Header Right: Only Language & User Auth Button */
-.header-right {
+/* Header Right: Language + Login Button */
+.header-end {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-.lang-switch-btn {
+.lang-btn {
   height: 38px;
-  padding: 0 12px;
+  padding: 0 13px;
   border-radius: 10px;
-  background: rgba(255, 255, 255, 0.045);
+  background: rgba(255, 255, 255, 0.05);
   border: 1px solid var(--border);
   font-size: 0.8rem;
   font-weight: 700;
@@ -395,7 +402,7 @@ svg {
   transition: all 0.2s ease;
 }
 
-.lang-switch-btn:hover {
+.lang-btn:hover {
   border-color: var(--border-hover);
   color: var(--text-primary);
 }
@@ -425,7 +432,7 @@ svg {
   border: 1px solid var(--border-hover);
   color: var(--text-primary);
   box-shadow: none;
-  padding: 0 13px 0 8px;
+  padding: 0 14px 0 8px;
 }
 
 .user-avatar-mini {
@@ -442,17 +449,17 @@ svg {
 }
 
 /* ==========================================================================
-   SLIDE-OUT NAVIGATION DRAWER (Opened via 3-Lines Button ☰)
+   SLIDE-OUT SIDEBAR DRAWER (3-Lines Menu ☰)
    ========================================================================== */
 .drawer-backdrop {
   position: fixed;
   inset: 0;
   z-index: 250;
-  background: rgba(3, 5, 10, 0.72);
+  background: rgba(3, 5, 10, 0.74);
   backdrop-filter: blur(8px);
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.28s ease;
 }
 
 .drawer-backdrop.open {
@@ -465,14 +472,14 @@ svg {
   top: 0;
   bottom: 0;
   inset-inline-start: 0;
-  width: 310px;
-  max-width: 86vw;
+  width: 320px;
+  max-width: 88vw;
   z-index: 260;
   background: var(--bg-drawer);
   backdrop-filter: blur(28px);
   border-inline-end: 1px solid var(--border);
   box-shadow: var(--shadow-lg);
-  padding: 22px 18px;
+  padding: 20px 18px;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -489,7 +496,7 @@ html[dir="ltr"] .nav-drawer {
   transform: translateX(0) !important;
 }
 
-.drawer-head {
+.drawer-top {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -503,7 +510,7 @@ html[dir="ltr"] .nav-drawer {
   border-radius: 10px;
   background: rgba(255, 255, 255, 0.06);
   color: var(--text-primary);
-  font-size: 1.2rem;
+  font-size: 1.25rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -514,19 +521,11 @@ html[dir="ltr"] .nav-drawer {
   color: var(--on-accent);
 }
 
-/* User Card inside Drawer */
 .drawer-user-card {
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid var(--border);
   border-radius: 14px;
-  padding: 12px 14px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-}
-
-.drawer-user-info {
+  padding: 12px;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -542,60 +541,94 @@ html[dir="ltr"] .nav-drawer {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
+}
+
+.drawer-user-info {
+  flex: 1;
+  min-width: 0;
 }
 
 .drawer-user-name {
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .drawer-user-status {
-  font-size: 0.73rem;
+  font-size: 0.72rem;
   color: var(--text-muted);
 }
 
-.drawer-section {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+.drawer-user-action {
+  padding: 6px 11px;
+  border-radius: 8px;
+  background: var(--accent-soft);
+  color: var(--accent-light);
+  font-size: 0.75rem;
+  font-weight: 700;
+  white-space: nowrap;
 }
 
-.drawer-section-title {
+.drawer-user-action:hover {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.drawer-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.drawer-group-title {
   font-size: 0.72rem;
   font-weight: 700;
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  padding: 0 10px;
-  margin-bottom: 2px;
+  padding: 0 6px;
 }
 
-.drawer-link {
+.drawer-nav-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.drawer-nav-item {
+  width: 100%;
   display: flex;
   align-items: center;
-  gap: 11px;
+  justify-content: space-between;
   padding: 10px 12px;
   border-radius: 11px;
   font-size: 0.88rem;
   font-weight: 600;
   color: var(--text-secondary);
-  text-align: start;
   transition: all 0.18s ease;
 }
 
-.drawer-link:hover {
+.drawer-nav-item .item-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.drawer-nav-item:hover {
   background: rgba(255, 255, 255, 0.06);
   color: var(--text-primary);
 }
 
-.drawer-link.active {
+.drawer-nav-item.active {
   background: var(--accent-soft);
   color: var(--accent-light);
   font-weight: 700;
 }
 
 .drawer-badge {
-  margin-inline-start: auto;
   font-size: 0.72rem;
   font-weight: 800;
   padding: 1px 8px;
@@ -629,42 +662,60 @@ html[dir="ltr"] .nav-drawer {
   color: var(--accent-light);
 }
 
-.drawer-themes-row {
+.drawer-theme-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.theme-dot-btn {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 4px 6px;
-}
-
-.theme-swatch-btn {
-  flex: 1;
-  height: 32px;
+  padding: 8px 10px;
   border-radius: 9px;
-  border: 2px solid transparent;
-  transition: transform 0.18s ease;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid var(--border);
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--text-secondary);
 }
 
-.theme-swatch-btn.active {
-  border-color: #ffffff;
-  transform: scale(1.06);
+.theme-dot-btn.active {
+  border-color: var(--border-hover);
+  background: var(--accent-soft);
+  color: var(--text-primary);
+}
+
+.swatch-circle {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
 }
 
 /* ==========================================================================
-   STREAMEX-STYLE AMBIENT HERO SHOWCASE
+   MAIN CONTAINER & STREAMEX AMBIENT HERO SPOTLIGHT
    ========================================================================== */
+.main-container {
+  max-width: 1420px;
+  margin: 0 auto;
+  padding: 0 24px 60px;
+}
+
 .hero-spotlight {
   position: relative;
-  margin-top: 18px;
+  margin-top: 20px;
   margin-bottom: 34px;
   border-radius: 26px;
   overflow: hidden;
-  min-height: 470px;
+  min-height: 450px;
   background: var(--bg-surface);
   border: 1px solid var(--border);
   box-shadow: var(--shadow-lg);
   display: flex;
   align-items: flex-end;
-  padding: 42px;
+  padding: 40px;
 }
 
 .hero-backdrop-img {
@@ -680,16 +731,28 @@ html[dir="ltr"] .nav-drawer {
   transform: scale(1.03);
 }
 
-.hero-vignette-layer {
+.hero-gradient-mask {
   position: absolute;
   inset: 0;
   background:
     radial-gradient(circle at 80% 25%, var(--accent-soft), transparent 55%),
-    linear-gradient(180deg, rgba(6, 7, 11, 0.15) 0%, rgba(6, 7, 11, 0.72) 58%, rgba(6, 7, 11, 0.97) 100%);
+    linear-gradient(180deg, rgba(6, 7, 11, 0.15) 0%, rgba(6, 7, 11, 0.74) 58%, rgba(6, 7, 11, 0.97) 100%);
   z-index: 2;
 }
 
-.hero-inner-grid {
+.hero-ambient-glow {
+  position: absolute;
+  width: 360px;
+  height: 360px;
+  bottom: -120px;
+  inset-inline-start: -80px;
+  background: var(--accent-glow);
+  filter: blur(110px);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.hero-body {
   position: relative;
   z-index: 3;
   width: 100%;
@@ -700,16 +763,16 @@ html[dir="ltr"] .nav-drawer {
   flex-wrap: wrap;
 }
 
-.hero-text-block {
+.hero-main-info {
   max-width: 650px;
 }
 
-.hero-chips {
+.hero-tags {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 8px;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
 }
 
 .pill-tag {
@@ -725,7 +788,7 @@ html[dir="ltr"] .nav-drawer {
 }
 
 .pill-tag.star {
-  background: rgba(251, 191, 36, 0.16);
+  background: rgba(251, 191, 36, 0.18);
   border: 1px solid rgba(251, 191, 36, 0.45);
   color: #fbbf24;
 }
@@ -737,8 +800,8 @@ html[dir="ltr"] .nav-drawer {
   color: #f1f5f9;
 }
 
-.hero-main-title {
-  font-size: clamp(1.9rem, 3.6vw, 3rem);
+.hero-movie-title {
+  font-size: clamp(1.85rem, 3.5vw, 2.9rem);
   font-weight: 800;
   line-height: 1.15;
   margin-bottom: 10px;
@@ -746,77 +809,80 @@ html[dir="ltr"] .nav-drawer {
   letter-spacing: -0.02em;
 }
 
-.hero-meta-strip {
+.hero-meta-row {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 10px;
   font-size: 0.86rem;
   color: #cbd5e1;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
 }
 
-.hero-overview {
-  font-size: 0.95rem;
+.hero-desc {
+  font-size: 0.94rem;
   color: #cbd5e1;
   line-height: 1.7;
-  margin-bottom: 24px;
+  margin-bottom: 22px;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
-.hero-cta-row {
+.hero-cta-group {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 12px;
 }
 
-.btn-glow-play {
-  height: 46px;
-  padding: 0 24px;
+.btn-stream-now {
+  height: 44px;
+  padding: 0 22px;
   border-radius: 99px;
   background: linear-gradient(135deg, var(--accent), var(--accent-2));
   color: var(--on-accent);
-  font-size: 0.92rem;
+  font-size: 0.9rem;
   font-weight: 700;
   display: inline-flex;
   align-items: center;
-  gap: 9px;
+  justify-content: center;
+  gap: 8px;
   box-shadow: 0 8px 25px var(--accent-glow);
   transition: all 0.22s ease;
 }
 
-.btn-glow-play:hover {
-  transform: translateY(-2px) scale(1.02);
-  filter: brightness(1.1);
+.btn-stream-now:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.08);
 }
 
-.btn-glass-action {
-  height: 46px;
+.btn-glass-sec {
+  height: 44px;
   padding: 0 20px;
   border-radius: 99px;
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.18);
   color: #ffffff;
-  font-size: 0.88rem;
+  font-size: 0.86rem;
   font-weight: 600;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   transition: all 0.2s ease;
 }
 
-.btn-glass-action:hover {
+.btn-glass-sec:hover {
   background: rgba(255, 255, 255, 0.18);
+  border-color: var(--border-hover);
 }
 
-.btn-circle-glass {
-  width: 46px;
-  height: 46px;
+.btn-bookmark-circle {
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.18);
@@ -827,15 +893,14 @@ html[dir="ltr"] .nav-drawer {
   transition: all 0.2s ease;
 }
 
-.btn-circle-glass.in-list,
-.btn-circle-glass:hover {
+.btn-bookmark-circle.in-list,
+.btn-bookmark-circle:hover {
   background: var(--accent);
   border-color: var(--accent);
   color: var(--on-accent);
 }
 
-/* Hero Mini Poster Switcher */
-.hero-Queue-thumbs {
+.hero-thumbs {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -843,13 +908,14 @@ html[dir="ltr"] .nav-drawer {
 
 .hero-thumb-card {
   width: 58px;
-  height: 82px;
+  height: 84px;
   border-radius: 12px;
   overflow: hidden;
-  border: 2px solid rgba(255, 255, 255, 0.15);
+  border: 2px solid rgba(255, 255, 255, 0.16);
   opacity: 0.55;
   transition: all 0.25s ease;
   padding: 0;
+  flex-shrink: 0;
 }
 
 .hero-thumb-card img {
@@ -859,7 +925,7 @@ html[dir="ltr"] .nav-drawer {
 }
 
 .hero-thumb-card:hover {
-  opacity: 0.85;
+  opacity: 0.88;
   transform: translateY(-3px);
 }
 
@@ -871,36 +937,39 @@ html[dir="ltr"] .nav-drawer {
 }
 
 /* ==========================================================================
-   QUICK CATEGORY STRIP & TOOLBAR
+   TOOLBAR & GENRE FILTER PILLS
    ========================================================================== */
-.quick-bar-section {
+.toolbar-surface {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 14px;
   margin-bottom: 24px;
+  padding: 14px 18px;
+  border-radius: 18px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
 }
 
-.genre-scroll-strip {
+.genre-scroll-list {
   display: flex;
   align-items: center;
   gap: 8px;
   overflow-x: auto;
   scrollbar-width: none;
-  padding: 2px 0;
 }
 
-.genre-scroll-strip::-webkit-scrollbar {
+.genre-scroll-list::-webkit-scrollbar {
   display: none;
 }
 
 .genre-pill {
   padding: 8px 16px;
   border-radius: 99px;
-  background: var(--bg-surface);
+  background: rgba(255, 255, 255, 0.04);
   border: 1px solid var(--border);
-  font-size: 0.83rem;
+  font-size: 0.82rem;
   font-weight: 600;
   color: var(--text-secondary);
   white-space: nowrap;
@@ -920,17 +989,18 @@ html[dir="ltr"] .nav-drawer {
   box-shadow: 0 4px 15px var(--accent-glow);
 }
 
-.sort-controls-row {
+.filter-controls {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 8px;
 }
 
-.sleek-select {
+.clean-select {
   height: 38px;
   padding: 0 13px;
   border-radius: 99px;
-  background: var(--bg-surface);
+  background: var(--bg-elevated);
   border: 1px solid var(--border);
   font-size: 0.8rem;
   font-weight: 600;
@@ -939,20 +1009,22 @@ html[dir="ltr"] .nav-drawer {
   cursor: pointer;
 }
 
-.sleek-select:hover,
-.sleek-select:focus {
+.clean-select:hover,
+.clean-select:focus {
   border-color: var(--border-hover);
   color: var(--text-primary);
 }
 
 /* ==========================================================================
-   SIGNATURE HOVER-BLUR MOVIE CARDS (Streamex + Custom Blur Info Layer)
+   SECTIONS & SIGNATURE HOVER-BLUR MOVIE CARDS GRID
    ========================================================================== */
-.section-block {
-  margin-bottom: 40px;
+.continue-block,
+.catalog-section,
+.top-ten-section {
+  margin-bottom: 42px;
 }
 
-.section-header-line {
+.section-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -966,20 +1038,20 @@ html[dir="ltr"] .nav-drawer {
   gap: 10px;
 }
 
-.section-glow-bar {
-  width: 6px;
+.section-dot {
+  width: 8px;
   height: 22px;
   border-radius: 99px;
   background: linear-gradient(180deg, var(--accent-light), var(--accent-2));
   box-shadow: 0 0 12px var(--accent-glow);
 }
 
-.section-title-text {
+.section-title {
   font-size: 1.24rem;
   font-weight: 800;
 }
 
-.count-badge-pill {
+.count-chip {
   font-size: 0.75rem;
   font-weight: 700;
   padding: 2px 10px;
@@ -988,35 +1060,48 @@ html[dir="ltr"] .nav-drawer {
   color: var(--accent-light);
 }
 
+.text-btn {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.text-btn:hover {
+  color: var(--accent-light);
+}
+
+/* Movies Grid (Supports both .movies-grid and .movies-Blur-grid) */
+.movies-grid,
 .movies-Blur-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(195px, 1fr));
   gap: 22px;
 }
 
-/* Individual Card with Hover-Blur Magic */
 .blur-movie-card {
   display: flex;
   flex-direction: column;
   gap: 9px;
   cursor: pointer;
+  min-width: 0;
 }
 
 .poster-frame {
   position: relative;
+  width: 100%;
   aspect-ratio: 2 / 3;
   border-radius: 18px;
   overflow: hidden;
   background: var(--bg-card);
   border: 1px solid var(--border);
-  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.45);
   transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.25s ease, box-shadow 0.32s ease;
 }
 
 .blur-movie-card:hover .poster-frame {
   transform: translateY(-6px);
   border-color: var(--border-hover);
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.72), 0 0 24px var(--accent-soft);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.75), 0 0 24px var(--accent-soft);
 }
 
 .poster-img {
@@ -1026,13 +1111,12 @@ html[dir="ltr"] .nav-drawer {
   transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), filter 0.35s ease;
 }
 
-/* THE HOVER BLUR EFFECT REQUESTED BY USER */
+/* HOVER BLUR ON MOVIE POSTER */
 .blur-movie-card:hover .poster-img {
-  transform: scale(1.09);
+  transform: scale(1.08);
   filter: blur(6px) brightness(0.32) saturate(1.2);
 }
 
-/* Default subtle corner badges (fade out on hover to make room for full details) */
 .corner-badges {
   position: absolute;
   top: 10px;
@@ -1049,7 +1133,7 @@ html[dir="ltr"] .nav-drawer {
 }
 
 .corner-quality {
-  background: rgba(6, 7, 11, 0.78);
+  background: rgba(6, 7, 11, 0.8);
   backdrop-filter: blur(6px);
   color: #f8fafc;
   font-size: 0.68rem;
@@ -1059,7 +1143,7 @@ html[dir="ltr"] .nav-drawer {
 }
 
 .corner-rating {
-  background: rgba(6, 7, 11, 0.82);
+  background: rgba(6, 7, 11, 0.84);
   backdrop-filter: blur(6px);
   color: #fbbf24;
   font-size: 0.73rem;
@@ -1068,19 +1152,19 @@ html[dir="ltr"] .nav-drawer {
   border-radius: 7px;
 }
 
-/* Rich Hover Info Overlay (Appears over the blurred poster) */
+/* Hover Overlay Layer with Genres, Rating, Synopsis & Watch Button */
 .hover-info-layer {
   position: absolute;
   inset: 0;
   z-index: 3;
-  padding: 16px;
+  padding: 15px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   opacity: 0;
   transform: translateY(10px);
   transition: opacity 0.28s ease, transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
-  background: linear-gradient(180deg, rgba(6, 7, 11, 0.25) 0%, rgba(6, 7, 11, 0.85) 100%);
+  background: linear-gradient(180deg, rgba(6, 7, 11, 0.25) 0%, rgba(6, 7, 11, 0.88) 100%);
 }
 
 .blur-movie-card:hover .hover-info-layer {
@@ -1099,7 +1183,7 @@ html[dir="ltr"] .nav-drawer {
   background: rgba(251, 191, 36, 0.2);
   border: 1px solid rgba(251, 191, 36, 0.5);
   color: #fbbf24;
-  font-size: 0.75rem;
+  font-size: 0.74rem;
   font-weight: 800;
   padding: 3px 9px;
   border-radius: 99px;
@@ -1135,7 +1219,7 @@ html[dir="ltr"] .nav-drawer {
 }
 
 .hover-year-type {
-  font-size: 0.75rem;
+  font-size: 0.74rem;
   font-weight: 700;
   color: var(--accent-light);
 }
@@ -1147,16 +1231,16 @@ html[dir="ltr"] .nav-drawer {
 }
 
 .hover-genre-tag {
-  font-size: 0.68rem;
+  font-size: 0.67rem;
   font-weight: 700;
   padding: 2px 7px;
   border-radius: 6px;
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.13);
   color: #f1f5f9;
 }
 
 .hover-synopsis-text {
-  font-size: 0.76rem;
+  font-size: 0.75rem;
   color: #cbd5e1;
   line-height: 1.45;
   display: -webkit-box;
@@ -1207,7 +1291,6 @@ html[dir="ltr"] .nav-drawer {
   background: rgba(255, 255, 255, 0.25);
 }
 
-/* Below Card Clean Label */
 .card-caption {
   padding: 0 4px;
 }
@@ -1230,8 +1313,8 @@ html[dir="ltr"] .nav-drawer {
   margin-top: 2px;
 }
 
-/* Continue Watching & Top 10 Strips */
-.continue-cards-row {
+/* Continue Watching & Top 10 */
+.continue-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 14px;
@@ -1259,6 +1342,7 @@ html[dir="ltr"] .nav-drawer {
   height: 68px;
   object-fit: cover;
   border-radius: 8px;
+  flex-shrink: 0;
 }
 
 .continue-item-body {
@@ -1292,7 +1376,7 @@ html[dir="ltr"] .nav-drawer {
   background: linear-gradient(90deg, var(--accent), var(--accent-2));
 }
 
-.top10-strip {
+.honor-strip {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(235px, 1fr));
   gap: 12px;
@@ -1355,14 +1439,26 @@ html[dir="ltr"] .nav-drawer {
   color: var(--text-muted);
 }
 
+.empty-catalog {
+  text-align: center;
+  padding: 50px 20px;
+  background: var(--bg-surface);
+  border: 1px dashed var(--border);
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
 /* ==========================================================================
-   MODALS: AUTH (LOGIN / REGISTER), VIDEO PLAYER, DETAILS & CODES
+   MODALS: AUTH, 40-SERVER PLAYER, DETAILS & CODES
    ========================================================================== */
 .modal-overlay {
   position: fixed;
   inset: 0;
   z-index: 400;
-  background: rgba(3, 5, 10, 0.85);
+  background: rgba(3, 5, 10, 0.84);
   backdrop-filter: blur(14px);
   display: flex;
   align-items: center;
@@ -1371,32 +1467,14 @@ html[dir="ltr"] .nav-drawer {
   overflow-y: auto;
 }
 
-.modal-box {
+.modal-card {
+  position: relative;
+  width: 100%;
   background: var(--bg-surface);
   border: 1px solid var(--border-hover);
   border-radius: 22px;
   box-shadow: var(--shadow-lg);
-  width: 100%;
   overflow: hidden;
-  position: relative;
-}
-
-.auth-modal-box {
-  max-width: 440px;
-}
-
-.player-modal-box {
-  max-width: 1000px;
-}
-
-.details-modal-box {
-  max-width: 820px;
-  max-height: 90vh;
-  overflow-y: auto;
-}
-
-.codes-modal-box {
-  max-width: 500px;
 }
 
 .modal-top-bar {
@@ -1409,56 +1487,71 @@ html[dir="ltr"] .nav-drawer {
   border-bottom: 1px solid var(--border);
 }
 
-.modal-title-cluster {
+.modal-title-wrap {
   display: flex;
   align-items: center;
   gap: 10px;
   flex-wrap: wrap;
 }
 
-.close-btn {
+.modal-sub-meta {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.modal-close-x {
   width: 34px;
   height: 34px;
   border-radius: 10px;
-  background: var(--bg-elevated);
+  background: rgba(255, 255, 255, 0.07);
   color: var(--text-primary);
-  font-size: 1.2rem;
+  font-size: 1.25rem;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.close-btn:hover {
+.modal-close-x:hover {
   background: var(--accent);
   color: var(--on-accent);
 }
 
-/* Auth Modal Tabs & Form */
+.floating-x {
+  position: absolute;
+  top: 14px;
+  inset-inline-end: 14px;
+  z-index: 10;
+}
+
+/* Auth Modal */
+.auth-modal-box {
+  max-width: 430px;
+}
+
 .auth-body {
-  padding: 24px;
+  padding: 22px;
 }
 
 .auth-tabs {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  gap: 6px;
   background: var(--bg-card);
-  padding: 4px;
+  padding: 5px;
   border-radius: 12px;
-  margin-bottom: 20px;
-  border: 1px solid var(--border);
+  margin-bottom: 18px;
 }
 
 .auth-tab-btn {
-  padding: 9px;
+  padding: 8px;
   border-radius: 9px;
-  font-size: 0.85rem;
+  font-size: 0.84rem;
   font-weight: 700;
-  color: var(--text-muted);
-  transition: all 0.2s ease;
+  color: var(--text-secondary);
 }
 
 .auth-tab-btn.active {
-  background: var(--accent);
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
   color: var(--on-accent);
 }
 
@@ -1468,248 +1561,442 @@ html[dir="ltr"] .nav-drawer {
   gap: 14px;
 }
 
-.form-field {
+.auth-field {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 5px;
 }
 
-.form-field label {
-  font-size: 0.8rem;
-  font-weight: 600;
+.auth-field label {
+  font-size: 0.78rem;
+  font-weight: 700;
   color: var(--text-secondary);
 }
 
-.input-sleek {
+.auth-field input {
   height: 42px;
   padding: 0 14px;
   border-radius: 11px;
   background: var(--bg-card);
   border: 1px solid var(--border);
   font-size: 0.88rem;
-  color: var(--text-primary);
   outline: none;
 }
 
-.input-sleek:focus {
+.auth-field input:focus {
   border-color: var(--accent-light);
-  box-shadow: 0 0 0 3px var(--accent-soft);
 }
 
-.auth-divider {
+.auth-submit-btn {
+  height: 44px;
+  border-radius: 11px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: var(--on-accent);
+  font-size: 0.9rem;
+  font-weight: 800;
+  margin-top: 4px;
+}
+
+.auth-guest-divider {
   text-align: center;
-  font-size: 0.76rem;
+  font-size: 0.75rem;
   color: var(--text-muted);
-  margin: 14px 0;
-  position: relative;
+  margin: 14px 0 10px;
 }
 
-/* Player Source Strip & Viewport */
-.player-source-strip {
+.quick-guest-btn {
+  width: 100%;
+  height: 40px;
+  border-radius: 11px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--accent-light);
+}
+
+.quick-guest-btn:hover {
+  background: var(--accent-soft);
+  border-color: var(--border-hover);
+}
+
+/* ==========================================================================
+   40-SERVER STREAMING PLAYER MODAL
+   ========================================================================== */
+.player-modal-box {
+  max-width: 1080px;
+}
+
+.player-controls-deck {
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.player-top-filters {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  padding: 10px 20px;
-  background: var(--bg-body);
-  border-bottom: 1px solid var(--border);
 }
 
-.srv-btn-group {
+.server-search-group {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
+  flex: 1;
+  min-width: 240px;
+}
+
+.server-count-pill {
+  background: var(--accent-soft);
+  color: var(--accent-light);
+  border: 1px solid var(--border-hover);
+  padding: 4px 10px;
+  border-radius: 99px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.server-quick-select {
+  height: 36px;
+  padding: 0 12px;
+  border-radius: 10px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  outline: none;
+  flex: 1;
+  max-width: 280px;
+}
+
+.series-ep-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.series-ep-bar label {
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--accent-light);
+}
+
+/* Scrollable 40-Servers Ribbon */
+.servers-scroll-ribbon {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  overflow-x: auto;
+  padding: 4px 2px 6px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent) var(--bg-elevated);
+}
+
+.servers-scroll-ribbon::-webkit-scrollbar {
+  height: 5px;
+}
+
+.servers-scroll-ribbon::-webkit-scrollbar-track {
+  background: var(--bg-elevated);
+  border-radius: 99px;
+}
+
+.servers-scroll-ribbon::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: 99px;
 }
 
 .srv-btn {
-  padding: 5px 12px;
-  border-radius: 99px;
-  background: var(--bg-surface);
+  padding: 6px 12px;
+  border-radius: 9px;
+  background: var(--bg-elevated);
   border: 1px solid var(--border);
   font-size: 0.76rem;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--text-secondary);
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.18s ease;
+  flex-shrink: 0;
+}
+
+.srv-btn:hover {
+  border-color: var(--border-hover);
+  color: var(--text-primary);
+  transform: translateY(-1px);
 }
 
 .srv-btn.active {
   background: linear-gradient(135deg, var(--accent), var(--accent-2));
   border-color: transparent;
   color: var(--on-accent);
-  font-weight: 700;
+  box-shadow: 0 4px 14px var(--accent-glow);
 }
 
-.video-viewport {
+.srv-num {
+  font-size: 0.66rem;
+  opacity: 0.75;
+  padding: 1px 5px;
+  border-radius: 5px;
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.srv-tag {
+  font-size: 0.64rem;
+  padding: 1px 5px;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #fbbf24;
+}
+
+.srv-btn.active .srv-tag {
+  background: rgba(0, 0, 0, 0.28);
+  color: #ffffff;
+}
+
+.video-stage {
   position: relative;
   width: 100%;
   aspect-ratio: 16 / 9;
-  background: #030509;
+  background: #000000;
   overflow: hidden;
 }
 
-.video-el,
-.canvas-el {
+.video-stage video,
+.video-stage iframe,
+.video-stage canvas {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  display: block;
+  border: 0;
 }
 
-.subtitle-line {
+.video-custom-controls {
   position: absolute;
-  bottom: 62px;
-  inset-inline: 10%;
-  text-align: center;
-  z-index: 6;
-  pointer-events: none;
-  font-size: 1.05rem;
-  font-weight: 600;
-  color: #ffffff;
-}
-
-.subtitle-line span {
-  background: rgba(6, 10, 18, 0.82);
-  padding: 4px 12px;
-  border-radius: 7px;
-  display: inline-block;
-}
-
-.video-ctrl-bar {
-  position: absolute;
-  bottom: 0;
   inset-inline: 0;
-  background: linear-gradient(180deg, transparent, rgba(4, 7, 13, 0.94));
-  padding: 14px 18px 10px;
-  z-index: 7;
-  color: #ffffff;
+  bottom: 0;
+  padding: 12px 16px;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.88), transparent);
 }
 
-.seek-track {
-  position: relative;
+.timeline-bar {
   height: 5px;
-  background: rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.2);
   border-radius: 99px;
+  margin-bottom: 10px;
   cursor: pointer;
-  margin-bottom: 8px;
   overflow: hidden;
 }
 
-.seek-fill {
+.timeline-fill {
   height: 100%;
-  background: var(--accent-light);
   width: 0%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
 }
 
-.ctrl-buttons-row {
+.controls-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-.ctrl-left {
+.controls-side {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-.ctrl-mini-btn {
-  padding: 4px 9px;
-  border-radius: 6px;
+.v-ctrl-btn {
+  padding: 4px 10px;
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.14);
   color: #ffffff;
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   font-weight: 700;
 }
 
-.ctrl-mini-btn:hover {
-  background: rgba(255, 255, 255, 0.16);
+.v-time {
+  font-size: 0.76rem;
+  color: #cbd5e1;
+  font-family: monospace;
 }
 
 /* Details Modal */
-.details-hero-area {
-  padding: 24px;
-  display: flex;
-  gap: 22px;
-  align-items: flex-start;
-  background: var(--bg-card);
-  border-bottom: 1px solid var(--border);
+.details-modal-box {
+  max-width: 880px;
+  max-height: 90vh;
+  overflow-y: auto;
 }
 
-.details-poster-img {
-  width: 160px;
-  height: 236px;
-  object-fit: cover;
-  border-radius: 14px;
-  flex-shrink: 0;
-}
-
-.details-info-col {
-  flex: 1;
-}
-
-.details-meta-boxes {
+.details-layout {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(115px, 1fr));
-  gap: 8px;
-  margin: 14px 0 18px;
-  background: var(--bg-surface);
-  padding: 10px 12px;
-  border-radius: 12px;
+  grid-template-columns: 250px 1fr;
+  gap: 26px;
+  padding: 26px;
+}
+
+.details-poster-col img {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border-radius: 16px;
   border: 1px solid var(--border);
 }
 
-.details-body-pad {
-  padding: 20px 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
+.details-heading {
+  font-size: 1.7rem;
+  font-weight: 800;
+  margin: 8px 0 10px;
 }
 
-.cast-tags {
+.details-story {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 16px;
+}
+
+.details-specs-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  margin-bottom: 18px;
+  font-size: 0.84rem;
+}
+
+.details-cta-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 7px;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.sub-heading {
+  font-size: 0.86rem;
+  font-weight: 800;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+}
+
+.cast-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 18px;
 }
 
 .cast-tag {
-  padding: 5px 12px;
+  padding: 4px 10px;
   border-radius: 99px;
   background: var(--bg-card);
   border: 1px solid var(--border);
-  font-size: 0.79rem;
+  font-size: 0.76rem;
 }
 
-.review-box-form {
+.review-form-row {
   display: flex;
-  flex-wrap: wrap;
   gap: 8px;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
 }
 
-.reviews-list-box {
+.review-form-row input {
+  flex: 1;
+  min-width: 140px;
+  height: 38px;
+  padding: 0 12px;
+  border-radius: 10px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  font-size: 0.82rem;
+  outline: none;
+}
+
+.compact-btn {
+  height: 38px;
+  padding: 0 16px;
+  font-size: 0.8rem;
+}
+
+.reviews-list {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  max-height: 140px;
+  overflow-y: auto;
 }
 
 .review-card-item {
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: var(--bg-card);
+  font-size: 0.8rem;
+}
+
+/* VIP Codes Modal */
+.codes-modal-box {
+  max-width: 500px;
+}
+
+.codes-body {
+  padding: 20px;
+}
+
+.codes-lead {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+}
+
+.code-form {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.code-form input {
+  flex: 1;
+  height: 42px;
+  padding: 0 14px;
+  border-radius: 11px;
   background: var(--bg-card);
   border: 1px solid var(--border);
-  padding: 10px 13px;
-  border-radius: 10px;
-  font-size: 0.83rem;
+  font-family: monospace;
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.codes-table {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .code-row-item {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 10px;
   padding: 10px 12px;
+  border-radius: 11px;
   background: var(--bg-card);
   border: 1px solid var(--border);
-  border-radius: 10px;
-  margin-top: 8px;
   cursor: pointer;
+  transition: border-color 0.18s ease;
 }
 
 .code-row-item:hover {
@@ -1717,71 +2004,93 @@ html[dir="ltr"] .nav-drawer {
 }
 
 .code-key-pill {
+  padding: 3px 9px;
+  border-radius: 7px;
+  background: var(--accent-soft);
+  color: var(--accent-light);
   font-family: monospace;
   font-weight: 800;
-  color: var(--accent-light);
-  background: var(--accent-soft);
-  padding: 3px 9px;
-  border-radius: 6px;
+  font-size: 0.78rem;
 }
 
-/* Footer */
-.clean-footer {
-  border-top: 1px solid var(--border);
-  padding: 24px 0;
-  margin-top: 48px;
-  font-size: 0.82rem;
-  color: var(--text-muted);
-}
-
-.footer-flex {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-
-.toast-area {
+/* Toast Notifications */
+.toast-stack {
   position: fixed;
   bottom: 22px;
   inset-inline-end: 22px;
-  z-index: 600;
+  z-index: 900;
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
 .toast-bubble {
-  background: var(--bg-surface);
+  padding: 11px 18px;
+  border-radius: 12px;
+  background: var(--bg-drawer);
   border: 1px solid var(--border-hover);
   color: var(--text-primary);
-  padding: 11px 16px;
-  border-radius: 12px;
-  box-shadow: var(--shadow-lg);
   font-size: 0.84rem;
-  font-weight: 600;
+  font-weight: 700;
+  box-shadow: var(--shadow-lg);
 }
 
+/* Footer */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 26px 24px;
+  background: var(--bg-surface);
+}
+
+.footer-wrap {
+  max-width: 1420px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.footer-brand strong {
+  color: var(--text-primary);
+}
+
+/* Responsive Breakpoints */
 @media (max-width: 820px) {
   .hero-spotlight {
     padding: 24px;
-    min-height: 400px;
+    min-height: 380px;
   }
-
-  .hero-Queue-thumbs {
-    display: none;
+  .details-layout {
+    grid-template-columns: 1fr;
   }
-
+  .details-poster-col img {
+    max-width: 200px;
+    margin: 0 auto;
+  }
+  .movies-grid,
   .movies-Blur-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: 14px;
   }
+}
 
-  .details-hero-area {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
+@media (max-width: 580px) {
+  .header-inner {
+    padding: 0 12px;
+    gap: 8px;
+  }
+  .brand-text {
+    display: none;
   }
 }
 
@@ -1792,12 +2101,11 @@ html[dir="ltr"] .nav-drawer {
   <div id="eyeComfortOverlay" class="eye-comfort-overlay" aria-hidden="true"></div>
 
   <!-- ========================================================================
-       ULTRA-CLEAN FLOATING HEADER (Only 3-Lines Menu, Logo, Search, Login)
+       FLOATING STREAMEX HEADER (Only 3-Lines Menu, Logo, Search, Login)
        ======================================================================== -->
   <header class="site-header" id="siteHeader">
     <div class="header-inner">
       <div class="header-start">
-        <!-- 3-LINES HAMBURGER DRAWER TRIGGER -->
         <button class="menu-trigger-btn" id="openDrawerBtn" aria-label="Open Navigation Drawer">
           <div class="hamburger-lines">
             <span></span>
@@ -1814,7 +2122,7 @@ html[dir="ltr"] .nav-drawer {
           </div>
           <div class="brand-text">
             <span class="brand-title">WatchUrMovie</span>
-            <span class="brand-sub">STREAMEX EDITION</span>
+            <span class="brand-sub">STREAMEX · 40 PLAYERS</span>
           </div>
         </a>
       </div>
@@ -1856,7 +2164,6 @@ html[dir="ltr"] .nav-drawer {
 
   <!-- ========================================================================
        SLIDE-OUT SIDEBAR DRAWER (3-Lines Menu ☰)
-       Contains Sections, Categories, Themes, Comfort & Account Card
        ======================================================================== -->
   <div class="drawer-backdrop" id="drawerBackdrop"></div>
   <aside class="nav-drawer" id="navDrawer" aria-label="Main Menu Drawer">
@@ -2170,7 +2477,7 @@ html[dir="ltr"] .nav-drawer {
   </div>
 
   <!-- ========================================================================
-       CINEMA STREAMING PLAYER MODAL (Streamex Embeds + Official Trailer + 4K)
+       40-SERVER STREAMING PLAYER MODAL + SEASON / EPISODE SELECTOR
        ======================================================================== -->
   <div class="modal-overlay hidden" id="playerModal" role="dialog" aria-modal="true">
     <div class="modal-card player-modal-box">
@@ -2183,23 +2490,24 @@ html[dir="ltr"] .nav-drawer {
         <button class="modal-close-x" id="closePlayerModalBtn" aria-label="Close">&times;</button>
       </div>
 
-      <div class="player-toolbar">
-        <div class="toolbar-item">
-          <span class="toolbar-label" data-i18n="selectServer">سيرفر العرض:</span>
-          <div class="server-pills" id="serverTabs">
-            <button class="srv-btn active" data-server="stream">Aurora 4K</button>
-            <button class="srv-btn" data-server="vidsrc">Streamex Embed</button>
-            <button class="srv-btn" data-server="trailer">Official Trailer</button>
+      <!-- 40-Servers Selection Deck + TV Series Season/Episode Selector -->
+      <div class="player-controls-deck">
+        <div class="player-top-filters">
+          <div class="server-search-group">
+            <span class="server-count-pill" data-i18n="serversCountLabel">40 مشغل متاح:</span>
+            <select id="serverQuickSelect" class="server-quick-select" dir="ltr" aria-label="Quick select from 40 servers"></select>
+          </div>
+
+          <div class="series-ep-bar hidden" id="seriesEpisodeBar">
+            <label for="seasonSelect" data-i18n="seasonLabel">الموسم:</label>
+            <select id="seasonSelect" class="clean-select" dir="ltr"></select>
+            <label for="episodeSelect" data-i18n="episodeLabel">الحلقة:</label>
+            <select id="episodeSelect" class="clean-select" dir="ltr"></select>
           </div>
         </div>
-        <div class="toolbar-item">
-          <span class="toolbar-label" data-i18n="subtitlesLabel">الترجمة:</span>
-          <select id="subtitleSelect" class="clean-select compact">
-            <option value="ar">العربية (مفعل)</option>
-            <option value="en">English CC</option>
-            <option value="off">إيقاف</option>
-          </select>
-        </div>
+
+        <!-- Horizontal Scrollable Ribbon of all 40 Servers -->
+        <div class="servers-scroll-ribbon" id="serverTabs"></div>
       </div>
 
       <div class="video-stage" id="videoViewport">
@@ -2207,13 +2515,12 @@ html[dir="ltr"] .nav-drawer {
         <iframe
           id="ytTrailerIframe"
           class="hidden"
-          style="width:100%;height:100%;border:0;"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
           allowfullscreen
         ></iframe>
         <canvas id="cinemaFallbackCanvas" class="hidden"></canvas>
 
-        <div class="video-custom-controls" id="videoCustomCtrlBar">
+        <div class="video-custom-controls hidden" id="videoCustomCtrlBar">
           <div class="timeline-bar" id="progressBarTrack">
             <div class="timeline-fill" id="progressFilled"></div>
           </div>
@@ -2252,7 +2559,7 @@ html[dir="ltr"] .nav-drawer {
               <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                 <polygon points="6 4 20 12 6 20 6 4"></polygon>
               </svg>
-              <span data-i18n="watchNow">شاهد الآن</span>
+              <span data-i18n="watchNow">شاهد الآن (40 مشغل)</span>
             </button>
             <button class="btn-glass-sec" id="detailsTrailerBtn">
               <span data-i18n="watchTrailer">الإعلان الرسمي</span>
@@ -2310,7 +2617,7 @@ html[dir="ltr"] .nav-drawer {
     <div class="footer-wrap">
       <div class="footer-brand">
         <strong>WatchUrMovie</strong>
-        <span>Streamex Edition · Powered by Live TMDB API</span>
+        <span>Streamex Edition · 40 Streaming Players · Live TMDB API</span>
       </div>
       <div class="footer-links">
         <span>© 2026 WatchUrMovie</span>
@@ -2320,11 +2627,12 @@ html[dir="ltr"] .nav-drawer {
 
   <script>
 /* ==========================================================================
-   WatchUrMovie — Streamex-Inspired Luxury Cinema Application (script.js)
-   - Clean Floating Header + 3-Lines Slide-Out Navigation Drawer (☰)
-   - Full User Authentication (Sign In, Create Account, Guest VIP, Logout)
+   WatchUrMovie — Streamex Luxury Cinema Engine (script.js)
+   - Floating Header + 3-Lines Slide-Out Navigation Drawer (☰)
+   - User Authentication (Sign In, Create Account, VIP Guest, Logout)
    - Signature Hover-Blur Movie Cards with Genre Badges, Synopsis & Watch CTA
-   - Live TMDB API (Key: 948d5b52b35e1e08e125bd0acbe23ace) + Original Titles
+   - 40 Distinct Streaming Players / Embed Servers + Series Season/Episode Bar
+   - Live TMDB API v3 (Key: 948d5b52b35e1e08e125bd0acbe23ace) + Original Titles
    ========================================================================== */
 
 (() => {
@@ -2334,6 +2642,292 @@ html[dir="ltr"] .nav-drawer {
   const TMDB_BASE_URL = 'https://api.themoviedb.org/3';
   const TMDB_IMG_W500 = 'https://image.tmdb.org/t/p/w500';
   const TMDB_IMG_ORIG = 'https://image.tmdb.org/t/p/original';
+
+  // ---------------------------------------------------------------------------
+  // 40 DISTINCT STREAMING SERVERS / EMBED PLAYERS (Movies & TV Series)
+  // ---------------------------------------------------------------------------
+  const STREAM_SERVERS = [
+    {
+      id: 'vidsrc_pro',
+      name: 'VidSrc Pro',
+      badge: '4K VIP',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://vidsrc.pro/embed/tv/${id}/${s}/${e}` : `https://vidsrc.pro/embed/movie/${id}`
+    },
+    {
+      id: 'vidsrc_cc',
+      name: 'VidSrc.cc v2',
+      badge: '4K FAST',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://vidsrc.cc/v2/embed/tv/${id}/${s}/${e}` : `https://vidsrc.cc/v2/embed/movie/${id}`
+    },
+    {
+      id: 'vidsrc_xyz',
+      name: 'VidSrc.xyz',
+      badge: 'FHD',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://vidsrc.xyz/embed/tv?tmdb=${id}&season=${s}&episode=${e}` : `https://vidsrc.xyz/embed/movie?tmdb=${id}`
+    },
+    {
+      id: 'vidlink_pro',
+      name: 'VidLink Pro',
+      badge: '4K HDR',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://vidlink.pro/tv/${id}/${s}/${e}` : `https://vidlink.pro/movie/${id}`
+    },
+    {
+      id: 'embed_su',
+      name: 'Embed.su',
+      badge: '4K MULTI',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://embed.su/embed/tv/${id}/${s}/${e}` : `https://embed.su/embed/movie/${id}`
+    },
+    {
+      id: 'superembed_multi',
+      name: 'SuperEmbed Multi',
+      badge: 'AR SUB',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://multiembed.mov/?video_id=${id}&tmdb=1&s=${s}&e=${e}` : `https://multiembed.mov/?video_id=${id}&tmdb=1`
+    },
+    {
+      id: 'superembed_vip',
+      name: 'SuperEmbed VIP',
+      badge: 'DIRECT',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://multiembed.mov/directstream.php?video_id=${id}&tmdb=1&s=${s}&e=${e}` : `https://multiembed.mov/directstream.php?video_id=${id}&tmdb=1`
+    },
+    {
+      id: 'autoembed_cc',
+      name: 'AutoEmbed.cc',
+      badge: 'FHD',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://player.autoembed.cc/embed/tv/${id}/${s}/${e}` : `https://player.autoembed.cc/embed/movie/${id}`
+    },
+    {
+      id: 'vidsrc_to',
+      name: 'VidSrc.to',
+      badge: '1080p',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://vidsrc.to/embed/tv/${id}/${s}/${e}` : `https://vidsrc.to/embed/movie/${id}`
+    },
+    {
+      id: 'vidsrc_me',
+      name: 'VidSrc.me',
+      badge: 'FAST',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://vidsrc.me/embed/tv?tmdb=${id}&season=${s}&episode=${e}` : `https://vidsrc.me/embed/movie?tmdb=${id}`
+    },
+    {
+      id: 'vidsrc_icu',
+      name: 'VidSrc.icu',
+      badge: '4K',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://vidsrc.icu/embed/tv/${id}/${s}/${e}` : `https://vidsrc.icu/embed/movie/${id}`
+    },
+    {
+      id: 'vidsrc_in',
+      name: 'VidSrc.in',
+      badge: 'FHD',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://vidsrc.in/embed/tv?tmdb=${id}&season=${s}&episode=${e}` : `https://vidsrc.in/embed/movie?tmdb=${id}`
+    },
+    {
+      id: 'vidsrc_pm',
+      name: 'VidSrc.pm',
+      badge: '1080p',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://vidsrc.pm/embed/tv?tmdb=${id}&season=${s}&episode=${e}` : `https://vidsrc.pm/embed/movie?tmdb=${id}`
+    },
+    {
+      id: 'vidsrc_net',
+      name: 'VidSrc.net',
+      badge: 'CLOUD',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://vidsrc.net/embed/tv?tmdb=${id}&season=${s}&episode=${e}` : `https://vidsrc.net/embed/movie?tmdb=${id}`
+    },
+    {
+      id: 'vidsrc_rip',
+      name: 'VidSrc.rip',
+      badge: 'TURBO',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://vidsrc.rip/embed/tv/${id}/${s}/${e}` : `https://vidsrc.rip/embed/movie/${id}`
+    },
+    {
+      id: 'twoembed_cc',
+      name: '2Embed.cc',
+      badge: 'MULTI',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://www.2embed.cc/embedtv/${id}&s=${s}&e=${e}` : `https://www.2embed.cc/embed/${id}`
+    },
+    {
+      id: 'twoembed_skin',
+      name: '2Embed.skin',
+      badge: 'FHD',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://www.2embed.skin/embedtv/${id}&s=${s}&e=${e}` : `https://www.2embed.skin/embed/${id}`
+    },
+    {
+      id: 'smashystream',
+      name: 'SmashyStream',
+      badge: '4K SUB',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://player.smashy.stream/tv/${id}?s=${s}&e=${e}` : `https://player.smashy.stream/movie/${id}`
+    },
+    {
+      id: 'moviesapi_club',
+      name: 'MoviesAPI.club',
+      badge: 'VIP',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://moviesapi.club/tv/${id}-${s}-${e}` : `https://moviesapi.club/movie/${id}`
+    },
+    {
+      id: 'rivestream_live',
+      name: 'RiveStream',
+      badge: '4K ULTRA',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://rivestream.live/embed?type=tv&id=${id}&season=${s}&episode=${e}` : `https://rivestream.live/embed?type=movie&id=${id}`
+    },
+    {
+      id: 'videasy_net',
+      name: 'Videasy 4K',
+      badge: '4K HDR',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://player.videasy.net/tv/${id}/${s}/${e}` : `https://player.videasy.net/movie/${id}`
+    },
+    {
+      id: 'vidfast_pro',
+      name: 'VidFast Pro',
+      badge: 'FAST',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://vidfast.pro/tv/${id}/${s}/${e}` : `https://vidfast.pro/movie/${id}`
+    },
+    {
+      id: 'vidbinge_dev',
+      name: 'VidBinge',
+      badge: '4K',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://vidbinge.dev/embed/tv/${id}/${s}/${e}` : `https://vidbinge.dev/embed/movie/${id}`
+    },
+    {
+      id: 'autoembed_co',
+      name: 'AutoEmbed Pro',
+      badge: '1080p',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://autoembed.co/tv/tmdb/${id}-${s}-${e}` : `https://autoembed.co/movie/tmdb/${id}`
+    },
+    {
+      id: 'rgshows_me',
+      name: 'RGShows Stream',
+      badge: 'FHD',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://embed.rgshows.me/api/1/tv/?id=${id}&s=${s}&e=${e}` : `https://embed.rgshows.me/api/1/movie/?id=${id}`
+    },
+    {
+      id: 'nontongo_win',
+      name: 'NontonGo',
+      badge: 'MULTI',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://www.NontonGo.win/embed/tv/${id}/${s}/${e}` : `https://www.NontonGo.win/embed/movie/${id}`
+    },
+    {
+      id: 'primewire_tf',
+      name: 'PrimeWire',
+      badge: '1080p',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://www.primewire.tf/embed/tv?tmdb=${id}&season=${s}&episode=${e}` : `https://www.primewire.tf/embed/movie?tmdb=${id}`
+    },
+    {
+      id: 'warezcdn',
+      name: 'WarezCDN',
+      badge: 'FAST',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://embed.warezcdn.com/serie/${id}/${s}/${e}` : `https://embed.warezcdn.com/filme/${id}`
+    },
+    {
+      id: 'frembed_pro',
+      name: 'Frembed',
+      badge: 'EU FHD',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://frembed.pro/api/serie.php?id=${id}&sa=${s}&epi=${e}` : `https://frembed.pro/api/film.php?id=${id}`
+    },
+    {
+      id: 'filmxy_vip',
+      name: 'Filmxy VIP',
+      badge: '1080p',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://www.filmxy.vip/tv/${id}/${s}/${e}` : `https://www.filmxy.vip/movie/${id}`
+    },
+    {
+      id: 'godrive_player',
+      name: 'GoDrivePlayer',
+      badge: 'CLOUD',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://databasegdriveplayer.xyz/player.php?type=series&tmdb=${id}&season=${s}&episode=${e}` : `https://databasegdriveplayer.xyz/player.php?tmdb=${id}`
+    },
+    {
+      id: 'anyembed_xyz',
+      name: 'AnyEmbed',
+      badge: 'FHD',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://anyembed.xyz/tv/${id}/${s}/${e}` : `https://anyembed.xyz/movie/${id}`
+    },
+    {
+      id: 'blackvid_space',
+      name: 'BlackVid',
+      badge: '4K DARK',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://blackvid.space/embed?tmdb=${id}&season=${s}&episode=${e}` : `https://blackvid.space/embed?tmdb=${id}`
+    },
+    {
+      id: 'cinescrape_com',
+      name: 'CineScrape',
+      badge: '4K',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://cinescrape.com/embed/tv/${id}/${s}/${e}` : `https://cinescrape.com/embed/movie/${id}`
+    },
+    {
+      id: '111movies_com',
+      name: '111Movies',
+      badge: 'FHD',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://111movies.com/tv/${id}/${s}/${e}` : `https://111movies.com/movie/${id}`
+    },
+    {
+      id: 'flickystream',
+      name: 'FlickyStream',
+      badge: 'FAST',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://flickystream.com/embed/tv/${id}/${s}/${e}` : `https://flickystream.com/embed/movie/${id}`
+    },
+    {
+      id: 'moviehab_to',
+      name: 'MovieHab',
+      badge: '1080p',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://moviehab.to/embed/tv/${id}/${s}/${e}` : `https://moviehab.to/embed/movie/${id}`
+    },
+    {
+      id: 'vidora_su',
+      name: 'Vidora Stream',
+      badge: '4K',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://vidora.su/embed/tv/${id}/${s}/${e}` : `https://vidora.su/embed/movie/${id}`
+    },
+    {
+      id: 'youtube_trailer',
+      name: 'Official Trailer',
+      badge: 'YOUTUBE',
+      type: 'trailer',
+      buildUrl: () => ''
+    },
+    {
+      id: 'aurora_direct',
+      name: 'Aurora Direct 4K',
+      badge: 'LOCAL 4K',
+      type: 'direct',
+      buildUrl: () => ''
+    }
+  ];
 
   const I18N = {
     ar: {
@@ -2375,8 +2969,9 @@ html[dir="ltr"] .nav-drawer {
       noResultsDesc: 'جرب البحث بالاسم الإنجليزي للفيلم أو تغيير التصنيف.',
       resetFilters: 'إظهار الكل',
       trendingTop10: 'أفضل 10 أعمال تقييماً على TMDB',
-      selectServer: 'سيرفر العرض:',
-      subtitlesLabel: 'الترجمة:',
+      serversCountLabel: '40 مشغل متاح:',
+      seasonLabel: 'الموسم:',
+      episodeLabel: 'الحلقة:',
       castAndCrew: 'طاقم التمثيل والإخراج',
       userReviews: 'تعليقات المشاهدين',
       submitReview: 'إرسال',
@@ -2389,7 +2984,7 @@ html[dir="ltr"] .nav-drawer {
       submitLoginBtn: 'دخول إلى الحساب',
       submitRegisterBtn: 'إنشاء حساب جديد',
       quickGuestBtn: 'دخول سريع كزائر VIP ⚡',
-      codesModalHeading: 'أكواد التفعيل وإعدادات TMDB',
+      codesModalHeading: 'أكواد التفعيل (./codes)',
       codesModalSub: 'اضغط على أي كود بالأسفل لتفعيله فوراً:',
       activateCodeBtn: 'تفعيل',
       typeMovie: 'فيلم',
@@ -2401,7 +2996,7 @@ html[dir="ltr"] .nav-drawer {
       useCodeNow: 'تفعيل ←',
       toastAddedWatchlist: 'تمت الإضافة إلى قائمتك المفضلة',
       toastRemovedWatchlist: 'تمت الإزالة من قائمتك',
-      toastServerSwitched: 'تم تبديل السيرفر بنجاح',
+      toastServerSwitched: 'تم التحويل إلى المشغل: ',
       toastRandomPick: 'اخترنا لك هذا العمل:',
       toastReviewAdded: 'تم نشر تعليقك بنجاح',
       toastHistoryCleared: 'تم مسح سجل المشاهدة',
@@ -2458,8 +3053,9 @@ html[dir="ltr"] .nav-drawer {
       noResultsDesc: 'Try searching another title or resetting filters.',
       resetFilters: 'Reset All',
       trendingTop10: 'Top 10 Highest Rated on TMDB',
-      selectServer: 'Server:',
-      subtitlesLabel: 'Subtitles:',
+      serversCountLabel: '40 Players Ready:',
+      seasonLabel: 'Season:',
+      episodeLabel: 'Episode:',
       castAndCrew: 'Cast & Crew',
       userReviews: 'Audience Comments',
       submitReview: 'Post',
@@ -2472,7 +3068,7 @@ html[dir="ltr"] .nav-drawer {
       submitLoginBtn: 'Sign In',
       submitRegisterBtn: 'Create Account',
       quickGuestBtn: '1-Click Guest VIP Access ⚡',
-      codesModalHeading: 'VIP Codes & TMDB API',
+      codesModalHeading: 'VIP Codes (./codes)',
       codesModalSub: 'Click any repository code below to activate immediately:',
       activateCodeBtn: 'Activate',
       typeMovie: 'Movie',
@@ -2484,7 +3080,7 @@ html[dir="ltr"] .nav-drawer {
       useCodeNow: 'Activate →',
       toastAddedWatchlist: 'Added to your watchlist',
       toastRemovedWatchlist: 'Removed from your watchlist',
-      toastServerSwitched: 'Streaming server switched',
+      toastServerSwitched: 'Switched to player: ',
       toastRandomPick: 'Picked for you:',
       toastReviewAdded: 'Your comment has been posted',
       toastHistoryCleared: 'Watch history cleared',
@@ -2675,7 +3271,7 @@ html[dir="ltr"] .nav-drawer {
     { code: 'IRAQVIP', type: 'VIP_UNLIMITED', descAr: 'عضوية خاصة مجانية + فتح العروض الحصرية المبكرة', descEn: 'Free Special Membership + Early Screenings' },
     { code: 'CINEMA99', type: 'AMBIENT_THEME', descAr: 'تفعيل الثيم العنبر الدافئ المريح للعين تلقائياً', descEn: 'Activate Warm Amber Comfort Palette automatically' },
     { code: 'PARTY777', type: 'WATCH_PARTY', descAr: 'إنشاء غرفة مشاهدة مشتركة مع الأصدقاء', descEn: 'Create Shared Watch Party Room with Friends' },
-    { code: 'ARABSEED', type: 'MULTI_SERVERS', descAr: 'تفعيل مصادر البث المباشر فائقة السرعة', descEn: 'Enable Ultra-Fast Direct Streaming Mirrors' }
+    { code: 'ARABSEED', type: 'MULTI_SERVERS', descAr: 'تفعيل جميع الـ 40 مشغل وسيرفر بث فائق السرعة', descEn: 'Enable All 40 Ultra-Fast Direct Streaming Players' }
   ];
 
   const state = {
@@ -2684,7 +3280,7 @@ html[dir="ltr"] .nav-drawer {
     eyeComfort: localStorage.getItem('wum_eye_comfort') === 'true',
     vipUnlocked: localStorage.getItem('wum_vip') === 'true',
     user: JSON.parse(localStorage.getItem('wum_user') || 'null'),
-    authMode: 'login', // 'login' | 'register'
+    authMode: 'login',
     tmdbKey: localStorage.getItem('wum_tmdb_key') || BUILTIN_TMDB_KEY,
     tmdbConnected: false,
     tmdbPage: 1,
@@ -2701,6 +3297,9 @@ html[dir="ltr"] .nav-drawer {
     reviews: JSON.parse(localStorage.getItem('wum_reviews') || '{}'),
     repoCodes: [...DEFAULT_REPO_CODES],
     currentPlayingItem: null,
+    activeServerId: STREAM_SERVERS[0].id,
+    activeSeason: 1,
+    activeEpisode: 1,
     canvasAnimId: null,
     usingFallbackCanvas: false,
     syntheticTime: 0,
@@ -2812,9 +3411,6 @@ html[dir="ltr"] .nav-drawer {
     showToast(t('toastLoggedOut'));
   }
 
-  // ---------------------------------------------------------------------------
-  // SLIDE-OUT DRAWER CONTROL
-  // ---------------------------------------------------------------------------
   function toggleDrawer(forceOpen) {
     const drawer = document.getElementById('navDrawer');
     const backdrop = document.getElementById('drawerBackdrop');
@@ -2882,6 +3478,7 @@ html[dir="ltr"] .nav-drawer {
       director: 'TMDB Official',
       cast: [],
       trailerKey: null,
+      seasonsCount: 5,
       synopsisAr: raw.overview_ar || raw.overview || 'قصة سينمائية مشوقة من قاعدة بيانات TMDB العالمية.',
       synopsisEn: raw.overview_en || raw.overview || 'Official synopsis from The Movie Database (TMDB).',
       palette: ['#18152e', '#090814', '#8b5cf6'],
@@ -3101,6 +3698,7 @@ html[dir="ltr"] .nav-drawer {
         item.durationAr = `${h} س ${m} د`;
         item.durationEn = `${h}h ${m}m`;
       } else if (data.number_of_seasons) {
+        item.seasonsCount = Math.max(1, Number(data.number_of_seasons) || 1);
         item.durationAr = `${data.number_of_seasons} مواسم (${data.number_of_episodes || ''} حلقة)`;
         item.durationEn = `${data.number_of_seasons} Seasons (${data.number_of_episodes || ''} Eps)`;
       }
@@ -3150,6 +3748,7 @@ html[dir="ltr"] .nav-drawer {
     renderContinueWatching();
     renderCatalog();
     renderRepoCodesList();
+    render40ServerButtons();
   }
 
   function getFeaturedItems() {
@@ -3397,13 +3996,11 @@ html[dir="ltr"] .nav-drawer {
             <div class="poster-frame">
               <img class="poster-img" src="${item.posterUrl}" alt="${getTitle(item)}" loading="lazy" />
 
-              <!-- Subtle Corner Badges (Default View) -->
               <div class="corner-badges">
                 <span class="corner-quality">${item.quality}</span>
                 <span class="corner-rating">★ ${item.rating.toFixed(1)}</span>
               </div>
 
-              <!-- HOVER BLUR OVERLAY WITH FULL INFO, GENRES & WATCH BUTTON -->
               <div class="hover-info-layer">
                 <div class="hover-top-row">
                   <span class="hover-score-pill">★ ${item.rating.toFixed(1)} TMDB</span>
@@ -3451,7 +4048,7 @@ html[dir="ltr"] .nav-drawer {
     grid.querySelectorAll('[data-watch-id]').forEach((btn) => {
       btn.addEventListener('click', (e) => {
         e.stopPropagation();
-        openPlayerModal(btn.getAttribute('data-watch-id'), false);
+        openPlayerModal(btn.getAttribute('data-watch-id'));
       });
     });
 
@@ -3508,9 +4105,141 @@ html[dir="ltr"] .nav-drawer {
     }
   }
 
+  // ---------------------------------------------------------------------------
+  // 40-SERVER STREAMING ENGINE & SEASON / EPISODE SELECTOR
+  // ---------------------------------------------------------------------------
   const videoEl = document.getElementById('cinemaVideo');
   const canvasEl = document.getElementById('cinemaFallbackCanvas');
   const ytIframeEl = document.getElementById('ytTrailerIframe');
+
+  function render40ServerButtons() {
+    const ribbon = document.getElementById('serverTabs');
+    const quickSelect = document.getElementById('serverQuickSelect');
+
+    if (ribbon) {
+      ribbon.innerHTML = STREAM_SERVERS.map(
+        (srv, idx) => `
+        <button class="srv-btn ${srv.id === state.activeServerId ? 'active' : ''}" data-server-id="${srv.id}">
+          <span class="srv-num">#${idx + 1}</span>
+          <span dir="ltr">${srv.name}</span>
+          <span class="srv-tag">${srv.badge}</span>
+        </button>
+      `
+      ).join('');
+
+      ribbon.querySelectorAll('[data-server-id]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const srvId = btn.getAttribute('data-server-id');
+          switchStreamingServer(srvId);
+        });
+      });
+    }
+
+    if (quickSelect) {
+      quickSelect.innerHTML = STREAM_SERVERS.map(
+        (srv, idx) => `<option value="${srv.id}" ${srv.id === state.activeServerId ? 'selected' : ''}>#${idx + 1} — ${srv.name} (${srv.badge})</option>`
+      ).join('');
+    }
+  }
+
+  function renderSeriesEpisodeSelectors(item) {
+    const bar = document.getElementById('seriesEpisodeBar');
+    const seasonSel = document.getElementById('seasonSelect');
+    const epSel = document.getElementById('episodeSelect');
+    if (!bar || !seasonSel || !epSel) return;
+
+    if (item.type !== 'series') {
+      bar.classList.add('hidden');
+      return;
+    }
+
+    bar.classList.remove('hidden');
+    const totalSeasons = Math.max(1, Number(item.seasonsCount) || 5);
+    seasonSel.innerHTML = Array.from({ length: totalSeasons }, (_, i) => {
+      const sNum = i + 1;
+      return `<option value="${sNum}" ${sNum === state.activeSeason ? 'selected' : ''}>Season ${sNum}</option>`;
+    }).join('');
+
+    epSel.innerHTML = Array.from({ length: 24 }, (_, i) => {
+      const eNum = i + 1;
+      return `<option value="${eNum}" ${eNum === state.activeEpisode ? 'selected' : ''}>Episode ${eNum}</option>`;
+    }).join('');
+  }
+
+  function switchStreamingServer(serverId) {
+    const srv = STREAM_SERVERS.find((s) => s.id === serverId) || STREAM_SERVERS[0];
+    state.activeServerId = srv.id;
+
+    document.querySelectorAll('[data-server-id]').forEach((b) => {
+      b.classList.toggle('active', b.getAttribute('data-server-id') === srv.id);
+    });
+
+    const quickSelect = document.getElementById('serverQuickSelect');
+    if (quickSelect) quickSelect.value = srv.id;
+
+    loadActiveServerIntoViewport();
+    showToast(`${t('toastServerSwitched')}${srv.name}`);
+  }
+
+  function loadActiveServerIntoViewport() {
+    const item = state.currentPlayingItem;
+    if (!item) return;
+
+    const srv = STREAM_SERVERS.find((s) => s.id === state.activeServerId) || STREAM_SERVERS[0];
+    stopCinemaSynthesizer();
+
+    if (srv.type === 'trailer') {
+      if (videoEl) {
+        videoEl.pause();
+        videoEl.classList.add('hidden');
+      }
+      if (canvasEl) canvasEl.classList.add('hidden');
+      document.getElementById('videoCustomCtrlBar')?.classList.add('hidden');
+
+      if (item.trailerKey && ytIframeEl) {
+        ytIframeEl.classList.remove('hidden');
+        ytIframeEl.src = `https://www.youtube.com/embed/${item.trailerKey}?autoplay=1&rel=0`;
+      } else if (ytIframeEl && item.tmdbId) {
+        // Fallback to first embed if no YouTube trailer key
+        ytIframeEl.classList.remove('hidden');
+        ytIframeEl.src = STREAM_SERVERS[0].buildUrl(item.tmdbId, item.type === 'series', state.activeSeason, state.activeEpisode);
+      }
+      return;
+    }
+
+    if (srv.type === 'embed' && item.tmdbId && ytIframeEl) {
+      if (videoEl) {
+        videoEl.pause();
+        videoEl.classList.add('hidden');
+      }
+      if (canvasEl) canvasEl.classList.add('hidden');
+      document.getElementById('videoCustomCtrlBar')?.classList.add('hidden');
+
+      ytIframeEl.classList.remove('hidden');
+      ytIframeEl.src = srv.buildUrl(item.tmdbId, item.type === 'series', state.activeSeason, state.activeEpisode);
+      return;
+    }
+
+    // Direct 4K HTML5 Stream or Synthesizer
+    if (ytIframeEl) {
+      ytIframeEl.src = '';
+      ytIframeEl.classList.add('hidden');
+    }
+    document.getElementById('videoCustomCtrlBar')?.classList.remove('hidden');
+
+    if (videoEl) {
+      videoEl.classList.remove('hidden');
+      if (canvasEl) canvasEl.classList.add('hidden');
+      videoEl.src = item.streamUrl || VIDEO_STREAMS[0];
+      videoEl.currentTime = 0;
+      const p = videoEl.play();
+      if (p !== undefined) {
+        p.catch(() => startCinemaSynthesizer(item));
+      }
+    } else {
+      startCinemaSynthesizer(item);
+    }
+  }
 
   function startCinemaSynthesizer(item) {
     state.usingFallbackCanvas = true;
@@ -3589,67 +4318,33 @@ html[dir="ltr"] .nav-drawer {
 
     const pct = duration > 0 ? Math.min(100, (current / duration) * 100) : 0;
     if (filled) filled.style.width = `${pct}%`;
-
-    if (state.currentPlayingItem && current > 2) {
-      state.watchHistory[state.currentPlayingItem.id] = Math.max(10, Math.min(95, Math.round(pct || 28)));
-      localStorage.setItem('wum_history', JSON.stringify(state.watchHistory));
-    }
   }
 
-  async function openPlayerModal(itemId, mode = 'stream') {
+  async function openPlayerModal(itemId, preferredServerId = null) {
     const item = CATALOG.find((c) => c.id === itemId) || CATALOG[0];
     if (!item) return;
 
     state.currentPlayingItem = item;
+    state.activeSeason = 1;
+    state.activeEpisode = 1;
+    if (preferredServerId) {
+      state.activeServerId = preferredServerId;
+    } else if (!state.activeServerId) {
+      state.activeServerId = STREAM_SERVERS[0].id;
+    }
+
     document.getElementById('playerModal')?.classList.remove('hidden');
     document.getElementById('playerTypeBadge').textContent = item.type === 'series' ? t('typeSeries') : t('typeMovie');
     document.getElementById('playerModalTitle').textContent = getTitle(item);
     document.getElementById('playerSubMeta').textContent = `${item.year} · ★ ${item.rating.toFixed(1)} TMDB`;
 
     await enrichTmdbItemDetails(item);
-    stopCinemaSynthesizer();
-
-    if (mode === 'trailer' && item.trailerKey && ytIframeEl) {
-      if (videoEl) {
-        videoEl.pause();
-        videoEl.classList.add('hidden');
-      }
-      if (canvasEl) canvasEl.classList.add('hidden');
-      ytIframeEl.classList.remove('hidden');
-      ytIframeEl.src = `https://www.youtube.com/embed/${item.trailerKey}?autoplay=1&rel=0`;
-      document.getElementById('videoCustomCtrlBar')?.classList.add('hidden');
-    } else if (mode === 'vidsrc' && item.tmdbId && ytIframeEl) {
-      if (videoEl) {
-        videoEl.pause();
-        videoEl.classList.add('hidden');
-      }
-      if (canvasEl) canvasEl.classList.add('hidden');
-      ytIframeEl.classList.remove('hidden');
-      const embedType = item.type === 'series' ? 'tv' : 'movie';
-      ytIframeEl.src = `https://vidsrc.xyz/embed/${embedType}/${item.tmdbId}`;
-      document.getElementById('videoCustomCtrlBar')?.classList.add('hidden');
-    } else {
-      if (ytIframeEl) {
-        ytIframeEl.src = '';
-        ytIframeEl.classList.add('hidden');
-      }
-      document.getElementById('videoCustomCtrlBar')?.classList.remove('hidden');
-      if (videoEl) {
-        videoEl.classList.remove('hidden');
-        if (canvasEl) canvasEl.classList.add('hidden');
-        videoEl.src = item.streamUrl;
-        videoEl.currentTime = 0;
-        const p = videoEl.play();
-        if (p !== undefined) {
-          p.catch(() => startCinemaSynthesizer(item));
-        }
-      } else {
-        startCinemaSynthesizer(item);
-      }
-    }
+    render40ServerButtons();
+    renderSeriesEpisodeSelectors(item);
+    loadActiveServerIntoViewport();
 
     if (!state.watchHistory[item.id]) {
-      state.watchHistory[item.id] = 22;
+      state.watchHistory[item.id] = 26;
       localStorage.setItem('wum_history', JSON.stringify(state.watchHistory));
     }
     renderContinueWatching();
@@ -3723,7 +4418,7 @@ html[dir="ltr"] .nav-drawer {
     const list = state.reviews[itemId] || [
       {
         author: state.lang === 'ar' ? 'متابع سينمائي' : 'Cinema Viewer',
-        text: state.lang === 'ar' ? 'عمل ممتاز وتجربة المشاهدة سلسة جداً.' : 'Fantastic title and super smooth streaming experience.'
+        text: state.lang === 'ar' ? 'عمل ممتاز ووجود 40 مشغل مختلف يخلي المشاهدة بدون أي تقطيع!' : 'Fantastic title and having 40 different streaming servers makes playback effortless!'
       }
     ];
     container.innerHTML = list
@@ -3772,12 +4467,10 @@ html[dir="ltr"] .nav-drawer {
   }
 
   function initEvents() {
-    // 3-Lines Drawer Menu Trigger
     document.getElementById('openDrawerBtn')?.addEventListener('click', () => toggleDrawer(true));
     document.getElementById('closeDrawerBtn')?.addEventListener('click', () => toggleDrawer(false));
     document.getElementById('drawerBackdrop')?.addEventListener('click', () => toggleDrawer(false));
 
-    // Auth Modal & User Login / Register
     document.getElementById('openAuthModalBtn')?.addEventListener('click', () => {
       if (state.user) {
         toggleDrawer(true);
@@ -3823,7 +4516,6 @@ html[dir="ltr"] .nav-drawer {
       loginUser('VIP Guest', 'vip@watchurmovie.app');
     });
 
-    // Drawer Navigation Links
     document.querySelectorAll('[data-nav]').forEach((btn) => {
       btn.addEventListener('click', () => {
         state.activeNav = btn.getAttribute('data-nav');
@@ -3835,7 +4527,6 @@ html[dir="ltr"] .nav-drawer {
       });
     });
 
-    // Palette Swatches inside Drawer
     document.querySelectorAll('[data-palette-pick]').forEach((btn) => {
       btn.addEventListener('click', () => {
         state.palette = btn.getAttribute('data-palette-pick');
@@ -3843,7 +4534,6 @@ html[dir="ltr"] .nav-drawer {
       });
     });
 
-    // Eye Comfort inside Drawer
     document.getElementById('eyeComfortBtn')?.addEventListener('click', () => {
       state.eyeComfort = !state.eyeComfort;
       localStorage.setItem('wum_eye_comfort', String(state.eyeComfort));
@@ -3851,14 +4541,12 @@ html[dir="ltr"] .nav-drawer {
       showToast(state.eyeComfort ? t('toastEyeOn') : t('toastEyeOff'));
     });
 
-    // Language Switcher
     document.getElementById('langToggleBtn')?.addEventListener('click', () => {
       state.lang = state.lang === 'ar' ? 'en' : 'ar';
       localStorage.setItem('wum_lang', state.lang);
       applyLanguage();
     });
 
-    // Search Input & Live TMDB Search
     const searchInput = document.getElementById('searchInput');
     const clearSearchBtn = document.getElementById('clearSearchBtn');
     const searchDropdown = document.getElementById('searchDropdown');
@@ -3894,11 +4582,10 @@ html[dir="ltr"] .nav-drawer {
       openDetailsModal(randomItem.id);
     });
 
-    // Hero CTA Buttons
     document.getElementById('heroWatchBtn')?.addEventListener('click', () => {
       const featuredItems = getFeaturedItems();
       const item = featuredItems[state.heroIndex] || CATALOG[0];
-      openPlayerModal(item.id, 'stream');
+      openPlayerModal(item.id);
     });
     document.getElementById('heroDetailsBtn')?.addEventListener('click', () => {
       const featuredItems = getFeaturedItems();
@@ -3943,16 +4630,20 @@ html[dir="ltr"] .nav-drawer {
 
     document.getElementById('closePlayerModalBtn')?.addEventListener('click', closePlayerModal);
 
-    document.querySelectorAll('.srv-btn').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.srv-btn').forEach((b) => b.classList.remove('active'));
-        btn.classList.add('active');
-        const srv = btn.getAttribute('data-server');
-        if (state.currentPlayingItem) {
-          openPlayerModal(state.currentPlayingItem.id, srv);
-        }
-        showToast(t('toastServerSwitched'));
-      });
+    // 40-Servers Quick Dropdown Selector
+    document.getElementById('serverQuickSelect')?.addEventListener('change', (e) => {
+      switchStreamingServer(e.target.value);
+    });
+
+    // Series Season & Episode Selectors
+    document.getElementById('seasonSelect')?.addEventListener('change', (e) => {
+      state.activeSeason = Number(e.target.value) || 1;
+      loadActiveServerIntoViewport();
+    });
+
+    document.getElementById('episodeSelect')?.addEventListener('change', (e) => {
+      state.activeEpisode = Number(e.target.value) || 1;
+      loadActiveServerIntoViewport();
     });
 
     document.getElementById('playPauseBtn')?.addEventListener('click', () => {
@@ -3980,12 +4671,12 @@ html[dir="ltr"] .nav-drawer {
 
     document.getElementById('detailsWatchBtn')?.addEventListener('click', () => {
       document.getElementById('detailsModal')?.classList.add('hidden');
-      if (state.currentPlayingItem) openPlayerModal(state.currentPlayingItem.id, 'stream');
+      if (state.currentPlayingItem) openPlayerModal(state.currentPlayingItem.id, STREAM_SERVERS[0].id);
     });
 
     document.getElementById('detailsTrailerBtn')?.addEventListener('click', () => {
       document.getElementById('detailsModal')?.classList.add('hidden');
-      if (state.currentPlayingItem) openPlayerModal(state.currentPlayingItem.id, 'trailer');
+      if (state.currentPlayingItem) openPlayerModal(state.currentPlayingItem.id, 'youtube_trailer');
     });
 
     document.getElementById('detailsWatchlistBtn')?.addEventListener('click', () => {
