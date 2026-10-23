@@ -1,9 +1,10 @@
 /* ==========================================================================
-   WatchUrMovie — Streamex-Inspired Luxury Cinema Application (script.js)
-   - Clean Floating Header + 3-Lines Slide-Out Navigation Drawer (☰)
-   - Full User Authentication (Sign In, Create Account, Guest VIP, Logout)
+   WatchUrMovie — Streamex Luxury Cinema Engine (script.js)
+   - Floating Header + 3-Lines Slide-Out Navigation Drawer (☰)
+   - User Authentication (Sign In, Create Account, VIP Guest, Logout)
    - Signature Hover-Blur Movie Cards with Genre Badges, Synopsis & Watch CTA
-   - Live TMDB API (Key: 948d5b52b35e1e08e125bd0acbe23ace) + Original Titles
+   - 40 Distinct Streaming Players / Embed Servers + Series Season/Episode Bar
+   - Live TMDB API v3 (Key: 948d5b52b35e1e08e125bd0acbe23ace) + Original Titles
    ========================================================================== */
 
 (() => {
@@ -13,6 +14,292 @@
   const TMDB_BASE_URL = 'https://api.themoviedb.org/3';
   const TMDB_IMG_W500 = 'https://image.tmdb.org/t/p/w500';
   const TMDB_IMG_ORIG = 'https://image.tmdb.org/t/p/original';
+
+  // ---------------------------------------------------------------------------
+  // 40 DISTINCT STREAMING SERVERS / EMBED PLAYERS (Movies & TV Series)
+  // ---------------------------------------------------------------------------
+  const STREAM_SERVERS = [
+    {
+      id: 'vidsrc_pro',
+      name: 'VidSrc Pro',
+      badge: '4K VIP',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://vidsrc.pro/embed/tv/${id}/${s}/${e}` : `https://vidsrc.pro/embed/movie/${id}`
+    },
+    {
+      id: 'vidsrc_cc',
+      name: 'VidSrc.cc v2',
+      badge: '4K FAST',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://vidsrc.cc/v2/embed/tv/${id}/${s}/${e}` : `https://vidsrc.cc/v2/embed/movie/${id}`
+    },
+    {
+      id: 'vidsrc_xyz',
+      name: 'VidSrc.xyz',
+      badge: 'FHD',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://vidsrc.xyz/embed/tv?tmdb=${id}&season=${s}&episode=${e}` : `https://vidsrc.xyz/embed/movie?tmdb=${id}`
+    },
+    {
+      id: 'vidlink_pro',
+      name: 'VidLink Pro',
+      badge: '4K HDR',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://vidlink.pro/tv/${id}/${s}/${e}` : `https://vidlink.pro/movie/${id}`
+    },
+    {
+      id: 'embed_su',
+      name: 'Embed.su',
+      badge: '4K MULTI',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://embed.su/embed/tv/${id}/${s}/${e}` : `https://embed.su/embed/movie/${id}`
+    },
+    {
+      id: 'superembed_multi',
+      name: 'SuperEmbed Multi',
+      badge: 'AR SUB',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://multiembed.mov/?video_id=${id}&tmdb=1&s=${s}&e=${e}` : `https://multiembed.mov/?video_id=${id}&tmdb=1`
+    },
+    {
+      id: 'superembed_vip',
+      name: 'SuperEmbed VIP',
+      badge: 'DIRECT',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://multiembed.mov/directstream.php?video_id=${id}&tmdb=1&s=${s}&e=${e}` : `https://multiembed.mov/directstream.php?video_id=${id}&tmdb=1`
+    },
+    {
+      id: 'autoembed_cc',
+      name: 'AutoEmbed.cc',
+      badge: 'FHD',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://player.autoembed.cc/embed/tv/${id}/${s}/${e}` : `https://player.autoembed.cc/embed/movie/${id}`
+    },
+    {
+      id: 'vidsrc_to',
+      name: 'VidSrc.to',
+      badge: '1080p',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://vidsrc.to/embed/tv/${id}/${s}/${e}` : `https://vidsrc.to/embed/movie/${id}`
+    },
+    {
+      id: 'vidsrc_me',
+      name: 'VidSrc.me',
+      badge: 'FAST',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://vidsrc.me/embed/tv?tmdb=${id}&season=${s}&episode=${e}` : `https://vidsrc.me/embed/movie?tmdb=${id}`
+    },
+    {
+      id: 'vidsrc_icu',
+      name: 'VidSrc.icu',
+      badge: '4K',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://vidsrc.icu/embed/tv/${id}/${s}/${e}` : `https://vidsrc.icu/embed/movie/${id}`
+    },
+    {
+      id: 'vidsrc_in',
+      name: 'VidSrc.in',
+      badge: 'FHD',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://vidsrc.in/embed/tv?tmdb=${id}&season=${s}&episode=${e}` : `https://vidsrc.in/embed/movie?tmdb=${id}`
+    },
+    {
+      id: 'vidsrc_pm',
+      name: 'VidSrc.pm',
+      badge: '1080p',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://vidsrc.pm/embed/tv?tmdb=${id}&season=${s}&episode=${e}` : `https://vidsrc.pm/embed/movie?tmdb=${id}`
+    },
+    {
+      id: 'vidsrc_net',
+      name: 'VidSrc.net',
+      badge: 'CLOUD',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://vidsrc.net/embed/tv?tmdb=${id}&season=${s}&episode=${e}` : `https://vidsrc.net/embed/movie?tmdb=${id}`
+    },
+    {
+      id: 'vidsrc_rip',
+      name: 'VidSrc.rip',
+      badge: 'TURBO',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://vidsrc.rip/embed/tv/${id}/${s}/${e}` : `https://vidsrc.rip/embed/movie/${id}`
+    },
+    {
+      id: 'twoembed_cc',
+      name: '2Embed.cc',
+      badge: 'MULTI',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://www.2embed.cc/embedtv/${id}&s=${s}&e=${e}` : `https://www.2embed.cc/embed/${id}`
+    },
+    {
+      id: 'twoembed_skin',
+      name: '2Embed.skin',
+      badge: 'FHD',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://www.2embed.skin/embedtv/${id}&s=${s}&e=${e}` : `https://www.2embed.skin/embed/${id}`
+    },
+    {
+      id: 'smashystream',
+      name: 'SmashyStream',
+      badge: '4K SUB',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://player.smashy.stream/tv/${id}?s=${s}&e=${e}` : `https://player.smashy.stream/movie/${id}`
+    },
+    {
+      id: 'moviesapi_club',
+      name: 'MoviesAPI.club',
+      badge: 'VIP',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://moviesapi.club/tv/${id}-${s}-${e}` : `https://moviesapi.club/movie/${id}`
+    },
+    {
+      id: 'rivestream_live',
+      name: 'RiveStream',
+      badge: '4K ULTRA',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://rivestream.live/embed?type=tv&id=${id}&season=${s}&episode=${e}` : `https://rivestream.live/embed?type=movie&id=${id}`
+    },
+    {
+      id: 'videasy_net',
+      name: 'Videasy 4K',
+      badge: '4K HDR',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://player.videasy.net/tv/${id}/${s}/${e}` : `https://player.videasy.net/movie/${id}`
+    },
+    {
+      id: 'vidfast_pro',
+      name: 'VidFast Pro',
+      badge: 'FAST',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://vidfast.pro/tv/${id}/${s}/${e}` : `https://vidfast.pro/movie/${id}`
+    },
+    {
+      id: 'vidbinge_dev',
+      name: 'VidBinge',
+      badge: '4K',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://vidbinge.dev/embed/tv/${id}/${s}/${e}` : `https://vidbinge.dev/embed/movie/${id}`
+    },
+    {
+      id: 'autoembed_co',
+      name: 'AutoEmbed Pro',
+      badge: '1080p',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://autoembed.co/tv/tmdb/${id}-${s}-${e}` : `https://autoembed.co/movie/tmdb/${id}`
+    },
+    {
+      id: 'rgshows_me',
+      name: 'RGShows Stream',
+      badge: 'FHD',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://embed.rgshows.me/api/1/tv/?id=${id}&s=${s}&e=${e}` : `https://embed.rgshows.me/api/1/movie/?id=${id}`
+    },
+    {
+      id: 'nontongo_win',
+      name: 'NontonGo',
+      badge: 'MULTI',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://www.NontonGo.win/embed/tv/${id}/${s}/${e}` : `https://www.NontonGo.win/embed/movie/${id}`
+    },
+    {
+      id: 'primewire_tf',
+      name: 'PrimeWire',
+      badge: '1080p',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://www.primewire.tf/embed/tv?tmdb=${id}&season=${s}&episode=${e}` : `https://www.primewire.tf/embed/movie?tmdb=${id}`
+    },
+    {
+      id: 'warezcdn',
+      name: 'WarezCDN',
+      badge: 'FAST',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://embed.warezcdn.com/serie/${id}/${s}/${e}` : `https://embed.warezcdn.com/filme/${id}`
+    },
+    {
+      id: 'frembed_pro',
+      name: 'Frembed',
+      badge: 'EU FHD',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://frembed.pro/api/serie.php?id=${id}&sa=${s}&epi=${e}` : `https://frembed.pro/api/film.php?id=${id}`
+    },
+    {
+      id: 'filmxy_vip',
+      name: 'Filmxy VIP',
+      badge: '1080p',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://www.filmxy.vip/tv/${id}/${s}/${e}` : `https://www.filmxy.vip/movie/${id}`
+    },
+    {
+      id: 'godrive_player',
+      name: 'GoDrivePlayer',
+      badge: 'CLOUD',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://databasegdriveplayer.xyz/player.php?type=series&tmdb=${id}&season=${s}&episode=${e}` : `https://databasegdriveplayer.xyz/player.php?tmdb=${id}`
+    },
+    {
+      id: 'anyembed_xyz',
+      name: 'AnyEmbed',
+      badge: 'FHD',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://anyembed.xyz/tv/${id}/${s}/${e}` : `https://anyembed.xyz/movie/${id}`
+    },
+    {
+      id: 'blackvid_space',
+      name: 'BlackVid',
+      badge: '4K DARK',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://blackvid.space/embed?tmdb=${id}&season=${s}&episode=${e}` : `https://blackvid.space/embed?tmdb=${id}`
+    },
+    {
+      id: 'cinescrape_com',
+      name: 'CineScrape',
+      badge: '4K',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://cinescrape.com/embed/tv/${id}/${s}/${e}` : `https://cinescrape.com/embed/movie/${id}`
+    },
+    {
+      id: '111movies_com',
+      name: '111Movies',
+      badge: 'FHD',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://111movies.com/tv/${id}/${s}/${e}` : `https://111movies.com/movie/${id}`
+    },
+    {
+      id: 'flickystream',
+      name: 'FlickyStream',
+      badge: 'FAST',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://flickystream.com/embed/tv/${id}/${s}/${e}` : `https://flickystream.com/embed/movie/${id}`
+    },
+    {
+      id: 'moviehab_to',
+      name: 'MovieHab',
+      badge: '1080p',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://moviehab.to/embed/tv/${id}/${s}/${e}` : `https://moviehab.to/embed/movie/${id}`
+    },
+    {
+      id: 'vidora_su',
+      name: 'Vidora Stream',
+      badge: '4K',
+      type: 'embed',
+      buildUrl: (id, isTv, s, e) => isTv ? `https://vidora.su/embed/tv/${id}/${s}/${e}` : `https://vidora.su/embed/movie/${id}`
+    },
+    {
+      id: 'youtube_trailer',
+      name: 'Official Trailer',
+      badge: 'YOUTUBE',
+      type: 'trailer',
+      buildUrl: () => ''
+    },
+    {
+      id: 'aurora_direct',
+      name: 'Aurora Direct 4K',
+      badge: 'LOCAL 4K',
+      type: 'direct',
+      buildUrl: () => ''
+    }
+  ];
 
   const I18N = {
     ar: {
@@ -54,8 +341,9 @@
       noResultsDesc: 'جرب البحث بالاسم الإنجليزي للفيلم أو تغيير التصنيف.',
       resetFilters: 'إظهار الكل',
       trendingTop10: 'أفضل 10 أعمال تقييماً على TMDB',
-      selectServer: 'سيرفر العرض:',
-      subtitlesLabel: 'الترجمة:',
+      serversCountLabel: '40 مشغل متاح:',
+      seasonLabel: 'الموسم:',
+      episodeLabel: 'الحلقة:',
       castAndCrew: 'طاقم التمثيل والإخراج',
       userReviews: 'تعليقات المشاهدين',
       submitReview: 'إرسال',
@@ -68,7 +356,7 @@
       submitLoginBtn: 'دخول إلى الحساب',
       submitRegisterBtn: 'إنشاء حساب جديد',
       quickGuestBtn: 'دخول سريع كزائر VIP ⚡',
-      codesModalHeading: 'أكواد التفعيل وإعدادات TMDB',
+      codesModalHeading: 'أكواد التفعيل (./codes)',
       codesModalSub: 'اضغط على أي كود بالأسفل لتفعيله فوراً:',
       activateCodeBtn: 'تفعيل',
       typeMovie: 'فيلم',
@@ -80,7 +368,7 @@
       useCodeNow: 'تفعيل ←',
       toastAddedWatchlist: 'تمت الإضافة إلى قائمتك المفضلة',
       toastRemovedWatchlist: 'تمت الإزالة من قائمتك',
-      toastServerSwitched: 'تم تبديل السيرفر بنجاح',
+      toastServerSwitched: 'تم التحويل إلى المشغل: ',
       toastRandomPick: 'اخترنا لك هذا العمل:',
       toastReviewAdded: 'تم نشر تعليقك بنجاح',
       toastHistoryCleared: 'تم مسح سجل المشاهدة',
@@ -137,8 +425,9 @@
       noResultsDesc: 'Try searching another title or resetting filters.',
       resetFilters: 'Reset All',
       trendingTop10: 'Top 10 Highest Rated on TMDB',
-      selectServer: 'Server:',
-      subtitlesLabel: 'Subtitles:',
+      serversCountLabel: '40 Players Ready:',
+      seasonLabel: 'Season:',
+      episodeLabel: 'Episode:',
       castAndCrew: 'Cast & Crew',
       userReviews: 'Audience Comments',
       submitReview: 'Post',
@@ -151,7 +440,7 @@
       submitLoginBtn: 'Sign In',
       submitRegisterBtn: 'Create Account',
       quickGuestBtn: '1-Click Guest VIP Access ⚡',
-      codesModalHeading: 'VIP Codes & TMDB API',
+      codesModalHeading: 'VIP Codes (./codes)',
       codesModalSub: 'Click any repository code below to activate immediately:',
       activateCodeBtn: 'Activate',
       typeMovie: 'Movie',
@@ -163,7 +452,7 @@
       useCodeNow: 'Activate →',
       toastAddedWatchlist: 'Added to your watchlist',
       toastRemovedWatchlist: 'Removed from your watchlist',
-      toastServerSwitched: 'Streaming server switched',
+      toastServerSwitched: 'Switched to player: ',
       toastRandomPick: 'Picked for you:',
       toastReviewAdded: 'Your comment has been posted',
       toastHistoryCleared: 'Watch history cleared',
@@ -354,7 +643,7 @@
     { code: 'IRAQVIP', type: 'VIP_UNLIMITED', descAr: 'عضوية خاصة مجانية + فتح العروض الحصرية المبكرة', descEn: 'Free Special Membership + Early Screenings' },
     { code: 'CINEMA99', type: 'AMBIENT_THEME', descAr: 'تفعيل الثيم العنبر الدافئ المريح للعين تلقائياً', descEn: 'Activate Warm Amber Comfort Palette automatically' },
     { code: 'PARTY777', type: 'WATCH_PARTY', descAr: 'إنشاء غرفة مشاهدة مشتركة مع الأصدقاء', descEn: 'Create Shared Watch Party Room with Friends' },
-    { code: 'ARABSEED', type: 'MULTI_SERVERS', descAr: 'تفعيل مصادر البث المباشر فائقة السرعة', descEn: 'Enable Ultra-Fast Direct Streaming Mirrors' }
+    { code: 'ARABSEED', type: 'MULTI_SERVERS', descAr: 'تفعيل جميع الـ 40 مشغل وسيرفر بث فائق السرعة', descEn: 'Enable All 40 Ultra-Fast Direct Streaming Players' }
   ];
 
   const state = {
@@ -363,7 +652,7 @@
     eyeComfort: localStorage.getItem('wum_eye_comfort') === 'true',
     vipUnlocked: localStorage.getItem('wum_vip') === 'true',
     user: JSON.parse(localStorage.getItem('wum_user') || 'null'),
-    authMode: 'login', // 'login' | 'register'
+    authMode: 'login',
     tmdbKey: localStorage.getItem('wum_tmdb_key') || BUILTIN_TMDB_KEY,
     tmdbConnected: false,
     tmdbPage: 1,
@@ -380,6 +669,9 @@
     reviews: JSON.parse(localStorage.getItem('wum_reviews') || '{}'),
     repoCodes: [...DEFAULT_REPO_CODES],
     currentPlayingItem: null,
+    activeServerId: STREAM_SERVERS[0].id,
+    activeSeason: 1,
+    activeEpisode: 1,
     canvasAnimId: null,
     usingFallbackCanvas: false,
     syntheticTime: 0,
@@ -491,9 +783,6 @@
     showToast(t('toastLoggedOut'));
   }
 
-  // ---------------------------------------------------------------------------
-  // SLIDE-OUT DRAWER CONTROL
-  // ---------------------------------------------------------------------------
   function toggleDrawer(forceOpen) {
     const drawer = document.getElementById('navDrawer');
     const backdrop = document.getElementById('drawerBackdrop');
@@ -561,6 +850,7 @@
       director: 'TMDB Official',
       cast: [],
       trailerKey: null,
+      seasonsCount: 5,
       synopsisAr: raw.overview_ar || raw.overview || 'قصة سينمائية مشوقة من قاعدة بيانات TMDB العالمية.',
       synopsisEn: raw.overview_en || raw.overview || 'Official synopsis from The Movie Database (TMDB).',
       palette: ['#18152e', '#090814', '#8b5cf6'],
@@ -780,6 +1070,7 @@
         item.durationAr = `${h} س ${m} د`;
         item.durationEn = `${h}h ${m}m`;
       } else if (data.number_of_seasons) {
+        item.seasonsCount = Math.max(1, Number(data.number_of_seasons) || 1);
         item.durationAr = `${data.number_of_seasons} مواسم (${data.number_of_episodes || ''} حلقة)`;
         item.durationEn = `${data.number_of_seasons} Seasons (${data.number_of_episodes || ''} Eps)`;
       }
@@ -829,6 +1120,7 @@
     renderContinueWatching();
     renderCatalog();
     renderRepoCodesList();
+    render40ServerButtons();
   }
 
   function getFeaturedItems() {
@@ -1076,13 +1368,11 @@
             <div class="poster-frame">
               <img class="poster-img" src="${item.posterUrl}" alt="${getTitle(item)}" loading="lazy" />
 
-              <!-- Subtle Corner Badges (Default View) -->
               <div class="corner-badges">
                 <span class="corner-quality">${item.quality}</span>
                 <span class="corner-rating">★ ${item.rating.toFixed(1)}</span>
               </div>
 
-              <!-- HOVER BLUR OVERLAY WITH FULL INFO, GENRES & WATCH BUTTON -->
               <div class="hover-info-layer">
                 <div class="hover-top-row">
                   <span class="hover-score-pill">★ ${item.rating.toFixed(1)} TMDB</span>
@@ -1130,7 +1420,7 @@
     grid.querySelectorAll('[data-watch-id]').forEach((btn) => {
       btn.addEventListener('click', (e) => {
         e.stopPropagation();
-        openPlayerModal(btn.getAttribute('data-watch-id'), false);
+        openPlayerModal(btn.getAttribute('data-watch-id'));
       });
     });
 
@@ -1187,9 +1477,141 @@
     }
   }
 
+  // ---------------------------------------------------------------------------
+  // 40-SERVER STREAMING ENGINE & SEASON / EPISODE SELECTOR
+  // ---------------------------------------------------------------------------
   const videoEl = document.getElementById('cinemaVideo');
   const canvasEl = document.getElementById('cinemaFallbackCanvas');
   const ytIframeEl = document.getElementById('ytTrailerIframe');
+
+  function render40ServerButtons() {
+    const ribbon = document.getElementById('serverTabs');
+    const quickSelect = document.getElementById('serverQuickSelect');
+
+    if (ribbon) {
+      ribbon.innerHTML = STREAM_SERVERS.map(
+        (srv, idx) => `
+        <button class="srv-btn ${srv.id === state.activeServerId ? 'active' : ''}" data-server-id="${srv.id}">
+          <span class="srv-num">#${idx + 1}</span>
+          <span dir="ltr">${srv.name}</span>
+          <span class="srv-tag">${srv.badge}</span>
+        </button>
+      `
+      ).join('');
+
+      ribbon.querySelectorAll('[data-server-id]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const srvId = btn.getAttribute('data-server-id');
+          switchStreamingServer(srvId);
+        });
+      });
+    }
+
+    if (quickSelect) {
+      quickSelect.innerHTML = STREAM_SERVERS.map(
+        (srv, idx) => `<option value="${srv.id}" ${srv.id === state.activeServerId ? 'selected' : ''}>#${idx + 1} — ${srv.name} (${srv.badge})</option>`
+      ).join('');
+    }
+  }
+
+  function renderSeriesEpisodeSelectors(item) {
+    const bar = document.getElementById('seriesEpisodeBar');
+    const seasonSel = document.getElementById('seasonSelect');
+    const epSel = document.getElementById('episodeSelect');
+    if (!bar || !seasonSel || !epSel) return;
+
+    if (item.type !== 'series') {
+      bar.classList.add('hidden');
+      return;
+    }
+
+    bar.classList.remove('hidden');
+    const totalSeasons = Math.max(1, Number(item.seasonsCount) || 5);
+    seasonSel.innerHTML = Array.from({ length: totalSeasons }, (_, i) => {
+      const sNum = i + 1;
+      return `<option value="${sNum}" ${sNum === state.activeSeason ? 'selected' : ''}>Season ${sNum}</option>`;
+    }).join('');
+
+    epSel.innerHTML = Array.from({ length: 24 }, (_, i) => {
+      const eNum = i + 1;
+      return `<option value="${eNum}" ${eNum === state.activeEpisode ? 'selected' : ''}>Episode ${eNum}</option>`;
+    }).join('');
+  }
+
+  function switchStreamingServer(serverId) {
+    const srv = STREAM_SERVERS.find((s) => s.id === serverId) || STREAM_SERVERS[0];
+    state.activeServerId = srv.id;
+
+    document.querySelectorAll('[data-server-id]').forEach((b) => {
+      b.classList.toggle('active', b.getAttribute('data-server-id') === srv.id);
+    });
+
+    const quickSelect = document.getElementById('serverQuickSelect');
+    if (quickSelect) quickSelect.value = srv.id;
+
+    loadActiveServerIntoViewport();
+    showToast(`${t('toastServerSwitched')}${srv.name}`);
+  }
+
+  function loadActiveServerIntoViewport() {
+    const item = state.currentPlayingItem;
+    if (!item) return;
+
+    const srv = STREAM_SERVERS.find((s) => s.id === state.activeServerId) || STREAM_SERVERS[0];
+    stopCinemaSynthesizer();
+
+    if (srv.type === 'trailer') {
+      if (videoEl) {
+        videoEl.pause();
+        videoEl.classList.add('hidden');
+      }
+      if (canvasEl) canvasEl.classList.add('hidden');
+      document.getElementById('videoCustomCtrlBar')?.classList.add('hidden');
+
+      if (item.trailerKey && ytIframeEl) {
+        ytIframeEl.classList.remove('hidden');
+        ytIframeEl.src = `https://www.youtube.com/embed/${item.trailerKey}?autoplay=1&rel=0`;
+      } else if (ytIframeEl && item.tmdbId) {
+        // Fallback to first embed if no YouTube trailer key
+        ytIframeEl.classList.remove('hidden');
+        ytIframeEl.src = STREAM_SERVERS[0].buildUrl(item.tmdbId, item.type === 'series', state.activeSeason, state.activeEpisode);
+      }
+      return;
+    }
+
+    if (srv.type === 'embed' && item.tmdbId && ytIframeEl) {
+      if (videoEl) {
+        videoEl.pause();
+        videoEl.classList.add('hidden');
+      }
+      if (canvasEl) canvasEl.classList.add('hidden');
+      document.getElementById('videoCustomCtrlBar')?.classList.add('hidden');
+
+      ytIframeEl.classList.remove('hidden');
+      ytIframeEl.src = srv.buildUrl(item.tmdbId, item.type === 'series', state.activeSeason, state.activeEpisode);
+      return;
+    }
+
+    // Direct 4K HTML5 Stream or Synthesizer
+    if (ytIframeEl) {
+      ytIframeEl.src = '';
+      ytIframeEl.classList.add('hidden');
+    }
+    document.getElementById('videoCustomCtrlBar')?.classList.remove('hidden');
+
+    if (videoEl) {
+      videoEl.classList.remove('hidden');
+      if (canvasEl) canvasEl.classList.add('hidden');
+      videoEl.src = item.streamUrl || VIDEO_STREAMS[0];
+      videoEl.currentTime = 0;
+      const p = videoEl.play();
+      if (p !== undefined) {
+        p.catch(() => startCinemaSynthesizer(item));
+      }
+    } else {
+      startCinemaSynthesizer(item);
+    }
+  }
 
   function startCinemaSynthesizer(item) {
     state.usingFallbackCanvas = true;
@@ -1268,67 +1690,33 @@
 
     const pct = duration > 0 ? Math.min(100, (current / duration) * 100) : 0;
     if (filled) filled.style.width = `${pct}%`;
-
-    if (state.currentPlayingItem && current > 2) {
-      state.watchHistory[state.currentPlayingItem.id] = Math.max(10, Math.min(95, Math.round(pct || 28)));
-      localStorage.setItem('wum_history', JSON.stringify(state.watchHistory));
-    }
   }
 
-  async function openPlayerModal(itemId, mode = 'stream') {
+  async function openPlayerModal(itemId, preferredServerId = null) {
     const item = CATALOG.find((c) => c.id === itemId) || CATALOG[0];
     if (!item) return;
 
     state.currentPlayingItem = item;
+    state.activeSeason = 1;
+    state.activeEpisode = 1;
+    if (preferredServerId) {
+      state.activeServerId = preferredServerId;
+    } else if (!state.activeServerId) {
+      state.activeServerId = STREAM_SERVERS[0].id;
+    }
+
     document.getElementById('playerModal')?.classList.remove('hidden');
     document.getElementById('playerTypeBadge').textContent = item.type === 'series' ? t('typeSeries') : t('typeMovie');
     document.getElementById('playerModalTitle').textContent = getTitle(item);
     document.getElementById('playerSubMeta').textContent = `${item.year} · ★ ${item.rating.toFixed(1)} TMDB`;
 
     await enrichTmdbItemDetails(item);
-    stopCinemaSynthesizer();
-
-    if (mode === 'trailer' && item.trailerKey && ytIframeEl) {
-      if (videoEl) {
-        videoEl.pause();
-        videoEl.classList.add('hidden');
-      }
-      if (canvasEl) canvasEl.classList.add('hidden');
-      ytIframeEl.classList.remove('hidden');
-      ytIframeEl.src = `https://www.youtube.com/embed/${item.trailerKey}?autoplay=1&rel=0`;
-      document.getElementById('videoCustomCtrlBar')?.classList.add('hidden');
-    } else if (mode === 'vidsrc' && item.tmdbId && ytIframeEl) {
-      if (videoEl) {
-        videoEl.pause();
-        videoEl.classList.add('hidden');
-      }
-      if (canvasEl) canvasEl.classList.add('hidden');
-      ytIframeEl.classList.remove('hidden');
-      const embedType = item.type === 'series' ? 'tv' : 'movie';
-      ytIframeEl.src = `https://vidsrc.xyz/embed/${embedType}/${item.tmdbId}`;
-      document.getElementById('videoCustomCtrlBar')?.classList.add('hidden');
-    } else {
-      if (ytIframeEl) {
-        ytIframeEl.src = '';
-        ytIframeEl.classList.add('hidden');
-      }
-      document.getElementById('videoCustomCtrlBar')?.classList.remove('hidden');
-      if (videoEl) {
-        videoEl.classList.remove('hidden');
-        if (canvasEl) canvasEl.classList.add('hidden');
-        videoEl.src = item.streamUrl;
-        videoEl.currentTime = 0;
-        const p = videoEl.play();
-        if (p !== undefined) {
-          p.catch(() => startCinemaSynthesizer(item));
-        }
-      } else {
-        startCinemaSynthesizer(item);
-      }
-    }
+    render40ServerButtons();
+    renderSeriesEpisodeSelectors(item);
+    loadActiveServerIntoViewport();
 
     if (!state.watchHistory[item.id]) {
-      state.watchHistory[item.id] = 22;
+      state.watchHistory[item.id] = 26;
       localStorage.setItem('wum_history', JSON.stringify(state.watchHistory));
     }
     renderContinueWatching();
@@ -1402,7 +1790,7 @@
     const list = state.reviews[itemId] || [
       {
         author: state.lang === 'ar' ? 'متابع سينمائي' : 'Cinema Viewer',
-        text: state.lang === 'ar' ? 'عمل ممتاز وتجربة المشاهدة سلسة جداً.' : 'Fantastic title and super smooth streaming experience.'
+        text: state.lang === 'ar' ? 'عمل ممتاز ووجود 40 مشغل مختلف يخلي المشاهدة بدون أي تقطيع!' : 'Fantastic title and having 40 different streaming servers makes playback effortless!'
       }
     ];
     container.innerHTML = list
@@ -1451,12 +1839,10 @@
   }
 
   function initEvents() {
-    // 3-Lines Drawer Menu Trigger
     document.getElementById('openDrawerBtn')?.addEventListener('click', () => toggleDrawer(true));
     document.getElementById('closeDrawerBtn')?.addEventListener('click', () => toggleDrawer(false));
     document.getElementById('drawerBackdrop')?.addEventListener('click', () => toggleDrawer(false));
 
-    // Auth Modal & User Login / Register
     document.getElementById('openAuthModalBtn')?.addEventListener('click', () => {
       if (state.user) {
         toggleDrawer(true);
@@ -1502,7 +1888,6 @@
       loginUser('VIP Guest', 'vip@watchurmovie.app');
     });
 
-    // Drawer Navigation Links
     document.querySelectorAll('[data-nav]').forEach((btn) => {
       btn.addEventListener('click', () => {
         state.activeNav = btn.getAttribute('data-nav');
@@ -1514,7 +1899,6 @@
       });
     });
 
-    // Palette Swatches inside Drawer
     document.querySelectorAll('[data-palette-pick]').forEach((btn) => {
       btn.addEventListener('click', () => {
         state.palette = btn.getAttribute('data-palette-pick');
@@ -1522,7 +1906,6 @@
       });
     });
 
-    // Eye Comfort inside Drawer
     document.getElementById('eyeComfortBtn')?.addEventListener('click', () => {
       state.eyeComfort = !state.eyeComfort;
       localStorage.setItem('wum_eye_comfort', String(state.eyeComfort));
@@ -1530,14 +1913,12 @@
       showToast(state.eyeComfort ? t('toastEyeOn') : t('toastEyeOff'));
     });
 
-    // Language Switcher
     document.getElementById('langToggleBtn')?.addEventListener('click', () => {
       state.lang = state.lang === 'ar' ? 'en' : 'ar';
       localStorage.setItem('wum_lang', state.lang);
       applyLanguage();
     });
 
-    // Search Input & Live TMDB Search
     const searchInput = document.getElementById('searchInput');
     const clearSearchBtn = document.getElementById('clearSearchBtn');
     const searchDropdown = document.getElementById('searchDropdown');
@@ -1573,11 +1954,10 @@
       openDetailsModal(randomItem.id);
     });
 
-    // Hero CTA Buttons
     document.getElementById('heroWatchBtn')?.addEventListener('click', () => {
       const featuredItems = getFeaturedItems();
       const item = featuredItems[state.heroIndex] || CATALOG[0];
-      openPlayerModal(item.id, 'stream');
+      openPlayerModal(item.id);
     });
     document.getElementById('heroDetailsBtn')?.addEventListener('click', () => {
       const featuredItems = getFeaturedItems();
@@ -1622,16 +2002,20 @@
 
     document.getElementById('closePlayerModalBtn')?.addEventListener('click', closePlayerModal);
 
-    document.querySelectorAll('.srv-btn').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.srv-btn').forEach((b) => b.classList.remove('active'));
-        btn.classList.add('active');
-        const srv = btn.getAttribute('data-server');
-        if (state.currentPlayingItem) {
-          openPlayerModal(state.currentPlayingItem.id, srv);
-        }
-        showToast(t('toastServerSwitched'));
-      });
+    // 40-Servers Quick Dropdown Selector
+    document.getElementById('serverQuickSelect')?.addEventListener('change', (e) => {
+      switchStreamingServer(e.target.value);
+    });
+
+    // Series Season & Episode Selectors
+    document.getElementById('seasonSelect')?.addEventListener('change', (e) => {
+      state.activeSeason = Number(e.target.value) || 1;
+      loadActiveServerIntoViewport();
+    });
+
+    document.getElementById('episodeSelect')?.addEventListener('change', (e) => {
+      state.activeEpisode = Number(e.target.value) || 1;
+      loadActiveServerIntoViewport();
     });
 
     document.getElementById('playPauseBtn')?.addEventListener('click', () => {
@@ -1659,12 +2043,12 @@
 
     document.getElementById('detailsWatchBtn')?.addEventListener('click', () => {
       document.getElementById('detailsModal')?.classList.add('hidden');
-      if (state.currentPlayingItem) openPlayerModal(state.currentPlayingItem.id, 'stream');
+      if (state.currentPlayingItem) openPlayerModal(state.currentPlayingItem.id, STREAM_SERVERS[0].id);
     });
 
     document.getElementById('detailsTrailerBtn')?.addEventListener('click', () => {
       document.getElementById('detailsModal')?.classList.add('hidden');
-      if (state.currentPlayingItem) openPlayerModal(state.currentPlayingItem.id, 'trailer');
+      if (state.currentPlayingItem) openPlayerModal(state.currentPlayingItem.id, 'youtube_trailer');
     });
 
     document.getElementById('detailsWatchlistBtn')?.addEventListener('click', () => {
