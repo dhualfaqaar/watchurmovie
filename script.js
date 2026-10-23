@@ -230,12 +230,18 @@
     { id: 'iraq', labelAr: '🇮🇶 القنوات العراقية ودوري نجوم العراق', labelEn: '🇮🇶 Iraqi Channels & Stars League' },
     { id: 'bein_euro', labelAr: '⚽ قنوات beIN والبطولات الأوروبية', labelEn: '⚽ beIN Sports & European Leagues' },
     { id: 'arab_sports', labelAr: '🏆 القنوات الرياضية العربية', labelEn: '🏆 Arab Sports Channels' },
+    { id: 'saudi', labelAr: '🇸🇦 دوري روشن السعودي', labelEn: '🇸🇦 Saudi Roshn League' },
+    { id: 'alwan', labelAr: '🎨 قنوات ألوان', labelEn: '🎨 Alwan Channels' },
+    { id: 'big_matches', labelAr: '🌍 مباريات عالمية وقنوات مفتوحة', labelEn: '🌍 Global Matches & Free Channels' },
     { id: 'mbc', labelAr: '🎬 قنوات MBC والأفلام والترفيه', labelEn: '🎬 MBC & Movies 24/7' },
     { id: 'cartoon', labelAr: '🧒 كارتون نتورك والأطفال', labelEn: '🧒 Cartoon Network & Kids' }
   ];
 
   // Global High-Availability HTTPS HLS Pool (Used by each channel's 10-Server Engine)
   const VERIFIED_HLS_STREAMS = {
+    // Public, free-to-view streams; paid services (SSC/beIN) are not represented by unrelated streams.
+    movies_action_low: 'https://shd-amg-fast.edgenextcdn.net/tx011/playlist.m3u8',
+    alkass_public: 'https://googlecdn1.alkassdigital.net/livestream/qbc4/main.m3u8',
     iraqia_sport: 'https://imn-live.esite-lab.com/hls/iraqia-sports-1.m3u8',
     iraqia_general: 'https://imn-live.esite-lab.com/hls/iraqia-general.m3u8',
     iraqia_news: 'https://imn-live.esite-lab.com/hls/iraqia-news.m3u8',
@@ -719,13 +725,8 @@
       descAr: 'أفلام هوليوود المترجمة على مدار الساعة بدون توقف',
       descEn: '24/7 Non-Stop Subtitled Hollywood Movies',
       color: '#8b5cf6',
-      hlsPool: [
-        VERIFIED_HLS_STREAMS.mbc_2_mix,
-        VERIFIED_HLS_STREAMS.mbc_action,
-        VERIFIED_HLS_STREAMS.mbc_max,
-        VERIFIED_HLS_STREAMS.mbc_4,
-        VERIFIED_HLS_STREAMS.mbc_1
-      ]
+      officialUrl: 'https://shahid.mbc.net/en/channels/mbc-2',
+      hlsPool: []
     },
     {
       id: 'ch_mbc_action',
@@ -878,6 +879,24 @@
         VERIFIED_HLS_STREAMS.atfal_kids
       ]
     }
+  ,
+    // Legal, publicly listed streams / directory entries. Premium broadcasters require their official subscription apps.
+    { id: 'ch_sbc_public', name: 'SBC السعودية (محتوى رياضي مختار)', shortLogo: 'SBC\nSA', category: 'saudi', descAr: 'قناة سعودية عامة؛ قنوات SSC ودوري روشن متاحة عبر Shahid/الناقل الرسمي حسب المنطقة', descEn: 'Saudi public channel; SSC/Roshn League via official licensed services', color: '#16a34a', hlsPool: [VERIFIED_HLS_STREAMS.sbc_saudi, VERIFIED_HLS_STREAMS.saudi_tv] },
+    { id: 'ch_saudi_public', name: 'القناة السعودية', shortLogo: 'SA\nTV', category: 'saudi', descAr: 'بث عام رسمي؛ لا يمثل قنوات SSC المدفوعة', descEn: 'Official public Saudi TV; not an SSC paid feed', color: '#22c55e', hlsPool: [VERIFIED_HLS_STREAMS.saudi_tv, VERIFIED_HLS_STREAMS.sbc_saudi] },
+    { id: 'ch_alwan_directory', name: 'ألوان الرياضية — دليل القناة', shortLogo: 'ALWAN', category: 'alwan', descAr: 'ما حصلنا على رابط بث عام موثّق لهذه القناة؛ لا نعرض بث قناة ثانية باسمها', descEn: 'No verified public feed found; we will not relabel another channel as Alwan', color: '#f97316', hlsPool: [] },
+    { id: 'ch_alkass_public', name: 'قناة الكأس / البث العام المتاح', shortLogo: 'ALKASS', category: 'big_matches', descAr: 'مباريات وبرامج رياضية مختارة؛ التوفر الجغرافي والحقوق قد يختلف', descEn: 'Selected sports programming; availability depends on rights and region', color: '#ef4444', hlsPool: [VERIFIED_HLS_STREAMS.alkass_qbc, VERIFIED_HLS_STREAMS.fifa_plus] },
+    { id: 'ch_fifa_public', name: 'FIFA+ مباريات وبرامج مجانية', shortLogo: 'FIFA+', category: 'big_matches', descAr: 'بث مجاني رسمي للمحتوى والمباريات المتاحة حسب المنطقة', descEn: 'Official free football content and matches, subject to region', color: '#38bdf8', hlsPool: [VERIFIED_HLS_STREAMS.fifa_plus, VERIFIED_HLS_STREAMS.redbull_sports] },
+    { id: 'ch_sportitalia', name: 'Sportitalia — رياضة مجانية', shortLogo: 'SPORT\nITALIA', category: 'big_matches', descAr: 'قناة رياضية مجانية؛ حقوق المباريات تختلف حسب المنطقة', descEn: 'Free sports channel; match rights vary by region', color: '#f59e0b', hlsPool: [VERIFIED_HLS_STREAMS.sport_italia, VERIFIED_HLS_STREAMS.fifa_plus] },
+    { id: 'ch_ssc_1_directory', name: 'SSC 1 — الناقل الرسمي لدوري روشن', shortLogo: 'SSC\n1', category: 'saudi', descAr: 'قناة مشفّرة؛ المشاهدة عبر Shahid أو مزود الخدمة الرسمي حسب حقوق بلدك', descEn: 'Encrypted channel; watch via Shahid or your licensed provider, subject to regional rights', color: '#16a34a', officialUrl: 'https://shahid.mbc.net/en/channels' },
+    { id: 'ch_ssc_2_directory', name: 'SSC 2 — الناقل الرسمي لدوري روشن', shortLogo: 'SSC\n2', category: 'saudi', descAr: 'قناة مشفّرة؛ المشاهدة عبر Shahid أو مزود الخدمة الرسمي حسب حقوق بلدك', descEn: 'Encrypted channel; watch via Shahid or your licensed provider, subject to regional rights', color: '#16a34a', officialUrl: 'https://shahid.mbc.net/en/channels' },
+    { id: 'ch_ssc_3_directory', name: 'SSC 3 — الناقل الرسمي لدوري روشن', shortLogo: 'SSC\n3', category: 'saudi', descAr: 'قناة مشفّرة؛ المشاهدة عبر Shahid أو مزود الخدمة الرسمي حسب حقوق بلدك', descEn: 'Encrypted channel; watch via Shahid or your licensed provider, subject to regional rights', color: '#16a34a', officialUrl: 'https://shahid.mbc.net/en/channels' },
+    { id: 'ch_ssc_4_directory', name: 'SSC 4 — الناقل الرسمي لدوري روشن', shortLogo: 'SSC\n4', category: 'saudi', descAr: 'قناة مشفّرة؛ المشاهدة عبر Shahid أو مزود الخدمة الرسمي حسب حقوق بلدك', descEn: 'Encrypted channel; watch via Shahid or your licensed provider, subject to regional rights', color: '#16a34a', officialUrl: 'https://shahid.mbc.net/en/channels' },
+    { id: 'ch_ssc_5_directory', name: 'SSC 5 — الناقل الرسمي لدوري روشن', shortLogo: 'SSC\n5', category: 'saudi', descAr: 'قناة مشفّرة؛ المشاهدة عبر Shahid أو مزود الخدمة الرسمي حسب حقوق بلدك', descEn: 'Encrypted channel; watch via Shahid or your licensed provider, subject to regional rights', color: '#16a34a', officialUrl: 'https://shahid.mbc.net/en/channels' },
+    { id: 'ch_ssc_extra_directory', name: 'SSC Extra — الناقل الرسمي لدوري روشن', shortLogo: 'SSC\nEXTRA', category: 'saudi', descAr: 'قنوات SSC Extra تتطلب مزوداً مرخصاً؛ لا يتوفر بث عام موثوق', descEn: 'SSC Extra requires a licensed provider; no verified public feed', color: '#22c55e', officialUrl: 'https://shahid.mbc.net/en/channels' },
+    { id: 'ch_bein_max_1', name: 'beIN SPORTS MAX 1 — الدليل الرسمي', shortLogo: 'beIN\nMAX 1', category: 'bein_euro', descAr: 'قناة رياضية مشفّرة؛ المشاهدة عبر beIN CONNECT أو مزود مرخص حسب بلدك', descEn: 'Encrypted sports channel; watch via beIN CONNECT or licensed provider by region', color: '#7c3aed', officialUrl: 'https://connect.bein.com/' },
+    { id: 'ch_bein_max_2', name: 'beIN SPORTS MAX 2 — الدليل الرسمي', shortLogo: 'beIN\nMAX 2', category: 'bein_euro', descAr: 'قناة رياضية مشفّرة؛ المشاهدة عبر beIN CONNECT أو مزود مرخص حسب بلدك', descEn: 'Encrypted sports channel; watch via beIN CONNECT or licensed provider by region', color: '#7c3aed', officialUrl: 'https://connect.bein.com/' },
+    { id: 'ch_bein_max_3', name: 'beIN SPORTS MAX 3 — الدليل الرسمي', shortLogo: 'beIN\nMAX 3', category: 'bein_euro', descAr: 'قناة رياضية مشفّرة؛ المشاهدة عبر beIN CONNECT أو مزود مرخص حسب بلدك', descEn: 'Encrypted sports channel; watch via beIN CONNECT or licensed provider by region', color: '#7c3aed', officialUrl: 'https://connect.bein.com/' },
+    { id: 'ch_bein_max_4', name: 'beIN SPORTS MAX 4 — الدليل الرسمي', shortLogo: 'beIN\nMAX 4', category: 'bein_euro', descAr: 'قناة رياضية مشفّرة؛ المشاهدة عبر beIN CONNECT أو مزود مرخص حسب بلدك', descEn: 'Encrypted sports channel; watch via beIN CONNECT or licensed provider by region', color: '#7c3aed', officialUrl: 'https://connect.bein.com/' }
   ].map((ch) => ({
     ...ch,
     servers: makeTenChannelServers(ch.hlsPool)
@@ -922,7 +941,7 @@
       backToCatalog: 'الرجوع للرئيسية',
       nowPlayingLabel: 'يُعرض الآن · Now Playing',
       downloadBtnText: 'التحميل المباشر والمواسم الكاملة',
-      serverHintText: '🚀 جميع هذه المشغلات الـ 28 مفحوصة ومن مواقع مستقلة ومختلفة كلياً — جرب التبديل بينها لأفضل سرعة.',
+      serverHintText: '🚀 اختر مصدراً متاحاً؛ قد تختلف الروابط والجودة والتوفر حسب القناة والمنطقة.',
       downloadHubTitle: 'مركز التحميل الشامل (أفلام + مواسم كاملة للمسلسلات بضغطة واحدة)',
       recommendedHeading: 'أعمال مشابهة ومقترحة (Recommended)',
       statusLabel: 'الحالة · Status',
@@ -1272,6 +1291,7 @@
     hlsInstance: null,
     hlsFailoverTimer: null,
     currentActiveStreamUrl: '',
+    weakNetMode: localStorage.getItem('watchurmovie-weak-net') === 'true',
     searchDebounceTimer: null
   };
 
@@ -2375,7 +2395,7 @@
               <div class="tv-ch-name">${ch.name}</div>
               <div class="tv-ch-cat">
                 <span class="srv-online-dot"></span>
-                <span>10 سيرفرات نشطة · ${state.lang === 'ar' ? ch.descAr : ch.descEn}</span>
+                <span>10 اختيارات للسيرفر · ${state.lang === 'ar' ? ch.descAr : ch.descEn}</span>
               </div>
             </div>
           </div>
@@ -2403,6 +2423,13 @@
     const titleEl = document.getElementById('activeLiveChannelTitle');
     const subEl = document.getElementById('activeLiveChannelSub');
     if (!ch || !grid) return;
+
+    if (ch.officialUrl || !ch.hlsPool?.length) {
+      grid.innerHTML = ch.officialUrl ? `<a class="live-official-link" href="${ch.officialUrl}" target="_blank" rel="noopener noreferrer">🔒 شاهد ${ch.name} عبر الناقل الرسمي (قد يتطلب اشتراكاً)</a>` : `<div class="live-official-link">ℹ️ ${ch.descAr}</div>`;
+      if (titleEl) titleEl.textContent = ch.name;
+      if (subEl) subEl.textContent = ch.descAr;
+      return;
+    }
 
     if (titleEl) titleEl.textContent = ch.name;
     if (subEl) subEl.textContent = state.lang === 'ar' ? ch.descAr : ch.descEn;
@@ -2439,6 +2466,14 @@
     const video = document.getElementById('liveTvHlsVideo');
     const statusText = document.getElementById('liveStreamStatusText');
     if (!ch || !video) return;
+    if (ch.officialUrl || !ch.hlsPool?.length) {
+      destroyLiveTvPlayer();
+      video.removeAttribute('src');
+      video.load();
+      const status = document.getElementById('liveStreamStatusText');
+      if (status) status.textContent = ch.officialUrl ? (state.lang === 'ar' ? '🔒 البث عبر الناقل الرسمي فقط' : '🔒 Official broadcaster access only') : (state.lang === 'ar' ? 'ℹ️ لا يوجد بث عام موثّق لهذه القناة' : 'ℹ️ No verified public stream for this channel');
+      return;
+    }
 
     const srv = ch.servers[serverIdx] || ch.servers[0];
     const candidateUrls = srv.urls || ch.hlsPool;
@@ -2469,13 +2504,25 @@
           } catch (_) {}
         }
 
+        const weakNet = state.weakNetMode;
         const hls = new window.Hls({
           enableWorker: true,
-          lowLatencyMode: true,
-          manifestLoadingTimeOut: 7000,
-          manifestLoadingMaxRetry: 1,
-          levelLoadingTimeOut: 7000
+          lowLatencyMode: !weakNet,
+          startLevel: weakNet ? 0 : -1,
+          capLevelToPlayerSize: true,
+          maxBufferLength: weakNet ? 12 : 30,
+          maxMaxBufferLength: weakNet ? 24 : 60,
+          maxBufferSize: weakNet ? 12 * 1000 * 1000 : 60 * 1000 * 1000,
+          abrEwmaDefaultEstimate: weakNet ? 450000 : 5000000,
+          abrBandWidthFactor: weakNet ? 0.72 : 0.95,
+          abrBandWidthUpFactor: weakNet ? 0.55 : 0.7,
+          manifestLoadingTimeOut: 10000,
+          manifestLoadingMaxRetry: 2,
+          levelLoadingTimeOut: 10000,
+          fragLoadingTimeOut: 20000,
+          fragLoadingMaxRetry: 4
         });
+        if (weakNet) hls.autoLevelCapping = 1; // Prefer low/SD renditions where the HLS playlist offers them.
         state.hlsInstance = hls;
 
         let playbackConfirmed = false;
@@ -2909,6 +2956,23 @@
       }
       showToast(state.lang === 'ar' ? 'تم نسخ رابط البث المباشر (.m3u8) ✓' : 'Copied direct .m3u8 stream URL ✓');
     });
+
+    // Weak-network mode: adaptive low rendition, modest buffers, and persistent preference.
+    document.getElementById('weakNetModeBtn')?.addEventListener('click', (event) => {
+      state.weakNetMode = !state.weakNetMode;
+      localStorage.setItem('watchurmovie-weak-net', String(state.weakNetMode));
+      event.currentTarget.classList.toggle('active', state.weakNetMode);
+      event.currentTarget.setAttribute('aria-pressed', String(state.weakNetMode));
+      event.currentTarget.textContent = state.weakNetMode ? '📶 وضع النت الضعيف: مفعّل · جودة خفيفة' : '📶 وضع النت الضعيف: إيقاف';
+      playActiveChannelServer(state.activeChannelServerIdx);
+      showToast(state.weakNetMode ? 'تم تفعيل الجودة التكيفية الخفيفة' : 'تم إيقاف وضع النت الضعيف');
+    });
+    const weakNetBtn = document.getElementById('weakNetModeBtn');
+    if (weakNetBtn) {
+      weakNetBtn.classList.toggle('active', state.weakNetMode);
+      weakNetBtn.setAttribute('aria-pressed', String(state.weakNetMode));
+      weakNetBtn.textContent = state.weakNetMode ? '📶 وضع النت الضعيف: مفعّل · جودة خفيفة' : '📶 وضع النت الضعيف: إيقاف';
+    }
 
     // Channel Search inside Live TV View
     const channelSearchInput = document.getElementById('channelSearchInput');

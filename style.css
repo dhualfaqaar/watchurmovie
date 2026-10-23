@@ -1,9 +1,11 @@
 /* ==========================================================================
-   WatchUrMovie — Streamex Studio + 10-Server Live TV Hub + Full-Page Search
+   WatchUrMovie — Streamex Studio + 10-Server Live TV Hub + Weak-Net Engine
    - Clean Slide-Out Drawer (Home, Movies, Series, Football & Live TV, Watchlist)
    - Header Bar without clutter (Live TV button exclusively in Drawer)
-   - Luxury Live TV & Football Broadcast Studio (10 Working Servers per Channel)
-   - Full-Page Watch Studio (#watchStudioView) + 28 Movie Servers + Season Pack DL
+   - Luxury Live TV & Football Broadcast Studio:
+     * Dedicated Weak-Internet Mode (360p / 480p Anti-Buffering HLS Engine)
+     * Saudi Roshn League (SSC 1-5 & Extra), beIN Sports Max 1-4, Alwan Sports 1-3,
+       Alkass 1-4, Global Match Carriers (AD Sports, Sky, TNT, DAZN), MBC 2 VIP
    ========================================================================== */
 
 :root,
@@ -1554,12 +1556,12 @@ html[dir="ltr"] .nav-drawer {
 
 .servers-cards-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(128px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(134px, 1fr));
   gap: 8px;
 }
 
 .server-card-btn {
-  height: 40px;
+  height: 42px;
   padding: 0 11px;
   border-radius: var(--radius-sm);
   background: var(--bg-surface);
@@ -1581,11 +1583,23 @@ html[dir="ltr"] .nav-drawer {
   background: var(--bg-elevated);
 }
 
+.server-card-btn.low-net-srv {
+  border-color: rgba(16, 185, 129, 0.32);
+  background: rgba(16, 185, 129, 0.07);
+}
+
 .server-card-btn.active {
-  background: linear-gradient(135deg, rgba(139, 92, 246, 0.26), rgba(6, 182, 212, 0.2));
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.28), rgba(6, 182, 212, 0.22));
   border-color: var(--accent-light);
   color: #fff;
   box-shadow: 0 4px 14px var(--accent-glow);
+}
+
+.server-card-btn.low-net-srv.active {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.32), rgba(6, 182, 212, 0.25));
+  border-color: #34d399;
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
 }
 
 .srv-sparkle {
@@ -1990,7 +2004,7 @@ html[dir="ltr"] .nav-drawer {
 }
 
 /* ==========================================================================
-   VIEW 3: SLEEK, ORGANIZED 10-SERVER LIVE TV & FOOTBALL HUB (#liveTvView)
+   VIEW 3: ULTRA-ORGANIZED 10-SERVER LIVE TV & FOOTBALL HUB (#liveTvView)
    ========================================================================== */
 .live-tv-view {
   max-width: 1620px;
@@ -2030,8 +2044,36 @@ html[dir="ltr"] .nav-drawer {
 .live-tv-header-actions {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   flex-wrap: wrap;
+}
+
+/* Weak Internet Mode Toggle Button */
+.weak-net-toggle-btn {
+  height: 40px;
+  padding: 0 16px;
+  border-radius: var(--radius-pill);
+  background: rgba(16, 185, 129, 0.14);
+  border: 1px solid rgba(16, 185, 129, 0.45);
+  color: #6ee7b7;
+  font-size: 0.83rem;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: var(--transition);
+}
+
+.weak-net-toggle-btn:hover {
+  background: rgba(16, 185, 129, 0.25);
+  transform: translateY(-1px);
+}
+
+.weak-net-toggle-btn.active {
+  background: linear-gradient(135deg, #10b981, #059669);
+  border-color: #34d399;
+  color: #fff;
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
 }
 
 .channel-search-box {
@@ -2104,7 +2146,7 @@ html[dir="ltr"] .nav-drawer {
 
 .live-workspace-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 370px;
+  grid-template-columns: minmax(0, 1fr) 380px;
   gap: 22px;
   align-items: start;
   margin-bottom: 28px;
@@ -2128,8 +2170,7 @@ html[dir="ltr"] .nav-drawer {
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.88);
 }
 
-.live-video-element,
-.live-iframe-element {
+.live-video-element {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -2228,7 +2269,7 @@ html[dir="ltr"] .nav-drawer {
   background: var(--accent-soft);
 }
 
-/* 10 Servers Grid for Each Channel */
+/* 10 Servers Grid for Each Channel (With Weak-Net Highlight Row) */
 .live-ten-servers-panel {
   background: var(--bg-secondary);
   border: 1px solid var(--border);
@@ -2258,12 +2299,13 @@ html[dir="ltr"] .nav-drawer {
 
 .live-ten-servers-sub {
   font-size: 0.76rem;
-  color: var(--text-secondary);
+  color: #34d399;
+  font-weight: 700;
 }
 
 .live-ten-servers-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(135px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(152px, 1fr));
   gap: 8px;
 }
 
@@ -2276,7 +2318,7 @@ html[dir="ltr"] .nav-drawer {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  max-height: 680px;
+  max-height: 700px;
   overflow-y: auto;
 }
 
@@ -2320,15 +2362,15 @@ html[dir="ltr"] .nav-drawer {
 }
 
 .side-ch-badge {
-  width: 44px;
-  height: 44px;
+  width: 46px;
+  height: 46px;
   border-radius: 10px;
   background: var(--bg-secondary);
   border: 1.5px solid var(--border);
   display: grid;
   place-items: center;
   font-family: var(--font-en);
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   font-weight: 800;
   color: #fff;
   flex-shrink: 0;
@@ -2372,7 +2414,7 @@ html[dir="ltr"] .nav-drawer {
 
 .tv-channels-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(235px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(245px, 1fr));
   gap: 14px;
 }
 
@@ -2397,15 +2439,15 @@ html[dir="ltr"] .nav-drawer {
 }
 
 .tv-ch-logo {
-  width: 50px;
-  height: 50px;
+  width: 52px;
+  height: 52px;
   border-radius: 12px;
   background: var(--bg-surface);
   border: 1.5px solid var(--border);
   display: grid;
   place-items: center;
   font-family: var(--font-en);
-  font-size: 0.74rem;
+  font-size: 0.72rem;
   font-weight: 800;
   color: #fff;
   flex-shrink: 0;
@@ -2732,3 +2774,9 @@ html[dir="ltr"] .nav-drawer {
     gap: 14px;
   }
 }
+
+/* Weak network playback toggle and official licensed access affordances */
+.weak-net-toggle-btn { min-height: 40px; padding: 0 14px; border-radius: var(--radius-pill); background: rgba(16,185,129,.10); border: 1px solid rgba(16,185,129,.38); color: #6ee7b7; font-size: .78rem; font-weight: 800; white-space: nowrap; transition: var(--transition); }
+.weak-net-toggle-btn:hover, .weak-net-toggle-btn.active { background: #047857; border-color: #34d399; color: #fff; }
+.live-official-link { display: block; padding: 14px; border-radius: var(--radius-md); background: var(--accent-soft); border: 1px solid var(--border-strong); color: var(--accent-light); text-align: center; font-weight: 800; }
+.live-official-link:hover { background: var(--accent); color: #fff; }
