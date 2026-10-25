@@ -3592,6 +3592,7 @@ html[dir="ltr"] .nav-drawer {
     { id: 'saudi', labelAr: '🇸🇦 دوري روشن السعودي', labelEn: '🇸🇦 Saudi Roshn League' },
     { id: 'alwan', labelAr: '🎨 قنوات ألوان', labelEn: '🎨 Alwan Channels' },
     { id: 'big_matches', labelAr: '🌍 مباريات عالمية وقنوات مفتوحة', labelEn: '🌍 Global Matches & Free Channels' },
+    { id: 'satellite', labelAr: '🛰️ معلومات استقبال فضائي', labelEn: '🛰️ Satellite Reception Info' },
     { id: 'mbc', labelAr: '🎬 قنوات MBC والأفلام والترفيه', labelEn: '🎬 MBC & Movies 24/7' },
     { id: 'cartoon', labelAr: '🧒 كارتون نتورك والأطفال', labelEn: '🧒 Cartoon Network & Kids' }
   ];
@@ -4257,6 +4258,16 @@ html[dir="ltr"] .nav-drawer {
     { id: 'ch_bein_max_2', name: 'beIN SPORTS MAX 2 — الدليل الرسمي', shortLogo: 'beIN\nMAX 2', category: 'bein_euro', descAr: 'قناة رياضية مشفّرة؛ المشاهدة عبر beIN CONNECT أو مزود مرخص حسب بلدك', descEn: 'Encrypted sports channel; watch via beIN CONNECT or licensed provider by region', color: '#7c3aed', officialUrl: 'https://connect.bein.com/' },
     { id: 'ch_bein_max_3', name: 'beIN SPORTS MAX 3 — الدليل الرسمي', shortLogo: 'beIN\nMAX 3', category: 'bein_euro', descAr: 'قناة رياضية مشفّرة؛ المشاهدة عبر beIN CONNECT أو مزود مرخص حسب بلدك', descEn: 'Encrypted sports channel; watch via beIN CONNECT or licensed provider by region', color: '#7c3aed', officialUrl: 'https://connect.bein.com/' },
     { id: 'ch_bein_max_4', name: 'beIN SPORTS MAX 4 — الدليل الرسمي', shortLogo: 'beIN\nMAX 4', category: 'bein_euro', descAr: 'قناة رياضية مشفّرة؛ المشاهدة عبر beIN CONNECT أو مزود مرخص حسب بلدك', descEn: 'Encrypted sports channel; watch via beIN CONNECT or licensed provider by region', color: '#7c3aed', officialUrl: 'https://connect.bein.com/' }
+    ,{
+      id: 'ch_el_clasico_hotbird_info',
+      name: 'El Clásico — معلومات الفيد الفضائي',
+      shortLogo: 'HOTBIRD\n13E',
+      category: 'satellite',
+      descAr: 'معلومات غير متحققة أرسلها المستخدم: Hotbird 13°E · 11665 H 7200 أو 11675 H 7200. هذا تردد استقبال فضائي وليس رابط مشاهدة عبر الموقع؛ يلزم طبق ورسيفر متوافق، وتوفر الفيد والحقوق يتغيران حسب المباراة والمنطقة.',
+      descEn: 'User-provided, unverified details: Hotbird 13°E · 11665 H 7200 or 11675 H 7200. These are satellite tuning parameters, not a web stream. A dish and compatible receiver are required; availability and rights vary by match and region.',
+      color: '#38bdf8',
+      hlsPool: []
+    }
   ].map((ch) => ({
     ...ch,
     hlsPool: Array.isArray(ch.hlsPool) ? ch.hlsPool.filter(Boolean) : [],
